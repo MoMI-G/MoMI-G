@@ -1,0 +1,69 @@
+class Container {
+  features?: any;
+  featureId?: number;
+  featureThreshold: number;
+  chroms: any;
+  posInner: PathRegion[];
+  nodes: number[];
+
+}
+abstract OverView {
+  fusionID: number
+  posUpdate: (reg: PathRegion[], featureId: number) => void;
+  featureThreshold: number;
+  features: any;
+  chroms: any;
+}
+abstract GraphView {
+
+}
+abstract LinearView {
+
+}
+class PathRegion {
+  path: string;
+  start: number;
+  stop?: number;
+}
+class SVList {
+
+
+  return PathRegion[]
+}
+class Circos {
+
+  return PathRegion[]
+}
+class WholeGraph {
+
+  return PathRegion[]
+}
+class PathRegionBox {
+  posText : string
+  posInner: PathRegion[]
+
+  posUpdate(posText)
+  posUpdateWithGene(geneName)
+  scaleUp()
+  scaleDown()
+}
+class Sankey {
+  nodes: number[]
+
+
+}
+class Linear {
+  fasta: nodes[]
+  bed: PathRegion[]
+  bam,vcf,...:
+}
+
+Container ---> OverView
+OverView ---> SVList
+OverView ---> Circos
+OverView ---> WholeGraph
+Container ---> PathRegionBox
+Container ---> GraphView
+Container ---> LinearView
+GraphView ---> Sankey
+LinearView ---> Linear

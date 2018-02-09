@@ -1,0 +1,32 @@
+{
+  "Default": {
+    "rows": [
+      {
+        "columns": [
+          {
+            "className": "col-md-6 col-sm-6 col-xs-6",
+            "widgets": [{ "key": "CircosWidget" }]
+          },
+          {
+            "className": "col-md-6 col-sm-6 col-xs-6",
+            "widgets": [
+              { "key": "ThresholdWidget" },
+              { "key": "FeatureTableWidget" }
+            ]
+          }
+        ]
+      },
+      {
+        "columns": [
+          {
+            "className": "col-md-12 col-sm-12 col-xs-12",
+            "widgets": [
+              { "key": "TubeMapWidget" },
+              { "key": "AnnotationWidget" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
