@@ -1,5 +1,7 @@
 # MoMIG
 
+[ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600)
+
 ### Modular Multi-scale Integrated Genome Graph Browser
 
 ![logo](public/images/logo.png)
