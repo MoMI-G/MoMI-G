@@ -43,6 +43,26 @@
 <li>Visualize the distributions of structural variations</li>
 </ul>
 </section>
+<section id="install" class="level2">
+<h2>Install</h2>
+<section id="dependencies" class="level3">
+<h3>Dependencies</h3>
+<ul>
+<li>Node.js</li>
+<li>npm or yarn</li>
+</ul>
+</section>
+<section id="summary-of-set-up" class="level3">
+<h3>Summary of set up</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> clone https://github.com/MoMI-G/MoMI-G
+$ <span class="bu">cd</span> MoMI-G
+$ <span class="ex">yarn</span>
+$ <span class="ex">yarn</span> start</code></pre></div>
+<p>And access to <a href="http://localhost:3000/" class="uri">http://localhost:3000/</a>.</p>
+<p>The back-end API is defined at <a href="https://gbapi4.docs.apiary.io/" class="uri">https://gbapi4.docs.apiary.io/</a> (but some definitions are outdated).<br />
+The CHM1 dataset is displayed by default. Modify <code>package.json</code> if you want to change the data source.</p>
+</section>
+</section>
 <section id="features" class="level2">
 <h2>Features</h2>
 <p>Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.</p>
@@ -57,15 +77,6 @@
 </ul></li>
 <li>Footer: a workspace -- a list of genomic region -- for comparing between coordinates</li>
 </ul>
-</section>
-<section id="install" class="level2">
-<h2>Install</h2>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> clone https://github.com/MoMI-G/MoMI-G
-$ <span class="bu">cd</span> MoMI-G
-$ <span class="ex">yarn</span>
-$ <span class="ex">yarn</span> start</code></pre></div>
-<p>And access to <a href="http://localhost:3000/" class="uri">http://localhost:3000/</a>.</p>
-<p>The back-end API is defined at <a href="https://gbapi4.docs.apiary.io" class="uri">https://gbapi4.docs.apiary.io</a>. Modify <code>package.json</code> if you want to change the data source. In default, CHM1 dataset is displayed.</p>
 </section>
 <section id="usage" class="level2">
 <h2>Usage</h2>
@@ -108,11 +119,6 @@ $ <span class="ex">yarn</span> start</code></pre></div>
 <p>This is the RefSeq gene list of the selected genomic coordinate.</p>
 </section>
 </section>
-<section id="call-for-feedbacks" class="level2">
-<h2>Call for feedbacks</h2>
-<p>In order to continuously improve the software, we would like to report on usability, bug reports, and advice. Also, we are also looking forward to your request for the visualization of your data with our system. Please contact <strong>Google Form</strong> at the bottom of the page.</p>
-<p>Please keep in mind that questions and opinions may be disclosed on websites or other media.</p>
-</section>
 <section id="change-log" class="level2">
 <h2>Change log</h2>
 <ul>
@@ -144,7 +150,6 @@ $ <span class="ex">yarn</span> start</code></pre></div>
 <li>Paten, B., Novak, A. M., Garrison, E., &amp; Hickey, G. (2017). Superbubbles, Ultrabubbles and Cacti. bioRxiv, 1–13. <a href="http://doi.org/10.1101/101493" class="uri">http://doi.org/10.1101/101493</a></li>
 <li>O’Leary, N. A., Wright, M. W., Brister, J. R., Ciufo, S., Haddad, D., McVeigh, R., … Pruitt, K. D. (2016). Reference sequence (RefSeq) database at NCBI: Current status, taxonomic expansion, and functional annotation. Nucleic Acids Research, 44(D1), D733–D745. <a href="https://doi.org/10.1093/nar/gkv1189" class="uri">https://doi.org/10.1093/nar/gkv1189</a></li>
 <li>Harrow, J., Frankish, A., Gonzalez, J. M., Tapanari, E., Diekhans, M., Kokocinski, F., … Hubbard, T. J. (2012). GENCODE: The reference human genome annotation for the ENCODE project. Genome Research, 22(9), 1760–1774. <a href="https://doi.org/10.1101/gr.135350.111" class="uri">https://doi.org/10.1101/gr.135350.111</a></li>
-<li>Weitz, E. ideogram, <a href="https://github.com/eweitz/ideogram" class="uri">https://github.com/eweitz/ideogram</a></li>
 <li>TogoGenome. <a href="http://togogenome.org/" class="uri">http://togogenome.org/</a></li>
 <li>DBCLS. (2016). SPARQList <a href="https://github.com/dbcls/sparqlist" class="uri">https://github.com/dbcls/sparqlist</a></li>
 </ul>

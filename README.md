@@ -2,7 +2,7 @@
 
 ### Modular Multi-scale Integrated Genome Graph Browser
 
-![logo](images/logo.png)
+![logo](public/images/logo.png)
 
 A genome graph browser for visualization of structural variants as a genome graph:
 
@@ -41,7 +41,7 @@ The CHM1 dataset is displayed by default. Modify `package.json` if you want to c
 
 Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.
 
-![design](images/design.png)
+![design](public/images/design.png)
 
 * Header: a link to README or options to change layouts.
 * Main:
@@ -60,13 +60,13 @@ This graph is called CHM1 graph below.
 
 ### Select structural variants
 
-![circos](images/Circos.png) ![table](images/table.png)
+![circos](public/images/Circos.png) ![table](public/images/table.png)
 
 You can select structural variants from Circos plot or table. When you click a line between chromosomes in Circos or "GO" button of a row of the structural variant in the table, the selected region is added into a coordinate workspace on the footer.
 
 ### A workspace for genomic regions
 
-![workspace](images/workspace.png)
+![workspace](public/images/workspace.png)
 
 When you select a genomic coordinate with the overall view, the region is inserted on the footer workspace and the top item of the workspace is the target of visualization as genome graphs.
 
@@ -74,13 +74,13 @@ Each card is draggable. If you double-clicked each card of genomic coordinate, t
 
 ### Karyotypes
 
-![karyotype](images/karyotype.png)
+![karyotype](public/images/karyotype.png)
 
 Karyotypes of each chromosome which is listed in the workspace is shown in this component. The red pictogram means that structural variations are identified on the position.
 
 ### Visualize as genome graphs
 
-![tube_map](images/TubeMap.png)
+![tube_map](public/images/TubeMap.png)
 
 The genomic region on the reference genome is drawn as a genome graph:
 
@@ -92,7 +92,7 @@ The genomic region on the reference genome is drawn as a genome graph:
 
 ### Confirm gene annotations
 
-![annotation](images/annotation.png)
+![annotation](public/images/annotation.png)
 
 This is the RefSeq gene list of the selected genomic coordinate.
 
