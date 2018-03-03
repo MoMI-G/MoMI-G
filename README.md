@@ -12,6 +12,8 @@ A sequence graph as a bi-directed graph composed of a set of multiple DNA sequen
 
 The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from personal genomes.
 
+[Short Demo](https://youtu.be/Cv1OFREYtbU)
+
 ## Goals
 
 * Compare a personal genome to a reference genome
