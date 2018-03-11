@@ -43,12 +43,12 @@ The CHM1 dataset is displayed by default.
 
 ### Run on your workstation
 
-If you want to try back-end server on your laptop, modify `package.json` and run docker container which includes CHM1 chr21 dataset.
+If you want to try back-end server on your laptop, modify `package.json` and run docker container which includes CHM1 chr21 with simulated reads dataset.
 
 ``` bash
 $ sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json
 $ yarn start
-$ docker run -d -p 8081:8081 momigteam/momig-backend # Run it on another shell. It takes a little long time -- please wait.
+$ docker run -p 8081:8081 momigteam/momig-backend # Run it on another shell. It takes a little long time -- please wait.
 ```
 
 If you want to run your own dataset, these files are required to be mounted on "static/" folder.
@@ -60,8 +60,8 @@ If you want to run your own dataset, these files are required to be mounted on "
   * \*.gam(optional): alignment on the graph
   * \*.gam.index(optional): index of gam
 
-``` bash 
-$ docker run -d -p 8081:8081 -v `pwd`/static:/vg/static momigteam/momig-backend
+``` bash
+$ docker run -p 8081:8081 -v `pwd`/static:/vg/static momigteam/momig-backend
 $ yarn start
 ```
 
