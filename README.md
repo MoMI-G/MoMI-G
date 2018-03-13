@@ -2,6 +2,8 @@
 
 [ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600)
 
+[![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com")
+
 ### Modular Multi-scale Integrated Genome Graph Browser
 
 ![logo](public/images/logo.png)
@@ -26,6 +28,7 @@ The visualization of sequence graph which is composed of a reference genome and 
 
 * Node.js
 * npm or yarn
+  * Docker (optional)
 
 ### Summary of set up
 
@@ -48,8 +51,10 @@ If you want to try back-end server on your laptop, modify `package.json` and run
 ``` bash
 $ sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json
 $ yarn start
-$ docker run -p 8081:8081 momigteam/momig-backend # Run it on another shell. It takes a little long time -- please wait.
+$ docker run --init -p 8081:8081 momigteam/momig-backend # Run it on another shell. It takes a little long time -- please wait.
 ```
+
+You can start docker container by `docker-compose up` instead of `docker run`.
 
 If you want to run your own dataset, these files are required to be mounted on "static/" folder.
 
@@ -61,7 +66,7 @@ If you want to run your own dataset, these files are required to be mounted on "
   * \*.gam.index(optional): index of gam
 
 ``` bash
-$ docker run -p 8081:8081 -v `pwd`/static:/vg/static momigteam/momig-backend
+$ docker run --init -p 8081:8081 -v `pwd`/static:/vg/static momigteam/momig-backend
 $ yarn start
 ```
 
