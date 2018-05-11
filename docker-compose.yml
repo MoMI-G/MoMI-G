@@ -5,3 +5,4 @@ services:
     ports:
       - "8081:8081"
     init: true
+    mem_reservation: 8gb
