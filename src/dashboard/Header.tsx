@@ -13,12 +13,14 @@ import {
   DropdownToggle,
   DropdownMenu
 } from 'reactstrap';
+import { PathRegion } from '../widgets/Utils';
 
 interface HeaderProps {
   keyId: number;
   updateKeyId: (key: number) => void;
   layoutPresets: any;
   name?: string;
+  pos: PathRegion[];
   onEdit: () => void;
 }
 
@@ -36,6 +38,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.toggle = this.toggle.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleDropdownReadme = this.toggleDropdownReadme.bind(this);
+    this.downloadRegions = this.downloadRegions.bind(this);
     this.state = {
       keyId: this.props.keyId,
       isOpen: false,
@@ -60,6 +63,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
   changeKeyId(id: number) {
     this.props.updateKeyId(id);
+  }
+  downloadRegions() {
+    const fasta = this.props.pos.map(a => a.toQuery()).join('\n');
+
+    var svgBlob = new Blob([fasta], {type: 'text/plain'});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = this.props.pos[0].toString() + '.txt';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
   render() {
     return (
@@ -120,6 +135,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       target="_blank"
                       title="readme.english">
                       English
+                    </DropdownItem>
+                    <DropdownItem
+                      key={2}
+                      onClick={this.downloadRegions}
+                      target="_blank"
+                      title="download.english">
+                      Download
                     </DropdownItem>
                     {/*
                     <DropdownItem

@@ -279,7 +279,7 @@ class DashboardInner extends React.Component<
         },
         ThresholdWidget: {
           type: ThresholdSlider,
-          title: 'Overall View: Threshold Slider',
+          title: 'Overall View: Threshold Filter',
           props: thresholdSliderProps
         },
         FeatureTableWidget: {
@@ -346,6 +346,7 @@ class DashboardInner extends React.Component<
           updateKeyId={this.props._keyIdUpdate}
           layoutPresets={layoutPresets}
           name={this.props.name}
+          pos={this.props.posInner}
           onEdit={this.toggleEdit}
         />
         <Dashboard

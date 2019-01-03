@@ -27,3 +27,9 @@ yarn-error.log*
 /src/samples/old
 env
 codeship.aes
+*.vcf
+
+
+sv_test*
+hg*
+breakpoint_list*

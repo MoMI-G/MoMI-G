@@ -5,6 +5,8 @@ import {
   PathRegion,
   Helpable,
   SPARQList,
+  BedAnnotation,
+  WigAnnotation,
   PathRegionWithPrevLen
 } from './Utils';
 import * as d3 from 'd3';
@@ -35,15 +37,16 @@ const greys_old = [
 
 const greys = [
   // '#d9d9d9',
-  //'#bdbdbd',
-  //'#737373',
+  // '#bdbdbd',
+  // '#737373',
   '#252525',
-  //'#969696',
+  // '#969696',
   '#525252',
   '#000000'
-]; //.reverse();
+]; // .reverse();
 
 const greysWhite = ['#d9d9d9'];
+const white = ['#ffffff'];
 
 const plainColors = [
   '#1f77b4',
@@ -70,6 +73,8 @@ const lightColors = [
   '#E6E6AC',
   '#A8E7ED'
 ]; // d3 category10
+// const greenDarkColors = ['#238b45', '#b2e2e2'].reverse();
+// const greenLightColors = ['#66c2a4', '#edf8fb'].reverse();
 
 const greens = [
   '#e5f5e0',
@@ -82,8 +87,8 @@ const greens = [
   '#00441b'
 ];
 
-const greenDarkColors = greens.slice(4, 8);
-const greenLightColors = greens.slice(0, 4);
+const greenDarkColors = greens.slice(4, 8); // .filter((a, i) => i % 2 === 1);
+const greenLightColors = greens.slice(0, 4); // .filter((a, i) => i % 2 === 0);
 
 export interface GraphWrapperProps {
   width: number;
@@ -109,12 +114,15 @@ export interface GraphWrapperState {
   loading: boolean;
   initialize: boolean;
   sequentialId: number;
+  // sequentialIdProp: number;
   annotations?: any;
   showGeneInfo: any[];
   subPathAnnotation: boolean;
   steps: number;
   pathNameDict: any;
   colorOption: [HaploidColorful, GeneColor];
+  nodeCoverages?: {[key: number]: number[]};
+  metaNodeCoverages?: {min: number, max: number}[];
 }
 
 class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
@@ -172,7 +180,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
     return 'sequencetubemap';
   }
   toggleGam(next: boolean) {
-    if (next) {
+    if (next === true) {
       this.reload();
     }
   }
@@ -228,7 +236,6 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
       case 'reference':
       case 'variation':
         if (colorOption[0] === HaploidColorful.Reference) {
-          // Set reference as referenecolor, variations as greyscale.
           if (Utils.strToColor(name, this.props.chroms) !== '') {
             // When reference
             return differenceColor(
@@ -258,7 +265,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
               ]
           };
         } else {
-          // Set reference as greyscale, variations as colorful.
+          // Set reference as grayscale, variations as colorful.
           if (type === 'reference') {
             return differenceColor(
               greys[this.uniqueTrackIdWithType(name, type) % greys.length],
@@ -274,8 +281,8 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   this.uniqueTrackIdWithType(name, 'plain') % plainColors.length
                 ],
               exon_color:
-                lightColors[
-                  this.uniqueTrackIdWithType(name, 'plain') % lightColors.length
+                plainColors[
+                  this.uniqueTrackIdWithType(name, 'plain') % plainColors.length
                 ]
             };
           }
@@ -290,7 +297,10 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
             exon_color:
               lightColors[
                 this.uniqueTrackIdWithType(name, 'plain') % lightColors.length
-              ]
+              ],
+            white_color: white[
+              this.uniqueTrackIdWithType(name, type) % white.length
+            ]
           };
         } else {
           // Gene colors are unified in green.
@@ -303,14 +313,22 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
               greenLightColors[
                 this.uniqueTrackIdWithType(name, type) % greenLightColors.length
               ],
+            white_color: white[
+              this.uniqueTrackIdWithType(name, type) % white.length
+            ],
             hideLegend: true
           };
         }
       default:
         // Other annotations.
-        return sameColor(
-          greys[this.uniqueTrackIdWithType(name, type) % greys.length]
-        );
+        return { 
+          haplotype_color:
+            greys[this.uniqueTrackIdWithType(name, type) % greys.length],
+          exon_color: white[
+            this.uniqueTrackIdWithType(name, type) % white.length
+          ],
+          hideLegend: true
+        };
     }
   }
   stepsUpdate(stepInput: string) {
@@ -327,6 +345,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
     this.fetchGraph(this.props.pos[0], this.props.uuid, true);
   }
   componentWillReceiveProps(props: GraphWrapperProps) {
+    // console.log(props)
     if (
       this.state.initialize &&
       this.props.sequentialId !== props.sequentialId
@@ -369,7 +388,6 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
     pos.scaleLeft();
   }
   fetchGraph(pos: PathRegion, uuid: string, cache: boolean) {
-
     this.setState({ pos: pos });
     const this_ = this;
     if (pos.diff() < this.maximumRange) {
@@ -415,7 +433,8 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
             const referencePath = path.filter(
               a => a.indexOfFirstBase !== undefined
             );
-            let allExonPaths = [];
+            let pathAsAllExon = [];
+            let allIsoforms = [];
             path.filter(a => a.indexOfFirstBase === undefined).forEach(i => {
               const diff = i.mapping.map((a, idx) => {
                 if (idx >= 1) {
@@ -472,7 +491,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   return a;
                 });
               }
-              allExonPaths = allExonPaths.concat(currentPathExon);
+              pathAsAllExon = pathAsAllExon.concat(currentPathExon);
             });
 
             path = path.map(i => {
@@ -518,7 +537,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                       ).sequence.length
                     ) -
                     i.mapping[lastIndex].position.coordinate;
-                  allExonPaths.push({
+                  pathAsAllExon.push({
                     track: i.name,
                     start: traversedNodeLength,
                     end: distance + traversedNodeLength - 1,
@@ -556,13 +575,209 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   ).sequence.length
                 ) -
                 i.mapping[lastIndex].position.coordinate;
-              allExonPaths.push({
+              pathAsAllExon.push({
                 track: i.name,
                 start: traversedNodeLength,
                 end: distance + traversedNodeLength - 1,
                 type: 'exon',
                 name: i.name
               });
+              let nodeCoverages: { [key: string]: number[]; } = {};
+              let nodeIds = i.mapping.map(pos => {
+                return new PathRegionWithPrevLen(
+                  i.name,
+                  pos.position.coordinate,
+                  pos.position.coordinate +
+                    Number(
+                      graph.node.find(
+                        a =>
+                          a.id ===
+                          pos.position.node_id
+                      ).sequence.length
+                    ),
+                  0,
+                  pos.position.node_id,
+                  i.mapping.length
+                ); });
+                // console.log(nodeIds)
+              const url: string = WigAnnotation.buildAnnotationRequests(nodeIds);
+              fetch(url, { headers: { Accept: 'application/json' } })
+                  .then(function(response: Response) {
+                    return response.json();
+                  })
+                  .then(function(res: any) {
+                    const wigs = WigAnnotation.convertToAnnotations(
+                      res,
+                      nodeIds
+                    );
+                    // Convert from array of nodes to nodes of array.
+                    const metaNodeCoverages = wigs.map((wig, index) => {
+                    // console.log(values, min, max);
+                      Object.keys(wig.values).map(function(key: string) {
+                        if (nodeCoverages[key] === undefined) {
+                          nodeCoverages[key] = new Array(wigs.length);
+                        }
+                        nodeCoverages[key][index] = wig.values[key]; // In original value
+                      });
+                      return {min: wig.min, max: wig.max};
+                    });
+                   
+                    this_.setState({
+                      loading: false,
+                      sequentialId: this_.state.sequentialId + 1,
+                      nodeCoverages,
+                      metaNodeCoverages
+                    });
+                  }).catch(function(err: any) {
+                    // handle error
+                    console.error(err);
+                  });
+ 
+              paths
+                .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
+                .forEach(pathPos => {
+                  // const pos = new PathRegion(i.name, i.indexOfFirstBase, stop);
+                  const url: string = BedAnnotation.buildBedAnnotationRequest(
+                    pathPos,
+                  );
+                  fetch(url, { headers: { Accept: 'application/json' } })
+                    .then(function(response: Response) {
+                      return response.json();
+                    })
+                    .then(function(res: any) {
+                      const annotations = BedAnnotation.convertToAnnotation(
+                        res,
+                        pathPos
+                      );
+                      // console.log(res);
+
+                      const i_mapping = i.mapping.slice(
+                        pathPos.startIndex,
+                        pathPos.stopIndex
+                      );
+                      const convertIsoformToPath = (isoform: any) => {
+                        // console.log(isoform, i.mapping);
+                        let startNodeIndex = i_mapping.findIndex(
+                          a => a.position.coordinate >= isoform.mrna_start
+                        );
+                        let endNodeIndex = i_mapping.findIndex(
+                          a => a.position.coordinate > isoform.mrna_end
+                        );
+                        // console.log(endNodeIndex, startNodeIndex)
+                        if (startNodeIndex >= 1) {
+                          startNodeIndex = startNodeIndex - 1;
+                        }
+                        if (endNodeIndex === -1) {
+                          endNodeIndex = i_mapping.length;
+                        }
+                        let newMapping = i_mapping.slice(
+                          startNodeIndex,
+                          endNodeIndex
+                        ); // [startNodeIndex..endNodeIndex]
+                        // console.log(newMapping)
+                        if (newMapping.length > 1) {
+                          newMapping = JSON.parse(JSON.stringify(newMapping)); // Deep copy
+                          newMapping[0].position.offset =
+                            isoform.mrna_start -
+                            newMapping[0].position.coordinate;
+                          newMapping[newMapping.length - 1].position.offset =
+                            isoform.mrna_end -
+                            (newMapping[newMapping.length - 1].position
+                              .coordinate +
+                              Number(
+                                graph.node.find(
+                                  a =>
+                                    a.id ===
+                                    newMapping[newMapping.length - 1].position
+                                      .node_id
+                                ).sequence.length
+                              )); // FIXME() untested
+                          const newPath = {
+                            name: isoform.name + ' (' + isoform.track + ')',
+                            mapping: newMapping,
+                            freq: 2,
+                            type: 'bed',
+                            full_length: isoform.mrna_end - isoform.mrna_start,
+                            start: isoform.mrna_start -
+                            newMapping[0].position.coordinate,
+                            end: isoform.mrna_end - isoform.mrna_start + 
+                            (newMapping[newMapping.length - 1].position
+                              .coordinate +
+                              Number(
+                                graph.node.find(
+                                  a =>
+                                    a.id ===
+                                    newMapping[newMapping.length - 1].position
+                                      .node_id
+                                ).sequence.length))
+                          };
+                          // console.log(newPath)
+                          return newPath;
+                        } else {
+                          return null;
+                        }
+                      };
+                      // console.log(annotations);
+                      if (
+                        annotations.isoform.length > 0 &&
+                        this_.props.subPathAnnotation
+                      ) {
+                        let additionalPath = annotations.isoform
+                          .map(a => convertIsoformToPath(a))
+                          .filter(a => a);
+
+                        let exons = additionalPath
+                          .map(a => {
+//                            let b = a.mapping[0].position.offset;
+                              return {start: a.start, end: a.start + a.full_length, track: a.name, name: a.name, type: 'exon'};
+                          })
+                          .filter(a => a);
+                        // console.log(exons);
+                        /*additionalPath = Utils.arrayUniqueByName(
+                          additionalPath
+                        );*/
+                        /*.filter(
+                            (a, index, self) =>
+                              a !== null &&
+                              self.findIndex(b => b.name === a.name) === index
+                          );*/
+                        // console.log("path:", additionalPath);
+                        let hash = {};
+
+                        genes.forEach(a => (hash[a.name] = 1));
+                        additionalPath.forEach(a => {
+                          if (!(a.name in hash)) {
+                            genes.push(a);
+                          }
+                        });
+                        // path = path.concat(additionalPath);
+                        let colouredIsoform = annotations.isoform.map(a => {
+                          a['color'] = this_.selectUniqueColor(
+                            a.name + ' (' + a.track + ')',
+                            'bed',
+                            [this_.state.colorOption[0], GeneColor.Colorful]
+                          ).haplotype_color;
+                          return a;
+                        });
+                        allIsoforms = colouredIsoform;
+
+                        graph.genes = genes;
+                        // console.log("path:",graph.path);
+                        this_.props.annotationsUpdate(annotations.isoform);
+                        this_.setState({
+                          loading: false,
+                          graph: graph,
+                          exon: this_.state.exon.concat(exons),
+                          sequentialId: this_.state.sequentialId + 1,
+                          annotations: colouredIsoform // annotations.isoform
+                        });
+                      }
+                    })
+                    .catch(function(err: any) {
+                      // handle error
+                      console.error(err);
+                    });
+                });
 
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
@@ -600,7 +815,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                         let newMapping = i_mapping.slice(
                           startNodeIndex,
                           endNodeIndex
-                        );
+                        ); 
                         if (newMapping.length > 1) {
                           newMapping = JSON.parse(JSON.stringify(newMapping)); // Deep copy
                           newMapping[0].position.offset =
@@ -622,7 +837,9 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                             name: isoform.name + ' (' + isoform.track + ')',
                             mapping: newMapping,
                             freq: 2,
-                            type: 'gene'
+                            type: 'gene',
+                            feature: 'gene',
+                            full_length: isoform.mrna_end - isoform.mrna_start
                           };
                           return newPath;
                         } else {
@@ -641,12 +858,22 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                             var offset = additionalPath.filter(
                               b => b.name === a.track
                             )[0].mapping[0].position.offset;
+                            // console.log(offset);
                             if (offset < 0) offset = 0;
                             a.start += offset;
                             a.end += offset;
                             return a;
                           })
                           .filter(a => a);
+                        let margin_exons = additionalPath
+                          .map(a => { if ( a.mapping[a.mapping.length - 1].position.offset < 0 ) {return [
+                            {start: 0, end: a.mapping[0].position.offset, track: a.name, name: a.name, type: 'margin'},
+                            {start: a.full_length + a.mapping[0].position.offset, end: a.full_length + a.mapping[0].position.offset - a.mapping[a.mapping.length - 1].position.offset, track: a.name, name: a.name, type: 'margin'},
+                          ]; } else {return [
+                            {start: 0, end: a.mapping[0].position.offset, track: a.name, name: a.name, type: 'margin'}
+                          ]; } });
+                        let flatten_exons = [].concat(...margin_exons);
+                        exons = exons.concat(flatten_exons);
                         let hash = {};
 
                         genes.forEach(a => (hash[a.name] = 1));
@@ -655,7 +882,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                             genes.push(a);
                           }
                         });
-                        let coloredIsoform = annotations.isoform.map(a => {
+                        let colouredIsoform = annotations.isoform.map(a => {
                           a['color'] = this_.selectUniqueColor(
                             a.name + ' (' + a.track + ')',
                             'gene',
@@ -671,7 +898,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                           graph: graph,
                           exon: this_.state.exon.concat(exons),
                           sequentialId: this_.state.sequentialId + 1,
-                          annotations: coloredIsoform
+                          annotations: colouredIsoform
                         });
                       }
                     })
@@ -683,11 +910,12 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
             });
             graph.path = path;
             graph.genes = [];
+            // console.log(graph.path);
             this_.props.annotationsClean();
             this_.setState({
               loading: false,
               graph: graph,
-              exon: allExonPaths,
+              exon: pathAsAllExon,
               annotations: [],
               sequentialId: this_.state.sequentialId + 1
             });

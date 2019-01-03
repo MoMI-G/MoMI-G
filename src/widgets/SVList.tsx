@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import {createRef} from 'react'; For react v16.3
 import * as ReactDom from 'react-dom';
 import * as d3 from 'd3';
 import ReactTable from 'react-table';
@@ -19,6 +20,7 @@ export interface SVListState {
 
 class SVList extends React.Component<OverViewProps, SVListState>
   implements Helpable {
+    private selectTable; // = createRef<ReactTable>();
   constructor(props: OverViewProps) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -26,6 +28,8 @@ class SVList extends React.Component<OverViewProps, SVListState>
     this.filterByPosition = this.filterByPosition.bind(this);
     this.filterCancel = this.filterCancel.bind(this);
     this.state = { fusions: props.features, loading: false, filter: '' };
+    this.selectTable = null;
+    this.addAllCandidate = this.addAllCandidate.bind(this);
   }
   componentWillReceiveProps(props: OverViewProps) {
     if (
@@ -42,7 +46,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
         <p>The Table shows the list of features between genomic coordinates.</p>
         <p>Structural variations are listed here.</p>
         <p>Click on the row to select the feature.</p>
-        <p>Input genomic coorinates or gene name to filter variations.</p>
+        <p>Input genomic coordinates or gene name to filter variations.</p>
       </div>
     );
   }
@@ -103,7 +107,57 @@ class SVList extends React.Component<OverViewProps, SVListState>
     if (newValue === '') {
       this.filterCancel();
     }
-  };
+  }
+  posUpdate = (row, annotations) => {
+    if (row.source_id === row.target_id) {
+      this.props.posUpdate(
+        [
+          new PathRegion(
+            row.source_id,
+            row.source_breakpoint,
+            row.target_breakpoint,
+            true,
+            annotations
+          ),
+          /*new PathRegion(
+            rowInfo.row._original.id,
+            null,
+            null,
+            false,
+            annotations
+          )*/
+        ],
+        row._index
+      );
+    } else {
+      this.props.posUpdate(
+        [
+          new PathRegion(
+            row.source_id,
+            row.source_breakpoint,
+            row.source_breakpoint,
+            true,
+            annotations
+          ),
+          new PathRegion(
+            row.target_id,
+            row.target_breakpoint,
+            row.target_breakpoint,
+            true,
+            annotations
+          ), /*
+          new PathRegion(
+            rowInfo.row._original.id,
+            null,
+            null,
+            false,
+            annotations
+          )*/
+        ],
+        row._index
+      );
+    }
+  }
   filter = ({ filter, onChange }) => (
     <select
       onChange={event => onChange(event.target.value)}
@@ -118,13 +172,28 @@ class SVList extends React.Component<OverViewProps, SVListState>
       ))}
     </select>
   );
+  addAllCandidate() {
+    const tableState = this.selectTable.getResolvedState();
+    let props = tableState.sortedData.slice(tableState.page * tableState.pageSize, tableState.pageSize).map(row => {
+      let annotations = [row.svtype, row.priority];
+      // this.posUpdate(row, annotations);
+      return new PathRegion(
+          row.source_id,
+          row.source_breakpoint,
+          row.target_breakpoint,
+          true,
+          annotations
+        );
+    });
+    this.props.posUpdate(props, 0);
+  }
   render() {
     const columns = [
       {
-        Header: () => <strong>GO</strong>,
+        Header: () => <div onClick={this.addAllCandidate}><strong>GO</strong></div>,
         id: 'jump',
         width: 35,
-        Filter: ({ filter, onChange }) => <div />,
+        Filter: ({ filter, onChange }) => {return <div />; },
         accessor: d => (
           <a title="Go to this region" style={{ cursor: 'pointer' }}>
             <strong>&#x2295;</strong>
@@ -160,7 +229,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
             id: 'source_breakpoint',
             accessor: d => Number(d.source_breakpoint),
             Cell: item => {
-              const item2 = Utils.formatPretitter(item.value);
+              const item2 = Utils.formatPrettier(item.value);
               return <span>{item2}</span>;
             }
           },
@@ -200,7 +269,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
             id: 'target_breakpoint',
             accessor: d => Number(d.target_breakpoint),
             Cell: item => {
-              const item2 = Utils.formatPretitter(item.value);
+              const item2 = Utils.formatPrettier(item.value);
               return <span>{item2}</span>;
             }
           },
@@ -254,6 +323,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
               desc: true
             }
           ]}
+          ref={(r) => this.selectTable = r}
           loading={this.state.loading}
           data={this.state.fusions}
           columns={columns}
@@ -273,12 +343,14 @@ class SVList extends React.Component<OverViewProps, SVListState>
             return {
               onClick: e => {
                 if (column.id === 'jump' && rowInfo) {
-                  const false_ = false;
+                  const _false = false;
                   let annotations = [rowInfo.row.svtype, rowInfo.row.priority];
+                  // Add annotations as filter
                   if (this.state.filter !== '') {
                     annotations.push(this.state.filter);
                   }
-                  if (false_ && rowInfo.row._original.hasOwnProperty('id')) {
+                  // If each variants has own id -- but currently it disabled.
+                  if (_false && rowInfo.row._original.hasOwnProperty('id')) {
                     this.props.posUpdate(
                       [
                         new PathRegion(
@@ -292,54 +364,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
                       rowInfo.row._index
                     );
                   } else {
-                    if (rowInfo.row.source_id === rowInfo.row.target_id) {
-                      this.props.posUpdate(
-                        [
-                          new PathRegion(
-                            rowInfo.row.source_id,
-                            rowInfo.row.source_breakpoint,
-                            rowInfo.row.target_breakpoint,
-                            true,
-                            annotations
-                          ),
-                          new PathRegion(
-                            rowInfo.row._original.id,
-                            null,
-                            null,
-                            false,
-                            annotations
-                          )
-                        ],
-                        rowInfo.row._index
-                      );
-                    } else {
-                      this.props.posUpdate(
-                        [
-                          new PathRegion(
-                            rowInfo.row.source_id,
-                            rowInfo.row.source_breakpoint,
-                            rowInfo.row.source_breakpoint,
-                            true,
-                            annotations
-                          ),
-                          new PathRegion(
-                            rowInfo.row.target_id,
-                            rowInfo.row.target_breakpoint,
-                            rowInfo.row.target_breakpoint,
-                            true,
-                            annotations
-                          ),
-                          new PathRegion(
-                            rowInfo.row._original.id,
-                            null,
-                            null,
-                            false,
-                            annotations
-                          )
-                        ],
-                        rowInfo.row._index
-                      );
-                    }
+                    this.posUpdate(rowInfo.row, annotations);
                   }
                 }
                 // console.log('It was in this table instance:', instance);

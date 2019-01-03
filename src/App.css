@@ -30,7 +30,7 @@
   overflow: auto;
   width: 100%;
   position: relative;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 
@@ -161,4 +161,12 @@ body {
 }
 .active > .nav-link {
   color: yellow !important
+}
+
+
+.axis path,
+.axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
 }

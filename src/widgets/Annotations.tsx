@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import * as d3 from 'd3';
+// import * as d3 from 'd3';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { PathRegion, Helpable, Utils } from './Utils';
+import { CSVLink, CSVDownload } from 'react-csv';
+// var fusions = require('./samples/fusion-genes.csv');
 
 export interface AnnotationsProps {
   annotations: any;
@@ -15,20 +17,23 @@ export interface AnnotationsProps {
 export interface AnnotationsState {
   annotations: any; // DSVParsedArray<DSVRowString>;
   loaded: boolean;
+  csv: any;
 }
 
 class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
   implements Helpable {
   constructor(props: AnnotationsProps) {
     super(props);
-    this.state = { annotations: props.annotations, loaded: false };
+    let csv = this.props.annotations.map(a => {return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand,  a.description]; });
+    this.state = { annotations: props.annotations, loaded: false, csv };
   }
   componentWillReceiveProps(props: AnnotationsProps) {
     if (
       this.props.annotations === undefined ||
       props.annotations.length !== this.props.annotations.length
     ) {
-      this.setState({ annotations: props.annotations, loaded: true });
+      let csv = this.props.annotations.map(a => {return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand,  a.description]; });
+      this.setState({ annotations: props.annotations, loaded: true, csv });
     }
   }
   help() {
@@ -72,11 +77,16 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
       {
         Header: 'name',
         id: 'name',
-        accessor: d => (
+        // id: 'source_breakpoint',
+        accessor: d => {if (d.type === 'gene') {return (
           <a href={`http://togogenome.org/gene/9606:${d.name}`} target="_blank">
             {d.name}
           </a>
-        )
+        ); } else if (d.type === 'repeat') {
+          return (<a href={`http://dfam.org/entry/${d.name}`} target="_blank">{d.name}</a>);
+      } else {
+          return (<span>{d.name}</span>);
+        }}
       },
       {
         Header: 'chrom',
@@ -102,7 +112,7 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
         id: 'start',
         accessor: d => Number(d.mrna_start),
         Cell: item => {
-          const item2 = Utils.formatPretitter(item.value);
+          const item2 = Utils.formatPrettier(item.value);
           return <span>{item2}</span>;
         }
       },
@@ -111,7 +121,7 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
         id: 'end',
         accessor: d => Number(d.mrna_end),
         Cell: item => {
-          const item2 = Utils.formatPretitter(item.value);
+          const item2 = Utils.formatPrettier(item.value);
           return <span>{item2}</span>;
         }
       },
@@ -129,40 +139,53 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
     ];
 
     return (
-      <ReactTable
-        data={this.state.annotations}
-        columns={columns}
-        className="-striped -highlight"
-        filterable={true}
-        showPageSizeOptions={true}
-        freezeWhenExpanded={true}
-        defaultPageSize={5}
-        noDataText={'No Data'}
-        getTdProps={(state, rowInfo, column, instance) => {
-          return {
-            onClick: e => {
-              // console.log('A Td Element was clicked!');
-              // console.log('it produced this event:', e);
-              // console.log('It was in this column:', column);
-              // console.log('It was in this row:', rowInfo.row);
-              if (column.id === 'jump' && rowInfo) {
-                this.props.posUpdate(
-                  [
-                    new PathRegion(
-                      rowInfo.row.path,
-                      rowInfo.row.start,
-                      rowInfo.row.end,
-                      true,
-                      [rowInfo.row.track]
-                    )
-                  ],
-                  null
-                );
-              }
+      <div>
+        <ReactTable
+          /*
+          defaultSorted={[
+            {
+              id: 'priority',
+              desc: true
             }
-          };
-        }}
-      />
+          ]}*/
+          data={this.state.annotations}
+          columns={columns}
+          className="-striped -highlight"
+          filterable={true}
+          showPageSizeOptions={true}
+          freezeWhenExpanded={true}
+          defaultPageSize={5}
+          noDataText={'No Data'}
+          getTdProps={(state, rowInfo, column, instance) => {
+            return {
+              onClick: e => {
+                if (column.id === 'jump' && rowInfo) {
+                  this.props.posUpdate(
+                    [
+                      new PathRegion(
+                        rowInfo.row.path,
+                        rowInfo.row.start,
+                        rowInfo.row.end,
+                        true,
+                        [rowInfo.row.track]
+                      )
+                    ],
+                    null
+                  );
+                }
+
+              }
+            };
+          }}
+        />
+        <div className="btn btn-primary-outline">
+          <CSVLink
+            filename={this.props.pos[0].toString() + '.csv'} 
+            data={this.state.csv}>
+            Download
+          </CSVLink>
+        </div>
+      </div>
     );
   }
 }

@@ -705,7 +705,7 @@ h2 {
   color: white;
 }
 .x_content {
-  padding: 0 15px 6px;
+  padding: 0 1px 6px;
   position: relative;
   width: 100%;
   float: left;
@@ -1812,6 +1812,7 @@ span.section {
 .form-control {
   border-radius: 0;
   width: 100%;
+  overflow: hidden;
 }
 .form-horizontal .control-label {
   padding-top: 8px;

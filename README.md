@@ -1,4 +1,4 @@
-# MoMIG
+# MoMI-G
 
 [ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600)
 
@@ -107,13 +107,13 @@ The genomic region on the reference genome is drawn as a genome graph:
   * The length of a node is proportional to the length of the DNA sequence.
 * Chromosome Path(widest, grayscale): an ordered set of DNA sequence -- Tracing the path marked with the chromosome name shows that the nodes are included in the reference genome in that order.
 * Variant Path(colorful): Tracing the path marked with the variation name shows that the nodes are included in the personal genome in that order.
-* RefSeq Path(narrowest, green): A gene annotation, dense areas are exons, thin areas are introns.
+* Gene Path(narrowest, green): A gene annotation, dense areas are exons, thin areas are introns.
 
 ### Confirm gene annotations
 
 ![annotation](public/images/annotation.png)
 
-This is the RefSeq gene list of the selected genomic coordinate.
+This is the Ensembl gene list of the selected genomic coordinate.
 
 ## Adapt your own dataset
 
@@ -169,7 +169,6 @@ This work is supported by Information-technology Promotion Agency, Japan (IPA), 
 * Beyer, W. SequenceTubeMap, https://github.com/vgteam/sequencetubemap
 * Vanderkam, D., Aksoy, B. A., Hodes, I., Perrone, J., & Hammerbacher, J. (2016). pileup.js: a JavaScript library for interactive and in-browser visualization of genomic data. Bioinformatics, 32(March), btw167. http://doi.org/10.1093/bioinformatics/btw167
 * Paten, B., Novak, A. M., Garrison, E., & Hickey, G. (2017). Superbubbles, Ultrabubbles and Cacti. bioRxiv, 1–13. http://doi.org/10.1101/101493
-* O’Leary, N. A., Wright, M. W., Brister, J. R., Ciufo, S., Haddad, D., McVeigh, R., … Pruitt, K. D. (2016). Reference sequence (RefSeq) database at NCBI: Current status, taxonomic expansion, and functional annotation. Nucleic Acids Research, 44(D1), D733–D745. https://doi.org/10.1093/nar/gkv1189
 * Harrow, J., Frankish, A., Gonzalez, J. M., Tapanari, E., Diekhans, M., Kokocinski, F., … Hubbard, T. J. (2012). GENCODE: The reference human genome annotation for the ENCODE project. Genome Research, 22(9), 1760–1774. https://doi.org/10.1101/gr.135350.111
 * TogoGenome. http://togogenome.org/
 * DBCLS. (2016). SPARQList https://github.com/dbcls/sparqlist

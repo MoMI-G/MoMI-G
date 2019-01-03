@@ -20,8 +20,9 @@
     "express-http-proxy": "^1.0.4",
     "ideogram": "https://github.com/6br/ideogram#zoom",
     "jquery": "^3.2.1",
+    "keymaster": "^1.6.2",
     "maryamyriameliamurphies": "^1.0.4",
-    "mathjs": "^3.16.2",
+    "mathjs": "^4.0.0",
     "pileup": "^0.6.8",
     "query-string": "^5.0.1",
     "raven-js": "^3.17.0",
@@ -29,6 +30,7 @@
     "react": "^16.0.0",
     "react-autosuggest": "^9.3.1",
     "react-beautiful-dnd": "^4.0.0",
+    "react-csv": "^1.0.19",
     "react-dazzle": "^1.2.7",
     "react-dom": "^16.0.0",
     "react-draggable": "^3.0.3",
@@ -79,5 +81,5 @@
       "_comment": "For alternative server."
     }
   },
-  "homepage": "http://chm1.mimig.tokyo/demo2"
+  "homepage": "http://chm1.momig.tokyo/demo2"
 }

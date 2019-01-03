@@ -1,5 +1,7 @@
 #!/bin/bash -eu
 
+#cd $(dirname $0)
+
 input=$1
 reference=$2
 pref=$input
