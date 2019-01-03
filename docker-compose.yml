@@ -1,0 +1,8 @@
+version: '2.2'
+services:
+  backend:
+    image: momigteam/momig-backend
+    ports:
+      - "8081:8081"
+    init: true
+    mem_reservation: 8gb

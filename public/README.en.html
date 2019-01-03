@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.9.0/github-markdown.min.css" integrity="sha256-AcEoN20lbehGx2iA6fVk4geoblRBOAUmz+gEM9QE59Y=" crossorigin="anonymous" />
+    <style>
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 200px;
+		max-width: 980px;
+		margin: 0 auto;
+		padding: 45px;
+	}
+
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
+	}
+    </style>
+
+    <title>MoMI-G Manual</title>
+  </head>
+  <body class="markdown-body">
+<section class="level1">
+<h1>MoMI-G</h1>
+<section class="level3">
+<h3>Modular Multi-scale Integrated Genome Graph Browser</h3>
+<p><img src="images/logo.png" alt="logo" /></p>
+<p>A genome graph browser for visualization of structural variants as a genome graph:</p>
+<p>A sequence graph as a bi-directed graph composed of a set of multiple DNA sequences as nodes and the corresponding end-to-end connections as edges has the ability to describe duplications, indels and inversions as loops or branching and merging against a reference genome.</p>
+<p>The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from personal genomes.</p>
+</section>
+<section class="level2">
+<h2>Goals</h2>
+<ul>
+<li>Compare a personal genome to a reference genome</li>
+<li>Reveal nested variations</li>
+<li>Navigate for all structural variations</li>
+<li>Visualize the distributions of structural variations</li>
+</ul>
+</section>
+<section id="install" class="level2">
+<h2>Install</h2>
+<section id="dependencies" class="level3">
+<h3>Dependencies</h3>
+<ul>
+<li>Node.js</li>
+<li>npm or yarn</li>
+</ul>
+</section>
+<section id="summary-of-set-up" class="level3">
+<h3>Summary of set up</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> clone https://github.com/MoMI-G/MoMI-G
+$ <span class="bu">cd</span> MoMI-G
+$ <span class="ex">yarn</span>
+$ <span class="ex">yarn</span> start</code></pre></div>
+<p>And access to <a href="http://localhost:3000/" class="uri">http://localhost:3000/</a>.</p>
+<p>The back-end API is defined at <a href="https://gbapi4.docs.apiary.io/" class="uri">https://gbapi4.docs.apiary.io/</a> (but some definitions are outdated).<br />
+The CHM1 dataset is displayed by default. Modify <code>package.json</code> if you want to change the data source.</p>
+</section>
+</section>
+<section id="features" class="level2">
+<h2>Features</h2>
+<p>Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.</p>
+<p><img src="images/design.png" alt="design" /></p>
+<ul>
+<li>Header: a link to README or options to change layouts.</li>
+<li>Main:
+<ul>
+<li>Overall View: select structural variations from Circos Plot / SV table / genomic coordinates / gene name</li>
+<li>Graph View: visualize genome graphs / karyotype on the selected genomic region</li>
+<li>Linear View: integrate with gene annotations / linear genome browser</li>
+</ul></li>
+<li>Footer: a workspace -- a list of genomic region -- for comparing between coordinates</li>
+</ul>
+</section>
+<section class="level2">
+<h2>Usage</h2>
+<section class="level3">
+<h3>Dataset</h3>
+<p>This demo allows you to visualize the genome information of the <a href="http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/">CHM1 dataset</a>, human haploid which includes insertions, deletion, and inversions.</p>
+<p>This graph is called CHM1 graph below.</p>
+</section>
+<section class="level3">
+<h3>Select structural variants</h3>
+<p><img src="images/Circos.png" alt="circos" /> <img src="images/table.png" alt="table" /></p>
+<p>You can select structural variants from Circos plot or table. When you click a line between chromosomes in Circos or &quot;GO&quot; button of a row of the structural variant in the table, the selected region is added into a coordinate workspace on the footer.</p>
+</section>
+<section class="level3">
+<h3>A workspace for genomic regions</h3>
+<p><img src="images/workspace.png" alt="workspace" /></p>
+<p>When you select a genomic coordinate with the overall view, the region is inserted on the footer workspace and the top item of the workspace is the target of visualization as genome graphs.</p>
+<p>Each card is draggable. If you double-clicked each card of genomic coordinate, then the item moves to the top of the list. You can name the genomic region and you can also lock the region. Moreover, you can specify the genomic region or gene name on the card.</p>
+</section>
+<section class="level3">
+<h3>Karyotypes</h3>
+<p><img src="images/karyotype.png" alt="karyotype" /></p>
+<p>Karyotypes of each chromosome which is listed in the workspace is shown in this component. The red pictogram means that structural variations are identified on the position.</p>
+</section>
+<section class="level3">
+<h3>Visualize as genome graphs</h3>
+<p><img src="images/TubeMap.png" alt="tube_map" /></p>
+<p>The genomic region on the reference genome is drawn as a genome graph:</p>
+<ul>
+<li>Node: a multiple DNA sequence
+<ul>
+<li>The length of a node is proportional to the length of the DNA sequence.</li>
+</ul></li>
+<li>Chromosome Path(widest, grayscale): an ordered set of DNA sequence -- Tracing the path marked with the chromosome name shows that the nodes are included in the reference genome in that order.</li>
+<li>Variant Path(colorful): Tracing the path marked with the variation name shows that the nodes are included in the personal genome in that order.</li>
+<li>Gene Path(narrowest, green): A gene annotation, dense areas are exons, thin areas are introns.</li>
+</ul>
+</section>
+<section class="level3">
+<h3>Confirm gene annotations</h3>
+<p><img src="images/annotation.png" alt="annotation" /></p>
+<p>This is the Ensembl gene list of the selected genomic coordinate.</p>
+</section>
+</section>
+<section id="change-log" class="level2">
+<h2>Change log</h2>
+<ul>
+<li>2017.08.09 Ver 0.1 (alpha)</li>
+<li>2017.09.26 Ver 0.2 (deploy CHM1 graph)</li>
+<li>2017.12.12 Ver 0.3 (beta)</li>
+<li>2017.12.19 Ver 0.4 (add gene annotations)</li>
+<li>2018.01.02 Ver 0.5 (add English descriptions)</li>
+<li>2018.01.11 Ver 0.6 (fix design)</li>
+<li>2018.01.28 Ver 1.0RC</li>
+<li>2018.02.10 Ver 1.0</li>
+</ul>
+</section>
+<section class="level2">
+<h2>Disclaim</h2>
+<p>We will not guarantee the accuracy and validity of the output result of this software at all. In addition, we will not assume any responsibility for any damage caused by using this software.</p>
+</section>
+<section class="level2">
+<h2>Acknowledgements</h2>
+<p>This work is supported by Information-technology Promotion Agency, Japan (IPA), Exploratory IT Human Resources Project (The MITOU Program) in the fiscal year 2017.</p>
+</section>
+<section class="level2">
+<h2>References</h2>
+<ul>
+<li>Chaisson, M. J. P., Huddleston, J., Dennis, M. Y., Sudmant, P. H., Malig, M., Hormozdiari, F., … Eichler, E. E. (2015). Resolving the complexity of the human genome using single-molecule sequencing. Nature, 517(7536), 608–611. <a href="http://doi.org/10.1038/nature13907" class="uri">http://doi.org/10.1038/nature13907</a></li>
+<li>Garrison, E., Novak, A., Hickey, G., Eizenga, J., Dawson, E., Jones, W., … Durbin, R. (2017). Sequence variation aware references and read mapping with vg : the variation graph toolkit. bioRxiv, 1–27. <a href="http://doi.org/10.1101/234856" class="uri">http://doi.org/10.1101/234856</a></li>
+<li>Beyer, W. SequenceTubeMap, <a href="https://github.com/vgteam/sequencetubemap" class="uri">https://github.com/vgteam/sequencetubemap</a></li>
+<li>Vanderkam, D., Aksoy, B. A., Hodes, I., Perrone, J., &amp; Hammerbacher, J. (2016). pileup.js: a JavaScript library for interactive and in-browser visualization of genomic data. Bioinformatics, 32(March), btw167. <a href="http://doi.org/10.1093/bioinformatics/btw167" class="uri">http://doi.org/10.1093/bioinformatics/btw167</a></li>
+<li>Paten, B., Novak, A. M., Garrison, E., &amp; Hickey, G. (2017). Superbubbles, Ultrabubbles and Cacti. bioRxiv, 1–13. <a href="http://doi.org/10.1101/101493" class="uri">http://doi.org/10.1101/101493</a></li>
+<li>Harrow, J., Frankish, A., Gonzalez, J. M., Tapanari, E., Diekhans, M., Kokocinski, F., … Hubbard, T. J. (2012). GENCODE: The reference human genome annotation for the ENCODE project. Genome Research, 22(9), 1760–1774. <a href="https://doi.org/10.1101/gr.135350.111" class="uri">https://doi.org/10.1101/gr.135350.111</a></li>
+<li>TogoGenome. <a href="http://togogenome.org/" class="uri">http://togogenome.org/</a></li>
+<li>DBCLS. (2016). SPARQList <a href="https://github.com/dbcls/sparqlist" class="uri">https://github.com/dbcls/sparqlist</a></li>
+</ul>
+</section>
+</section>
+  <a href='./README.en.html'>Readme (English)</a>
+  <a href='./README.html'>Readme (Japanese)</a>
+  <a href='./'>Back</a>
+</body>
+</html>

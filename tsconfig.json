@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "jsx": "react",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "skipLibCheck": true, 
+    "allowJs": true,
+    "outDir": "build/dist"
+  },
+  "files": [
+    "src/server.tsx",
+    "typings/resource.d.ts"
+  ],
+  "typeRoots" : [
+    "typings",
+    "node_modules/@types/"
+  ]
+}
