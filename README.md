@@ -42,7 +42,7 @@ $ yarn start
 And access to http://localhost:3000/.
 
 The back-end API is defined at https://gbapi4.docs.apiary.io/ (but some definitions are outdated).
-The CHM1 dataset is displayed by default. 
+The CHM1 dataset is displayed by default.
 
 ### Run on your workstation
 
