@@ -75,8 +75,8 @@
   },
   "proxy": {
     "/api/v2": {
-      "target": "http://localhost:8081/",
-      "_target": "http://chm1.momig.tokyo/",
+      "_target": "http://localhost:8081/",
+      "target": "http://chm1.momig.tokyo/",
       "secure": false,
       "_comment": "For alternative server."
     }
