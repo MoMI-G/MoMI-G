@@ -2,3 +2,4 @@ build/
 build-ssr/
 src/samples/old
 node_modules/
+scripts

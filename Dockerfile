@@ -1,6 +1,9 @@
-FROM node:latest
+FROM node:alpine
 
 WORKDIR /usr/src/app
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 
 #RUN apt-get update && apt-get install -y \
 #		yarn \
@@ -8,6 +11,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN yarn install && yarn build
+RUN sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json && yarn install && yarn build
 
-CMD yarn
+ENTRYPOINT yarn
