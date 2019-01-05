@@ -2,15 +2,18 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Utils, PathRegion, Helpable } from './Utils';
 import * as d3 from 'd3';
+import * as FontAwesome from 'react-fontawesome';
 
-import * as tubeMap from 'sequenceTubeMap/frontend/app/scripts/tubemap';
+import * as tubeMap from './tubemap';
+// import Graph from './Graph';
+// import * as tubeMap from 'sequenceTubeMap/frontend/app/scripts/tubemap';
 
 const greys = [
   '#d9d9d9',
   '#bdbdbd',
-  //'#737373',
+  // '#737373',
   '#969696'
-  //'#525252'
+  // '#525252'
   // '#000000'
 ];
 
@@ -31,6 +34,8 @@ export interface TubeMapProps {
   nodeWidthOpt?: number;
   changeGam: (gam: boolean) => void;
   annotations?: any;
+  nodeCoverages?: {[key: number]: number[]};
+  metaNodeCoverages?: any;
 }
 
 export interface TubeMapState {
@@ -58,6 +63,8 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
     this.selectNodeId = this.selectNodeId.bind(this);
     this.fadeout = this.fadeout.bind(this);
     this.fadein = this.fadein.bind(this);
+    this.clickDownload = this.clickDownload.bind(this);
+    this.readNameDownload = this.readNameDownload.bind(this);
     this.state = {
       initialize: false,
       mergeNodes: true,
@@ -139,9 +146,13 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
       const graph = props.graph;
       const gam = this.state.showReads ? graph.gam || {} : {}; // JSON.parse(props.gam);
       const bed = props.exon;
+      console.log(bed);
       const nodes = tubeMap.vgExtractNodes(graph);
       const path = graph.path.concat(graph.genes);
       const tracks = this.vgExtractTracks(path);
+      const nodeCoverages = props.nodeCoverages;
+      const metaNodeCoverages = props.metaNodeCoverages;
+      // const reads = this.vgExtractTracks(graph.genes);
       const reads = tubeMap
         .vgExtractReads(nodes, tracks, gam)
         .map((alignment, index) => {
@@ -150,7 +161,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
           return alignment;
         });
 
-      this.createTubeMap(nodes, tracks, reads, bed);
+      this.createTubeMap(nodes, tracks, reads, bed, nodeCoverages, metaNodeCoverages);
     }
   }
 
@@ -182,6 +193,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
       );
       track['id'] = index;
       track['sequence'] = sequence;
+      if (path.hasOwnProperty('feature')) track['feature'] = 'gene';
       if (path.hasOwnProperty('freq')) track['freq'] = path.freq;
       if (path.hasOwnProperty('name')) track['name'] = path.name;
       if (path.hasOwnProperty('indexOfFirstBase')) {
@@ -199,7 +211,26 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
     });
     return result;
   }
-  createTubeMap(nodes: any, tracks: any, reads: any, bed: any) {
+  /*
+  componentWillUpdate() {
+    if (
+      this.props.graph !== '' &&
+      this.props.graph.path !== undefined &&
+      this.state.initialize // &&
+      // this.props.graph !== props.graph
+    ) {
+      const graph = this.props.graph;
+      const gam = JSON.parse(this.props.gam);
+      const nodes = tubeMap.vgExtractNodes(graph);
+      const tracks = tubeMap.vgExtractTracks(graph);
+      const reads = tubeMap.vgExtractReads(nodes, tracks, gam);
+      this.createTubeMap(nodes, tracks, reads);
+    }
+  }
+  */
+  createTubeMap(nodes: any, tracks: any, reads: any, bed: any, nodeCoverages?: any, metaNodeCoverages?: any) {
+    // console.log(this.state);
+    // console.info('bed: ', bed);
     tubeMap.create({
       svgID: '#svg',
       clickableNodes: true,
@@ -208,9 +239,11 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
       bed,
       nodes,
       tracks,
-      reads
+      reads,
+      nodeCoverages,
+      metaNodeCoverages,
     });
-    if (!this.state.changedExonVisibility && this.props.subPathAnnotation) {
+    if (!this.state.changedExonVisibility) {
       tubeMap.changeExonVisibility(); //
       this.setState({ changedExonVisibility: true });
     }
@@ -220,6 +253,44 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
     tubeMap.setSoftClipsFlag(this.state.softClips);
     tubeMap.setColorSet('haplotypeColors', 'plainColors');
     this.fadein();
+  }
+  readNameDownload() {
+    const gam = this.props.graph.gam; // || {} : {};
+    if (gam !== {} && gam !== undefined) {
+      // const readNames = gam.map(a => a.name ).join('\n');
+      const fasta = gam.map(a => `>${a.name}\n${a.sequence}`).join('\n');
+
+      var svgBlob = new Blob([fasta], {type: 'text/plain'});
+      var svgUrl = URL.createObjectURL(svgBlob);
+      var downloadLink = document.createElement('a');
+      downloadLink.href = svgUrl;
+      downloadLink.download = this.props.pos[0].toString() + '.fasta';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    }
+  }
+  clickDownload() {
+    var source = document.getElementById('svg').outerHTML;  
+ //   var svgData = $("#tubeMap")[0].outerHTML;
+    // add name spaces.
+    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+      source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    if (!source.match(/^<svg[^>]+"http\:\/\/www\.w3\.org\/1999\/xlink"/)) {
+      source = source.replace(/^<svg/, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+    }
+
+    // add xml declaration
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+    var svgBlob = new Blob([source], {type: 'image/svg+xml;charset=utf-8'});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement('a');
+    downloadLink.href = svgUrl;
+    downloadLink.download = this.props.pos[0].toString() + '.svg';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
   changeNodeId(event: any) {
     this.setState({ nodeId: event.target.value });
@@ -283,7 +354,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
                 />
               </div>
             </span>
-            <label className="form-control">GeneAnnotations</label>
+            <label className="form-control">Annotations</label>
             <span className="input-group-prepend">
               <div className="input-group-text">
                 <input
@@ -296,19 +367,23 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
                 />
               </div>
             </span>
-            <label className="form-control">Alignments(Reads)</label>
-
+            <label className="form-control d-inline-flex">Alignments
+              <button className="btn btn-primary-outline" style={{padding: '0 5px', marginLeft: '10px'}} onClick={this.readNameDownload}>
+                <FontAwesome name="download" />
+              </button>
+            </label>
             <select
               value={this.state.nodeWidthOpt}
               onChange={this.setNodeWidth}
               className="form-control"
               title="Design of tubemap: show all nucleotides or compressed design"
-              style={{ width: '300px', display: 'inline-block' }}>
+              style={{ width: '200px', display: 'inline-block', height: '45px' }}>
               <option value={0}>all sequence</option>
-              <option value={1}>compressed design</option>
-              <option value={2}>compressed proportional design</option>
-              <option value={3}>compressed proportional design(small)</option>
+              <option value={1}>compressed</option>
+              <option value={2}>compressed proportional</option>
+              <option value={3}>compressed proportional(small)</option>
             </select>
+            <button className="btn btn-primary" style={{ height: '45px', margin: 0}} onClick={this.clickDownload}><FontAwesome name="download" /></button>
           </div>
         </div>
 

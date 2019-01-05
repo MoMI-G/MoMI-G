@@ -399,6 +399,9 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
   }
   _selectChrom(chromsLabel: string[]) {
     if (chromsLabel.filter(a => a.length > 0).length > 0) {
+      /*const chroms = chromsLabel.map(
+        a => this.props.chroms.find(b => b.label === a)
+      ).filter(a => a !== null);*/
       const chroms = this.props.chroms.filter(
         a => chromsLabel.indexOf(a.label) !== -1
       );

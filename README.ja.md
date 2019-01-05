@@ -1,4 +1,4 @@
-# MoMIG
+# MoMI-G
 
 ### Modular Multi-scale Integrated Genome Graph Browser
 
@@ -76,7 +76,7 @@ Excel のような表形式で、予め与えられた 2 座標間の対応関�
 
 ![table](images/table.png)
 
-#### 3. Threshold Slider
+#### 3. Threshold Filter
 
 スライダーを左右に調節することで、対応関係に設定された優先度(Priority)で、スライダーで指定された範囲の対応関係のみを、Overall View の種々のデザイン上で表示することができます。
 
@@ -113,13 +113,13 @@ Overall View で選択した座標区間のグラフビューを表示します�
   * ノード上にマウスカーソルをあわせると、ツールチップにそのノード id が表示されます。
 * 染色体名が付けられているパス: 染色体名が付けられている線の上でノードをたどると、それらのノードはその並び順で参照配列に含まれていることがわかる。
 * 変異名が振られているパス: 変異名や、ハプロタイプの識別名が付けられている線をたどると、その線の上のノードがその並び順で個人ゲノムに含まれていることがわかる。
-* RefSeq の遺伝子名が振られているパス: その区間には遺伝子のアノテーションが付与されています。また色の濃淡によってコーディング領域かそうでないかが分かるようになっており、色が濃い領域が exon 領域、色が薄い領域が intron 領域です。
+* 遺伝子名が振られているパス: その区間には遺伝子のアノテーションが付与されています。また色の濃淡によってコーディング領域かそうでないかが分かるようになっており、色が濃い領域が exon 領域、色が薄い領域が intron 領域です。
   * パスの線の太さや色は、情報の種類を区別する以外には現時点では意味はありません。
 
 また、チェックボックスやドロップダウンメニューには、以下の効用があります。
 
 * MergeNodes: 冗長なノードをマージするかどうかを選択できる。
-* GeneAnnotations: RefSeq による遺伝子のアノテーションをパスとして統合するかどうかを選択できる。
+* Annotations: 遺伝子などのアノテーションをパスとして統合するかどうかを選択できる。
 * NodeDesignDropdownMenu: ノードの文字を全て表示させるか、ノードを塩基配列の長さに応じて伸縮するか、などノードのデザインを選択できます。
 
 背後のデータとして、このようなグラフ構造を陽に持つデータセットを入力として与えるか、リニアゲノムをもとにしたデータセットに対してはグラフ構造を構築するようなラッパーを定義する必要があります。
@@ -130,7 +130,7 @@ Overall View で選択した座標区間のグラフビューを表示します�
 
 #### 7. Annotation Table
 
-Graph View で表示されている区間に存在する RefSeq による遺伝子のアノテーションについて、その詳細情報をテーブル形式の一覧で表示します。
+Graph View で表示されている区間に存在する遺伝子のアノテーションについて、その詳細情報をテーブル形式の一覧で表示します。
 
 ![annotation](images/annotation.png)
 
@@ -231,7 +231,6 @@ hg19 や hg38 といった今まで広く用いられている参照配列など
 * Beyer, W. SequenceTubeMap, https://github.com/vgteam/sequencetubemap
 * Vanderkam, D., Aksoy, B. A., Hodes, I., Perrone, J., & Hammerbacher, J. (2016). pileup.js: a JavaScript library for interactive and in-browser visualization of genomic data. Bioinformatics, 32(March), btw167. http://doi.org/10.1093/bioinformatics/btw167
 * Paten, B., Novak, A. M., Garrison, E., & Hickey, G. (2017). Superbubbles, Ultrabubbles and Cacti. bioRxiv, 1–13. http://doi.org/10.1101/101493
-* O’Leary, N. A., Wright, M. W., Brister, J. R., Ciufo, S., Haddad, D., McVeigh, R., … Pruitt, K. D. (2016). Reference sequence (RefSeq) database at NCBI: Current status, taxonomic expansion, and functional annotation. Nucleic Acids Research, 44(D1), D733–D745. https://doi.org/10.1093/nar/gkv1189
 * Harrow, J., Frankish, A., Gonzalez, J. M., Tapanari, E., Diekhans, M., Kokocinski, F., … Hubbard, T. J. (2012). GENCODE: The reference human genome annotation for the ENCODE project. Genome Research, 22(9), 1760–1774. https://doi.org/10.1101/gr.135350.111
 * Weitz, E. ideogram, https://github.com/eweitz/ideogram
 * TogoGenome. http://togogenome.org/

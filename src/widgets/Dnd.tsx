@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PathRegion, Helpable, PathRegionProps, Utils } from './Utils';
 import PathRegionForm from './PathRegionForm';
 import styled from 'styled-components';
+import * as key from 'keymaster';
 
 const DropZone = styled.div`
   display: flex;
@@ -76,13 +77,19 @@ class Dnd extends React.Component<PathRegionProps, DndState>
     this.onItemUpdate = this.onItemUpdate.bind(this);
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onItemDuplicate = this.onItemDuplicate.bind(this);
+    this.onItemMoveToTail = this.onItemMoveToTail.bind(this);
+    let this_ = this;
+    // Key bindings
+    key('option+d', function() {this_.onHeadItemDelete(); });
+    key('option+s', function() {this_.onItemMoveToTail(); });
+
   }
 
   componentDidMount() {
     this.props.arrayMode();
   }
 
-  onDragEnd(result) {
+  onDragEnd(result: any) {
     // dropped outside the list
     if (!result.destination) {
       return;
@@ -105,6 +112,17 @@ class Dnd extends React.Component<PathRegionProps, DndState>
     let tmp = result[0];
     result[0] = result[index];
     result[index] = tmp;
+    this.props.posUpdate(result, null);
+  }
+  
+  onHeadItemDelete() {
+    this.onItemDelete(0);
+  }
+
+  onItemMoveToTail() {
+    var result = this.state.items;
+    let tmp = result.shift();
+    result.push(tmp);
     this.props.posUpdate(result, null);
   }
 
@@ -153,6 +171,8 @@ class Dnd extends React.Component<PathRegionProps, DndState>
         <p>Gene name is currently referring to GENCODE.</p>
         <p>Remove the genomic region item on click &#x2716; button.</p>
         <p>Remove except for the genomic region on click &#x2B55; button.</p>
+        <p>"Option + d" destroys the first item of genomic region.</p>
+        <p>"Option + s" shifts left of all items to hold the current genomic region in workspace.</p>
       </div>
     );
   }

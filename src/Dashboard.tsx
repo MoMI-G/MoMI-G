@@ -122,7 +122,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
           });
         });
       } else {
-        const sortedData = data.sort(function(a, b) {
+        const sortedData = data.sort(function(a: any, b: any) {
           return d3.descending(+a.priority, +b.priority);
         });
         this_.setState({
@@ -243,7 +243,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
     window.parent.location.hash =
       '#' +
       QueryString.stringify({
-        path: item.path.map(a => a.toUnreadableString()),
+        path: item.path.map(a => a.toStringWithNames()),
         uuid: item.uuid,
         reference: item.reference,
         layout: item.layout,

@@ -1,6 +1,6 @@
 {
-  "short_name": "MoMIG: A Graph Genome Browser",
-  "name": "MoMIG: Modular Multi-scale Integrated Genome Graph Browser",
+  "short_name": "MoMI-G: A Graph Genome Browser",
+  "name": "MoMI-G: Modular Multi-scale Integrated Genome Graph Browser",
   "icons": [
     {
       "src": "favicon.ico",
