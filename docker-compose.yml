@@ -8,5 +8,6 @@ services:
     mem_reservation: 8gb
   frontend:
     build: .
+    command: yarn start
     ports:
       - "3000:3000"

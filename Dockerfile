@@ -11,6 +11,6 @@ RUN apk update && apk upgrade && \
 
 COPY . .
 
-RUN sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json && yarn install && yarn build
+RUN sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json && yarn install
 
-ENTRYPOINT yarn
+ENTRYPOINT yarn start
