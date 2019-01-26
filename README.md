@@ -6,13 +6,17 @@
 
 ![logo](public/images/logo.png)
 
-A genome graph browser for visualization of structural variants as a variation graph:
+A genome graph browser for visualization of structural variants (SVs) as a variation graph:
 
 A sequence graph as a bi-directed graph composed of a set of multiple DNA sequences as nodes and the corresponding end-to-end connections as edges has the ability to describe duplications, indels and inversions as loops or branching and merging against a reference genome.
 
 The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from an individual genome.
 
-[Short Demo](https://youtu.be/Cv1OFREYtbU)
+## Demo
+
+Youtube Movies:
+
+[Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https://youtu.be/mEXpFwf1K_M)
 
 ## Goals
 
