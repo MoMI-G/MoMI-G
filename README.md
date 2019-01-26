@@ -18,7 +18,7 @@ Youtube Movies:
 
 [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https://youtu.be/mEXpFwf1K_M)
 
-## Goals
+## Features
 
 * Compare a personal genome to a reference genome
 * Reveal nested variations
@@ -58,7 +58,7 @@ $ docker run --init -p 8081:8081 momigteam/momig-backend # Run it on another she
 
 You can start docker container by `docker-compose up` instead of `docker run`.
 
-## Features
+## Overview
 
 Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.
 
