@@ -89,12 +89,6 @@ When you select a genomic coordinate with the overall view, the region is insert
 
 Each card is draggable. If you double-clicked each card of genomic coordinate, then the item moves to the top of the list. You can name the genomic region and you can also lock the region. Moreover, you can specify the genomic region or gene name on the card.
 
-### Karyotypes
-
-![karyotype](public/images/karyotype.png)
-
-Karyotypes of each chromosome which is listed in the workspace is shown in this component. The red pictogram means that structural variations are identified on the position.
-
 ### Visualize as genome graphs
 
 ![tube_map](public/images/TubeMap.png)
