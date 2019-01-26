@@ -1,8 +1,6 @@
 # MoMI-G
 
-[ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600)
-
-[![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com")
+[ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600) [![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com")
 
 ### Modular Multi-scale Integrated Genome Graph Browser
 
@@ -83,7 +81,7 @@ This graph is called CHM1 graph below.
 
 You can select structural variants from Circos plot or table. When you click a line between chromosomes in Circos or "GO" button of a row of the structural variant in the table, the selected region is added into a coordinate workspace on the footer.
 
-### A workspace for genomic regions
+### Interval Card Deck
 
 ![workspace](public/images/workspace.png)
 
@@ -121,7 +119,7 @@ If you want to run with your own dataset, use intenal scripts `scripts/vcf2xg.sh
 
 |Software|Dataset|Supported SV type|
 |------|---|----|
-|Sniffles|for long reads|INV, DEL, TRA, DUP, (INS)|
+|Sniffles|for PacBio/Nanopore|INV, DEL, TRA, DUP, (INS)|
 |10X LongRanger|for 10X|To be supported|
 |SURVIVOR|for merging SV calls|To be supported|
 
