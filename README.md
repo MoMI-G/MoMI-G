@@ -8,11 +8,11 @@
 
 ![logo](public/images/logo.png)
 
-A genome graph browser for visualization of structural variants as a genome graph:
+A genome graph browser for visualization of structural variants as a variation graph:
 
 A sequence graph as a bi-directed graph composed of a set of multiple DNA sequences as nodes and the corresponding end-to-end connections as edges has the ability to describe duplications, indels and inversions as loops or branching and merging against a reference genome.
 
-The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from personal genomes.
+The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from an individual genome.
 
 [Short Demo](https://youtu.be/Cv1OFREYtbU)
 
@@ -20,7 +20,7 @@ The visualization of sequence graph which is composed of a reference genome and 
 
 * Compare a personal genome to a reference genome
 * Reveal nested variations
-* Navigate for all structural variations
+* Navigate for structural variations
 * Visualize the distributions of structural variations
 
 ## Install
@@ -60,7 +60,7 @@ You can start docker container by `docker-compose up` instead of `docker run`.
 
 Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.
 
-![design](public/images/design.png)
+![overall](public/images/overall.png)
 
 * Header: a link to README or options to change layouts.
 * Main:
