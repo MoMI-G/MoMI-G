@@ -18,15 +18,6 @@ Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
 ![demo_image](public/images/top.png)
 
-## Features
-
-MoMI-G
-
-* allows visualization of (possibly distant) multiple intervals.
-* displays SVs that span multiple intervals.
-* displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.
-* allows users to manually inspect hundreds of SVs.
-
 ## Installation
 ### Dependencies
 
@@ -43,11 +34,11 @@ $ yarn
 $ yarn start
 ```
 
-And access to http://localhost:3000/.
+And access to http://localhost:3000/. The demo shows CHM1, a human hydatidiform mole cell line dataset from backend server of MoMI-G that MoMI-G developer serves.
 
 ### Run on your workstation
 
-If you want to try back-end server on your laptop, modify `package.json` and run docker container which includes CHM1 chr21 with simulated reads dataset.
+If you want to run the backend server on your laptop, modify `package.json` and run docker container which includes backend server and CHM1 chr21 with simulated reads dataset.
 
 ``` bash
 $ sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json
@@ -55,7 +46,16 @@ $ yarn start
 $ docker run --init -p 8081:8081 momigteam/momig-backend # Run it on another shell. It takes a little long time -- please wait.
 ```
 
-You can start docker container by `docker-compose up` instead of `docker run`.
+You can start docker container by `docker-compose up` instead of `docker run`. The source code of the backend server is [here](https://github.com/MoMI-G/MoMI-G_backend).
+
+## Features
+
+MoMI-G
+
+* allows visualization of (possibly distant) multiple intervals.
+* displays SVs that span multiple intervals.
+* displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.
+* allows users to manually inspect hundreds of SVs.
 
 ## Usage
 
@@ -79,7 +79,7 @@ We integrate SequenceTubeMap into MoMI-G with modifying the original implementat
 
 * Chromosome Path (thick, grayscale): A chromosome path is a chromosome in a reference genome; walking on the path provides us a full nucleotide sequence.
 * Variant Path (colored): A variant path with a variation name represents a personal genome.
-* Gene Path (thin, colored): A gene path is for gene annotation. Exons are shown as a path with darker color, and introns are shown as that with lighter color.
+* Gene Path (thin, colored): A gene path is for gene annotation. Exons are shown as a path with a darker color, and introns are shown as that with a lighter color.
 * Annotation Path (thin, grayscale): An annotation path is for user-definable bigBed annotations such as repeats. If you have a GFF3 or BED file, you can easily convert into bigBed file.
 * Read Alignment (thin, grayscale): Read alignments aligned on the graph or lifted over from the original alignments to a reference genome.
 
@@ -93,7 +93,7 @@ Gene annotations retrieved from Ensembl or names of the region described in bigb
 
 ## Dataset
 
-This demo includes the genome of the [CHM1 dataset](http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/), that is a human pseudodiploid genome. They identified insertions, deletions, and inversions, so we converted from the list of SVs into a variation graph with our custom scripts. Alternatively, you can employ your own dataset with the following procedure.
+The demo includes the genome of the [CHM1 dataset](http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/). CHM1 is a human hydatidiform mole cell line dataset so that we can assume all SVs are homozygous. They identified insertions, deletions, and inversions against hg19, so we converted from the list of SVs into a variation graph with our custom scripts. Alternatively, you can employ your own dataset with the following procedure.
 
 ### Adapt your own dataset
 
