@@ -18,12 +18,16 @@ Youtube Movies:
 
 [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https://youtu.be/mEXpFwf1K_M)
 
+Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
+
 ## Features
 
-* Compare a personal genome to a reference genome
-* Reveal nested variations
-* Navigate for structural variations
-* Visualize the distributions of structural variations
+MoMI-G
+
+* allows visualization of (possibly distant) multiple intervals.
+* displays SVs that span multiple intervals.
+* displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.
+* allows users to manually inspect hundreds of SVs.
 
 ## Install
 ### Dependencies
@@ -75,7 +79,7 @@ Multi-scale view modules from whole-genome to a nucleotide are integrated on the
 
 ### Dataset
 
-This demo allows you to visualize the genome information of the [CHM1 dataset](http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/), human haploid which includes insertions, deletion, and inversions.
+This demo shows the genome of the [CHM1 dataset](http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/), human haploid which includes insertions, deletion, and inversions.
 
 This graph is called CHM1 graph below.
 
@@ -83,7 +87,7 @@ This graph is called CHM1 graph below.
 
 ![circos](public/images/Circos.png) ![table](public/images/table.png)
 
-You can select structural variants from Circos plot or table. When you click a line between chromosomes in Circos or "GO" button of a row of the structural variant in the table, the selected region is added into a coordinate workspace on the footer.
+Manual screening for all SVs is time-consuming so that SVs should be filtered by certain criteria for manual screening. There are two view components to select SVs from candidates. The first view components is Circos, which aligns chromosomes as a circular layout. Thick arcs are chromosomes, and a line connecting to thick arcs indicates a SV. Because Circos enables us to choose and rotate chromosomes, we can focus on the subset of chromosomes. Circos is a suitable for visualizing the distribution of SVs and inter-chromosomal variations as lines. Second, Feature Table shows chromosome names, coordinates, and strand, enabling us to select SVs. We can sort and filter Feature Table by SV type, coordinates, or gene name. We can select a SV from both components.
 
 ### Interval Card Deck
 
@@ -97,13 +101,13 @@ Each card is draggable. If you double-clicked each card of genomic coordinate, t
 
 ![tube_map](public/images/TubeMap.png)
 
-The genomic region on the reference genome is drawn as a genome graph:
+We integrate SequenceTubeMap into MoMI-G with modifying the original implementation so that it can visualize a variation graph converted from SVs for showing the difference between a reference genome and a personal genome. Because there are many types of paths in variation graph, we categorized them for assigning different design as follows:
 
-* Node: a multiple DNA sequence
-  * The length of a node is proportional to the length of the DNA sequence.
-* Chromosome Path(widest, grayscale): an ordered set of DNA sequence -- Tracing the path marked with the chromosome name shows that the nodes are included in the reference genome in that order.
-* Variant Path(colorful): Tracing the path marked with the variation name shows that the nodes are included in the personal genome in that order.
-* Gene Path(narrowest, green): A gene annotation, dense areas are exons, thin areas are introns.
+* Chromosome Path (thick, grayscale): A chromosome path is a chromosome in a reference genome; walking on the path provides us a full nucleotide sequence.
+* Variant Path (colored): A variant path with a variation name represents a personal genome.
+* Gene Path (thin, colored): A gene path is for gene annotation. Exons are shown as a path with darker color, and introns are shown as that with lighter color.
+* Annotation Path (thin, grayscale): An annotation path is for user-definable bigBed annotations such as repeats. If you have a GFF3 or BED file, you can easily convert into bigBed file.
+* Read Alignment (thin, grayscale): Read alignments aligned on the graph or lifted over from the original alignments to a reference genome.
 
 ### Confirm gene annotations
 
@@ -149,6 +153,7 @@ $ yarn start
 * 2018.01.11 Ver 0.6 (fix design)
 * 2018.01.28 Ver 1.0RC
 * 2018.02.10 Ver 1.0
+* 2019.01.06 Ver 1.0 Rev.1
 
 ## Disclaim
 
