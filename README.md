@@ -12,7 +12,7 @@ Long-read sequencing allows for more sensitive and accurate discovery of SVs, wh
 
 ## Demo
 
-Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https://youtu.be/mEXpFwf1K_M)
+Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https://youtu.be/mEXpFwf1K_M), [Long Demo](https://youtu.be/dny_2t8CNFA)
 
 Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
