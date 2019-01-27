@@ -8,7 +8,7 @@
 
 A genome graph browser for visualization of structural variants (SVs) as a variation graph:
 
-Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. Since most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, manual screening for SV candidates is still important because of high false positive rate of SV calling. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, which is composed with reference genome and variations. Users can filter SVs, visualize with genomic annotations, and validate using read alignments.
+Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. However, no existing genome browser meets the demand by researchers who wish to study cancer genomes. Because most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, no existing genome browsers allow users to simultaneously inspect the read alignments that span the reference allele and an alternative allele caused by a heterozygous SV. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, that provides a graph-based view that displays a genome with branches and alignments on them. Users can filter, visualize with genomic annotations, and inspect SVs with read alignments.
 
 ## Demo
 
@@ -63,7 +63,7 @@ MoMI-G
 
 ![overall](public/images/overall.png)
 
-Manual screening for all SVs is time-consuming so that SVs should be filtered by certain criteria for manual screening. There are two view components to select SVs from candidates. The first view components is Circos, which aligns chromosomes as a circular layout. Thick arcs are chromosomes, and a line connecting to thick arcs indicates a SV. Because Circos enables us to choose and rotate chromosomes, we can focus on the subset of chromosomes. Circos is a suitable for visualizing the distribution of SVs and inter-chromosomal variations as lines. Second, Feature Table shows chromosome names, coordinates, and strand, enabling us to select SVs. We can sort and filter Feature Table by SV type, coordinates, or gene name. We can select a SV from both components.
+Manual screening for SV candidates is still important because of high false positive rate of SV calling, but it is time-consuming so that SVs should be filtered by certain criteria for manual screening. There are two view components to select SVs from candidates. The first view components is Circos, which aligns chromosomes as a circular layout. Thick arcs are chromosomes, and a line connecting to thick arcs indicates a SV. Because Circos enables us to choose and rotate chromosomes, we can focus on the subset of chromosomes. Circos is a suitable for visualizing the distribution of SVs and inter-chromosomal variations as lines. Second, Feature Table shows chromosome names, coordinates, and strand, enabling us to select SVs. We can sort and filter Feature Table by SV type, coordinates, or gene name. We can select a SV from both components.
 
 ### Interval Card Deck
 
