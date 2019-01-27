@@ -2,20 +2,13 @@
 
 [ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600) [![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com")
 
-### Modular Multi-scale Integrated Genome Graph Browser
+## Modular Multi-scale Integrated Genome Graph Browser
 
 ![logo](public/images/logo.png)
 
 A genome graph browser for visualization of structural variants (SVs) as a variation graph:
 
 Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. Since most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, manual screening for SV candidates is still important because of high false positive rate of SV calling. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, which is composed with reference genome and variations. Users can filter SVs, visualize with genomic annotations, and validate using read alignments.
-
-MoMI-G
-
-* allows visualization of (possibly distant) multiple intervals.
-* displays SVs that span multiple intervals.
-* displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.
-* allows users to manually inspect hundreds of SVs.
 
 ## Demo
 
@@ -24,6 +17,15 @@ Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https
 Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
 ![demo_image](public/images/top.png)
+
+## Features
+
+MoMI-G
+
+* allows visualization of (possibly distant) multiple intervals.
+* displays SVs that span multiple intervals.
+* displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.
+* allows users to manually inspect hundreds of SVs.
 
 ## Installation
 ### Dependencies

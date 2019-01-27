@@ -25,100 +25,137 @@
     <title>MoMI-G Manual</title>
   </head>
   <body class="markdown-body">
-<section class="level1">
+<section id="momi-g" class="level1">
 <h1>MoMI-G</h1>
-<section class="level3">
-<h3>Modular Multi-scale Integrated Genome Graph Browser</h3>
+<p><a href="https://app.codeship.com/projects/245600"> <img src="https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master" alt="Codeship Status for 6br/graph-genome-browser" /></a> <a href="https://microbadger.com/images/momigteam/momig-backend" title="Get your own version badge on microbadger.com"><img src="https://images.microbadger.com/badges/version/momigteam/momig-backend.svg" /></a></p>
+<section id="modular-multi-scale-integrated-genome-graph-browser" class="level2">
+<h2>Modular Multi-scale Integrated Genome Graph Browser</h2>
 <p><img src="images/logo.png" alt="logo" /></p>
-<p>A genome graph browser for visualization of structural variants as a genome graph:</p>
-<p>A sequence graph as a bi-directed graph composed of a set of multiple DNA sequences as nodes and the corresponding end-to-end connections as edges has the ability to describe duplications, indels and inversions as loops or branching and merging against a reference genome.</p>
-<p>The visualization of sequence graph which is composed of a reference genome and a personal genome can be useful for the interpretation of structural variants in the personal genome. This genome browser is designed to visualize large-scale structural variants called from personal genomes.</p>
+<p>A genome graph browser for visualization of structural variants (SVs) as a variation graph:</p>
+<p>Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. Since most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, manual screening for SV candidates is still important because of high false positive rate of SV calling. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, which is composed with reference genome and variations. Users can filter SVs, visualize with genomic annotations, and validate using read alignments.</p>
 </section>
-<section class="level2">
-<h2>Goals</h2>
+<section id="demo" class="level2">
+<h2>Demo</h2>
+<p>Youtube Movies: <a href="https://youtu.be/Cv1OFREYtbU">Short Demo</a>, <a href="https://youtu.be/mEXpFwf1K_M">Short Demo 2</a></p>
+<p>Demo Page: <a href="http://demo.momig.tokyo/">CHM1 Demo</a></p>
+<p><img src="images/top.png" alt="demo_image" /></p>
+</section>
+<section id="features" class="level2">
+<h2>Features</h2>
+<p>MoMI-G</p>
 <ul>
-<li>Compare a personal genome to a reference genome</li>
-<li>Reveal nested variations</li>
-<li>Navigate for all structural variations</li>
-<li>Visualize the distributions of structural variations</li>
+<li>allows visualization of (possibly distant) multiple intervals.</li>
+<li>displays SVs that span multiple intervals.</li>
+<li>displays SVs at varying scales, i.e., chromosome, gene, and nucleotide scales.</li>
+<li>allows users to manually inspect hundreds of SVs.</li>
 </ul>
 </section>
-<section id="install" class="level2">
-<h2>Install</h2>
+<section id="installation" class="level2">
+<h2>Installation</h2>
 <section id="dependencies" class="level3">
 <h3>Dependencies</h3>
 <ul>
 <li>Node.js</li>
-<li>npm or yarn</li>
+<li>npm or yarn
+<ul>
+<li>Docker (optional)</li>
+</ul></li>
 </ul>
 </section>
 <section id="summary-of-set-up" class="level3">
 <h3>Summary of set up</h3>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="fu">git</span> clone https://github.com/MoMI-G/MoMI-G
-$ <span class="bu">cd</span> MoMI-G
-$ <span class="ex">yarn</span>
-$ <span class="ex">yarn</span> start</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1">$ <span class="fu">git</span> clone https://github.com/MoMI-G/MoMI-G</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">$ <span class="bu">cd</span> MoMI-G</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">$ <span class="ex">yarn</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">$ <span class="ex">yarn</span> start</a></code></pre></div>
 <p>And access to <a href="http://localhost:3000/" class="uri">http://localhost:3000/</a>.</p>
-<p>The back-end API is defined at <a href="https://gbapi4.docs.apiary.io/" class="uri">https://gbapi4.docs.apiary.io/</a> (but some definitions are outdated).<br />
-The CHM1 dataset is displayed by default. Modify <code>package.json</code> if you want to change the data source.</p>
+</section>
+<section id="run-on-your-workstation" class="level3">
+<h3>Run on your workstation</h3>
+<p>If you want to try back-end server on your laptop, modify <code>package.json</code> and run docker container which includes CHM1 chr21 with simulated reads dataset.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1">$ <span class="fu">sed</span> -e <span class="st">&quot;s/</span><span class="dt">\&quot;</span><span class="st">target/</span><span class="dt">\&quot;</span><span class="st">target_/g&quot;</span>  -e <span class="st">&quot;s/\_target/target/g&quot;</span> -i.bak package.json</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">$ <span class="ex">yarn</span> start</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">$ <span class="ex">docker</span> run --init -p 8081:8081 momigteam/momig-backend <span class="co"># Run it on another shell. It takes a little long time -- please wait.</span></a></code></pre></div>
+<p>You can start docker container by <code>docker-compose up</code> instead of <code>docker run</code>.</p>
 </section>
 </section>
-<section id="features" class="level2">
-<h2>Features</h2>
-<p>Multi-scale view modules from whole-genome to a nucleotide are integrated on the dashboard.</p>
-<p><img src="images/design.png" alt="design" /></p>
-<ul>
-<li>Header: a link to README or options to change layouts.</li>
-<li>Main:
-<ul>
-<li>Overall View: select structural variations from Circos Plot / SV table / genomic coordinates / gene name</li>
-<li>Graph View: visualize genome graphs / karyotype on the selected genomic region</li>
-<li>Linear View: integrate with gene annotations / linear genome browser</li>
-</ul></li>
-<li>Footer: a workspace -- a list of genomic region -- for comparing between coordinates</li>
-</ul>
-</section>
-<section class="level2">
+<section id="usage" class="level2">
 <h2>Usage</h2>
-<section class="level3">
-<h3>Dataset</h3>
-<p>This demo allows you to visualize the genome information of the <a href="http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/">CHM1 dataset</a>, human haploid which includes insertions, deletion, and inversions.</p>
-<p>This graph is called CHM1 graph below.</p>
-</section>
-<section class="level3">
+<section id="select-structural-variants" class="level3">
 <h3>Select structural variants</h3>
-<p><img src="images/Circos.png" alt="circos" /> <img src="images/table.png" alt="table" /></p>
-<p>You can select structural variants from Circos plot or table. When you click a line between chromosomes in Circos or &quot;GO&quot; button of a row of the structural variant in the table, the selected region is added into a coordinate workspace on the footer.</p>
+<p><img src="images/overall.png" alt="overall" /></p>
+<p>Manual screening for all SVs is time-consuming so that SVs should be filtered by certain criteria for manual screening. There are two view components to select SVs from candidates. The first view components is Circos, which aligns chromosomes as a circular layout. Thick arcs are chromosomes, and a line connecting to thick arcs indicates a SV. Because Circos enables us to choose and rotate chromosomes, we can focus on the subset of chromosomes. Circos is a suitable for visualizing the distribution of SVs and inter-chromosomal variations as lines. Second, Feature Table shows chromosome names, coordinates, and strand, enabling us to select SVs. We can sort and filter Feature Table by SV type, coordinates, or gene name. We can select a SV from both components.</p>
 </section>
-<section class="level3">
-<h3>A workspace for genomic regions</h3>
+<section id="interval-card-deck" class="level3">
+<h3>Interval Card Deck</h3>
 <p><img src="images/workspace.png" alt="workspace" /></p>
-<p>When you select a genomic coordinate with the overall view, the region is inserted on the footer workspace and the top item of the workspace is the target of visualization as genome graphs.</p>
-<p>Each card is draggable. If you double-clicked each card of genomic coordinate, then the item moves to the top of the list. You can name the genomic region and you can also lock the region. Moreover, you can specify the genomic region or gene name on the card.</p>
+<p>After you select SVs using Feature Table or Circos Plot, the listed variants are stacked on Interval Card Deck at the bottom of the window. In Interval Card Deck, intervals are displayed as cards, and the interval of the top (leftmost) card of the deck is shown on SequenceTubeMap. Each card can be dragged, and the order of cards can be changed. If one double-clicks on a card, the card moves to the top of the deck. Also, a card can be locked to avoid unintended modification or disposal, and the gene name can be input with autocompletion for specifying the interval of a card.</p>
 </section>
-<section class="level3">
-<h3>Karyotypes</h3>
-<p><img src="images/karyotype.png" alt="karyotype" /></p>
-<p>Karyotypes of each chromosome which is listed in the workspace is shown in this component. The red pictogram means that structural variations are identified on the position.</p>
-</section>
-<section class="level3">
+<section id="visualize-as-genome-graphs" class="level3">
 <h3>Visualize as genome graphs</h3>
 <p><img src="images/TubeMap.png" alt="tube_map" /></p>
-<p>The genomic region on the reference genome is drawn as a genome graph:</p>
+<p>We integrate SequenceTubeMap into MoMI-G with modifying the original implementation so that it can visualize a variation graph converted from SVs for showing the difference between a reference genome and a personal genome. Because there are many types of paths in variation graph, we categorized them for assigning different design as follows:</p>
 <ul>
-<li>Node: a multiple DNA sequence
-<ul>
-<li>The length of a node is proportional to the length of the DNA sequence.</li>
-</ul></li>
-<li>Chromosome Path(widest, grayscale): an ordered set of DNA sequence -- Tracing the path marked with the chromosome name shows that the nodes are included in the reference genome in that order.</li>
-<li>Variant Path(colorful): Tracing the path marked with the variation name shows that the nodes are included in the personal genome in that order.</li>
-<li>Gene Path(narrowest, green): A gene annotation, dense areas are exons, thin areas are introns.</li>
+<li>Chromosome Path (thick, grayscale): A chromosome path is a chromosome in a reference genome; walking on the path provides us a full nucleotide sequence.</li>
+<li>Variant Path (colored): A variant path with a variation name represents a personal genome.</li>
+<li>Gene Path (thin, colored): A gene path is for gene annotation. Exons are shown as a path with darker color, and introns are shown as that with lighter color.</li>
+<li>Annotation Path (thin, grayscale): An annotation path is for user-definable bigBed annotations such as repeats. If you have a GFF3 or BED file, you can easily convert into bigBed file.</li>
+<li>Read Alignment (thin, grayscale): Read alignments aligned on the graph or lifted over from the original alignments to a reference genome.</li>
 </ul>
+<p>A sequence graph as a bi-directed graph composed of a set of multiple DNA sequences as nodes and the corresponding end-to-end connections as edges has the ability to describe duplications, indels and inversions as loops or branching and merging against a reference genome.</p>
 </section>
-<section class="level3">
-<h3>Confirm gene annotations</h3>
+<section id="annotations" class="level3">
+<h3>Annotations</h3>
 <p><img src="images/annotation.png" alt="annotation" /></p>
-<p>This is the Ensembl gene list of the selected genomic coordinate.</p>
+<p>Gene annotations retrieved from Ensembl or names of the region described in bigbed format are listed on Annotation Table.</p>
+</section>
+</section>
+<section id="dataset" class="level2">
+<h2>Dataset</h2>
+<p>This demo includes the genome of the <a href="http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/">CHM1 dataset</a>, that is a human pseudodiploid genome. They identified insertions, deletions, and inversions, so we converted from the list of SVs into a variation graph with our custom scripts. Alternatively, you can employ your own dataset with the following procedure.</p>
+<section id="adapt-your-own-dataset" class="level3">
+<h3>Adapt your own dataset</h3>
+<p>If you want to run MoMI-G with your own dataset, use our custom scripts <code>scripts/vcf2xg.sh</code> to generate pcf and xg dataset. It requires VG, ruby, bash, and samtools.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Software</th>
+<th>Dataset</th>
+<th>Supported SV type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Sniffles</td>
+<td>for PacBio/Nanopore</td>
+<td>INV, DEL, TRA, DUP, (INS)</td>
+</tr>
+<tr class="even">
+<td>10X LongRanger</td>
+<td>for 10X</td>
+<td>To be supported</td>
+</tr>
+<tr class="odd">
+<td>SURVIVOR</td>
+<td>for merging SV calls</td>
+<td>To be supported</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1">$ <span class="fu">bash</span> vcf2xg.sh test.vcf test_output /bin/vg hg[19<span class="kw">|</span><span class="ex">38</span>]</a></code></pre></div>
+<p>After that, these files are required to be mounted on &quot;static/&quot; folder.</p>
+<ul>
+<li>static/
+<ul>
+<li>config.yaml: a configuration file</li>
+<li>*.xg: an index of variation graph, generated by <a href="https://github.com/vgteam/vg">vg</a></li>
+<li>*.pcf: pair of cooridnate format: required to display variants on Feature Table or Circos Plot.</li>
+<li>*.gam(optional): read alignments on the graph</li>
+<li>*.gam.index(optional): index of gam</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1">$ <span class="ex">docker</span> run --init -p 8081:8081 -v <span class="kw">`</span><span class="bu">pwd</span><span class="kw">`</span>/static:/vg/static momigteam/momig-backend</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">$ <span class="ex">yarn</span> start</a></code></pre></div>
 </section>
 </section>
 <section id="change-log" class="level2">
@@ -132,17 +169,18 @@ The CHM1 dataset is displayed by default. Modify <code>package.json</code> if yo
 <li>2018.01.11 Ver 0.6 (fix design)</li>
 <li>2018.01.28 Ver 1.0RC</li>
 <li>2018.02.10 Ver 1.0</li>
+<li>2019.01.06 Ver 1.0 Rev.1</li>
 </ul>
 </section>
-<section class="level2">
+<section id="disclaim" class="level2">
 <h2>Disclaim</h2>
 <p>We will not guarantee the accuracy and validity of the output result of this software at all. In addition, we will not assume any responsibility for any damage caused by using this software.</p>
 </section>
-<section class="level2">
+<section id="acknowledgements" class="level2">
 <h2>Acknowledgements</h2>
-<p>This work is supported by Information-technology Promotion Agency, Japan (IPA), Exploratory IT Human Resources Project (The MITOU Program) in the fiscal year 2017.</p>
+<p>This work is supported in part by Information-technology Promotion Agency, Japan (IPA), Exploratory IT Human Resources Project (The MITOU Program) in the fiscal year 2017.</p>
 </section>
-<section class="level2">
+<section id="references" class="level2">
 <h2>References</h2>
 <ul>
 <li>Chaisson, M. J. P., Huddleston, J., Dennis, M. Y., Sudmant, P. H., Malig, M., Hormozdiari, F., … Eichler, E. E. (2015). Resolving the complexity of the human genome using single-molecule sequencing. Nature, 517(7536), 608–611. <a href="http://doi.org/10.1038/nature13907" class="uri">http://doi.org/10.1038/nature13907</a></li>
@@ -154,6 +192,10 @@ The CHM1 dataset is displayed by default. Modify <code>package.json</code> if yo
 <li>TogoGenome. <a href="http://togogenome.org/" class="uri">http://togogenome.org/</a></li>
 <li>DBCLS. (2016). SPARQList <a href="https://github.com/dbcls/sparqlist" class="uri">https://github.com/dbcls/sparqlist</a></li>
 </ul>
+</section>
+<section id="license" class="level2">
+<h2>License</h2>
+<p>MIT</p>
 </section>
 </section>
   <a href='./README.en.html'>Readme (English)</a>
