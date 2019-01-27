@@ -8,7 +8,7 @@ A genome graph browser for visualization of structural variants (SVs) as a varia
 
 ![logo](public/images/logo.png)
 
-Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. However, no existing genome browser meets the demand by researchers who wish to study cancer genomes. Because most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, no existing genome browsers allow users to simultaneously inspect the read alignments that span the reference allele and an alternative allele caused by a heterozygous SV. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, that provides a graph-based view that displays a genome with branches and alignments on them. Users can filter, visualize with genomic annotations, and inspect SVs with read alignments.
+Long-read sequencing allows for more sensitive and accurate discovery of SVs, which requires to filter and validate thousands of candidates. However, no existing genome browser meets the demand for cancer genomics. Because most visualization tools show an only range of a linear sequence, making them unsuitable for large (over megabase) or nested SVs. Also, no existing genome browsers allow users to simultaneously inspect the read alignments that span the reference allele and an alternative allele caused by a heterozygous SV. Here we present MoMI-G, a graph genome browser to visualize SVs on the variation graph, that provides a graph-based view that displays a genome with branches and alignments on them. Users can filter, visualize with genomic annotations, and inspect SVs with read alignments.
 
 ## Demo
 
