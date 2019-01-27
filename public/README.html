@@ -25,9 +25,9 @@
     <title>MoMI-G Manual</title>
   </head>
   <body class="markdown-body">
-<section class="level1">
+<section id="momi-g" class="level1">
 <h1>MoMI-G</h1>
-<section class="level3">
+<section id="modular-multi-scale-integrated-genome-graph-browser" class="level3">
 <h3>Modular Multi-scale Integrated Genome Graph Browser</h3>
 <p><img src="images/logo.png" alt="logo" /></p>
 <p>当ソフトウェアは、グラフゲノムのインタラクティブな可視化を目的とするツールです。このツールでは特に、以下のような解析をグラフゲノムという形で可視化することを想定し、それらの機能に特化した実装を行っています。</p>
@@ -38,28 +38,21 @@
 </ul></li>
 <li>リファレンスゲノムグラフの可視化</li>
 </ul>
-<p>現在、このデモでは CHM1 データセット(<a href="http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/" class="uri">http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/</a> )を含む個人グラフゲノムの配列情報を可視化することができます。このグラフを以下では CHM1 graph と呼んでいます。</p>
+<p>このデモでは CHM1 データセット(<a href="http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/" class="uri">http://eichlerlab.gs.washington.edu/publications/chm1-structural-variation/</a> )を含む個人グラフゲノムの配列情報を可視化することができます。このグラフを以下では CHM1 graph と呼んでいます。</p>
 </section>
-<section class="level2">
+<section id="注意事項仕様" class="level2">
 <h2>注意事項・仕様</h2>
 <p>スマートフォンからの接続は想定しておりません。またページを開いたときに画面サイズによっては、ビューが画面からはみだしてしまう現象を確認しております。お手数ですが、ブラウザのズーム設定で適宜調節するか、スクロールしてご利用下さい。</p>
 <p>表示したい座標位置を連続で切り替えると Partial-Graph View でローディングが発生し、しばらくの間変化が反映されず、数秒後にまとめて変化が反映される現象が確認されています。Partial-Graph View のロードが完了してから次の座標位置を選択してください。</p>
 </section>
-<section class="level2">
-<h2>今後実装を予定している機能</h2>
-<ul>
-<li>https 対応</li>
-<li>表示されている画面の共有リンク</li>
-</ul>
-</section>
-<section class="level2">
+<section id="使い方" class="level2">
 <h2>使い方</h2>
 <p>画面上にタイル上に配置されたコンポーネントがあります。これらを上から順に操作することで、グラフゲノムにおける 全ゲノムレベル の情報から 1 塩基レベルの情報まで得ることができるようになることを目指しています。それぞれの利用方法を説明します。また利用を検討されるユーザーの方に、入力となるデータについての説明も付与しました。</p>
 <p>（UCSC、Ensembl などのゲノムブラウザをすでに用いたことのある方を主に説明の対象としています）</p>
-<section class="level3">
+<section id="design-dashboard-style" class="level3">
 <h3>Design: dashboard style</h3>
 <p>このブラウザは、様々なパーツがダッシュボード上に配置されて、それらのコンポーネントは自由にレイアウトを変更することができます。ページ上部のナビゲーションバーでは、README をクリックすると別タブでこの説明が表示されるほか、Layout をクリックするとダッシュボードのレイアウトを変更することができます。また右上の Edit ボタンをクリックすると、配置されるコンポーネントを自由に変更・追加・削除することができます。</p>
-<section class="level4">
+<section id="0-path-region-workspace" class="level4">
 <h4>0. Path-Region Workspace</h4>
 <p>以下に示す Overall View モジュールで染色体上の座標を選択すると、その選択された座標区間は、カードの形で Workspace 上に並べられます。このカードのうち、最も左に位置しているカードが、以下の Graph View 及び Linear View で表示されるものとなります。</p>
 <p>カードは自由に並べ替えることができます。ドラッグアンドドロップで位置を交換することができるほか、カードの何も書かれていない部分をダブルクリックすることで、その要素を最も左に移動させることができます。</p>
@@ -75,28 +68,28 @@
 <p>また可視化対象の位置を左右に移動させる操作のために&quot;&lt;-&quot;、&quot;-&gt;&quot;ボタンを用いるほか、可視化対象の位置の縮尺を拡大・縮小させる操作のために&quot;+&quot;、&quot;-&quot;ボタンを用います。もっとも左の&quot;◎&quot;ボタンをクリックすると、入力した文字で確定し、遺伝子名を入力した場合はそれに対応する座標区間が表示されます。ピンのボタンをクリックすると、そのカードが消えないようにピン止めされます。複製ボタンを押すと同じ座標位置のカードが複製されるほか、塗りつぶされた&quot;o&quot;ボタンをクリックすると、そのカードを除いた他のカードが全て削除されます。また塗りつぶされた&quot;x&quot;ボタンをクリックすると、そのカードが削除されますが、ピン留めされている場合は表示されません。</p>
 </section>
 </section>
-<section class="level3">
+<section id="overall-view" class="level3">
 <h3>Overall View</h3>
 <p>Overall View のレイヤーでは、Whole-genome レベルの情報（パスに相当する）から染色体上の場所を一意に選択するためのナビゲーションを提供しています。特に、GUI の上で染色体上の 2 座標間の対応関係(2 座標のペア)を選択することが可能です。これを提供するには予め計算した、2 座標間の対応関係のリストを与える必要があります。</p>
 <p>CHM1 graph では構造多型として列挙された挿入や欠失、逆位のなかで、ある一定の距離離れているものをフィルタリングし、Insertion であれば挿入位置、Deletion/Inversion であれば欠失・逆位の開始点および終了点、Translocation であればその転座によって連結する 2 箇所の染色体の座標を 2 座標のペアとして扱い、この Overall View のレイヤーでナビゲーションする対象としています。</p>
-<section class="level4">
+<section id="1-circos-plot" class="level4">
 <h4>1. Circos Plot</h4>
 <p>Circos Plot では、染色体上の 2 座標間の対応関係を円状に配置された染色体の間の線で表現します。染色体をクリックすると、その染色体内の inter-chromosomal な対応関係が Chromosome Graph に表示されます。また対応関係の線にカーソルを合わせると、その線で表現されている対応関係の説明がツールチップで表示され、線をクリックするとその対応関係の Partial Graph が表示されます。</p>
 <p>ここでは主に inter-chromosomal な対応関係の情報を提供しますが、今回のように intra-chromosomal な対応関係のみであっても、その頻度を視覚的にとらえることが可能となります。</p>
 <p><img src="images/Circos.png" alt="circos" /></p>
 </section>
-<section class="level4">
+<section id="2-feature-table" class="level4">
 <h4>2. Feature Table</h4>
 <p>Excel のような表形式で、予め与えられた 2 座標間の対応関係のリストを表示しています。このビューの上で、染色体ごとの絞り込みや座標位置によるソートを行うことが可能です。</p>
 <p>対応関係の行をクリックすると、 Workspace にその染色体上の領域が追加されます。</p>
 <p><img src="images/table.png" alt="table" /></p>
 </section>
-<section class="level4">
+<section id="3-threshold-filter" class="level4">
 <h4>3. Threshold Filter</h4>
 <p>スライダーを左右に調節することで、対応関係に設定された優先度(Priority)で、スライダーで指定された範囲の対応関係のみを、Overall View の種々のデザイン上で表示することができます。</p>
 <p>また、&quot;Inter-chromosome&quot;ないし&quot;Intra-chromosome&quot;チェックボックスを入にすることで、その特定の対応関係のみを表示することが可能になります。</p>
 </section>
-<section class="level4">
+<section id="4-karyotype-widget" class="level4">
 <h4>4. Karyotype Widget</h4>
 <p>Path Region Workspace で選択した参照配列の染色体の核型が表示されます。またその核型の下に、意匠によって、参照配列の変異が表示されます。</p>
 <ul>
@@ -106,15 +99,15 @@
 <p>また、ドラッグすることで表示する位置を変えたり、スクロールすることでサイズを拡大・縮小することもできます。</p>
 <p><img src="images/karyotype.png" alt="karyotype" /></p>
 </section>
-<section class="level4">
+<section id="5-chromosome-graphscale-view" class="level4">
 <h4>5. Chromosome-Graph/Scale View</h4>
 <p>2 座標間の対応関係が 1 本の染色体上に載っているものに限定して、その様態を表現するビューです。</p>
 <p>横に参照配列上の 1 本の染色体を表現し、その上の対応関係を弧で表現しています。弧にカーソルを合わせると、その弧で表現されている対応関係の説明がツールチップで表示され、クリックするとその区間の Partial Graph が表示されます。また Scale のブラシをドラッグする、または Scale 上の軸をクリックすることで、その染色体上で可視化したい座標区間を変更することができます。</p>
 </section>
 </section>
-<section class="level3">
+<section id="graph-view" class="level3">
 <h3>Graph View</h3>
-<section class="level4">
+<section id="6-sequencetubemap" class="level4">
 <h4>6. SequenceTubeMap</h4>
 <p>Overall View で選択した座標区間のグラフビューを表示します。計算量に対する制約として、表示するの範囲をパス換算で 50,000bp より大きな粒度で指定した場合はレンダリングされません。</p>
 <p>グラフビューの見方を説明します。このビューは、ノードとパスを用いて、座標区間のグラフをレンダリングしています。</p>
@@ -142,18 +135,18 @@
 <p><img src="images/TubeMap.png" alt="tube_map" /></p>
 </section>
 </section>
-<section class="level3">
+<section id="linear-view" class="level3">
 <h3>Linear view</h3>
-<section class="level4">
+<section id="7-annotation-table" class="level4">
 <h4>7. Annotation Table</h4>
 <p>Graph View で表示されている区間に存在する遺伝子のアノテーションについて、その詳細情報をテーブル形式の一覧で表示します。</p>
 <p><img src="images/annotation.png" alt="annotation" /></p>
 </section>
 </section>
-<section class="level3">
+<section id="supplemental-view" class="level3">
 <h3>Supplemental View</h3>
 <p>その他、&quot;Edit&quot;ボタンをクリックすることによってダッシュボードに追加可能となるデザイン、あるいは実装を予定しているデザインについて紹介します。</p>
-<section class="level4">
+<section id="8-linear-browser" class="level4">
 <h4>8. Linear Browser</h4>
 <p>Overall View で選択した座標区間のリニアビューを表示します。</p>
 <p>現状の実装では、pileup.js を用いてリニアゲノム向けのゲノムブラウザをレンダリングしています。CHM1 graph では、hg37 上の対応する区間の塩基配列を表示するほか、その上の遺伝子アノテーションについても表示しています。</p>
@@ -161,17 +154,17 @@
 <p>pileup.js では bigbed 形式の遺伝子アノテーション、vcf 形式の変異アノテーションや bam 形式のパイルアップを表示することができるため、これ以外にトラックを追加することもできます。）</p>
 <p><img src="images/linear.png" alt="linear" /></p>
 </section>
-<section class="level4">
+<section id="9-upload-form" class="level4">
 <h4>9. Upload Form</h4>
 <p>構造多型を表現するためのフォーマットとして一般的に用いられている VCF ファイルをアップロードすると、サーバーの内部でグラフ表現に変換し、個別に uuid が発行されます。</p>
 <p>変換には時間がかかりますが、変換が終わった後でこの uuid をもとにアクセスすると、デフォルトで表示されている CHM1 graph ではなく、アップロードした VCF ファイルで表現されている構造多型を可視化しています。</p>
 <p>VCF ファイルの変換は<a href="https://github.com/harazono/vcf2ggf">vcf2ggf</a>に依拠しています。</p>
 </section>
-<section class="level4">
+<section id="10-path-region-form" class="level4">
 <h4>10. Path-Region Form</h4>
 <p>参照配列上の座標を指定するための、カード形式ではないシンプルなデザインの input box です。</p>
 </section>
-<section class="level4">
+<section id="11-sankey-diagram" class="level4">
 <h4>11. Sankey Diagram</h4>
 <p>Overall View で選択した座標区間のグラフビューを表示します。計算量に対する制約として、表示するの範囲をパス換算で 50,000bp より大きな粒度で指定した場合はレンダリングされません。</p>
 <p>グラフビューの見方を説明します。このビューは、ノードとエッジを用いて、座標区間のグラフをレンダリングしています。</p>
@@ -193,7 +186,7 @@
 </section>
 </section>
 </section>
-<section class="level2">
+<section id="シーケンスグラフで表現可能なグラフゲノム" class="level2">
 <h2>シーケンスグラフで表現可能なグラフゲノム</h2>
 <p>hg19 や hg38 といった今まで広く用いられている参照配列など、1 本の配列で表現されるゲノム（ここでは、これをリニアゲノムと呼びます）に比べて情報科学的なエッジとノードで構成されるグラフゲノムを用いることは、1 種類のリニアゲノムに比べてより多くの情報量をもとに解析が行える点、またグラフゲノムが表現しているリニアゲノムの集合に比べて、共通部分が集約されているために少ない計算量で解析が可能になる点で、今後の解析ワークフローにおいて有望であると考えています。</p>
 <p>広義にグラフゲノムと呼ばれる問題のうち、Sequence Graph と呼ばれる、Bi-Directed Graph の一種をここでは扱います。Sequence Graph はゲノム配列を内部に持つ情報科学的なデータ構造として、以下の性質を持ちます。</p>
@@ -208,11 +201,11 @@
 </ul>
 <p>このパスによって参照配列や個人ゲノムの染色体が、どのノードを経由した配列によって表現されるのかを扱うことが可能になります。ここでは、このノード、エッジ、パスで表現されるグラフゲノムのフォーマットについて、可視化の対象としています。CHM1 graph では、パスは hg19 の参照配列のそれぞれの染色体、ノードとエッジによって SV が表現されています。</p>
 </section>
-<section class="level2">
+<section id="フィードバックのお願い" class="level2">
 <h2>フィードバックのお願い</h2>
 <p>ソフトウェアの継続的改善のため、使用感の報告やバグレポート、アドバイスをいただきたいと考えております。またお手持ちのデータをプロトタイプシステムで可視化したいという要望につきましても、是非ご相談を承ります。ページ下部の<strong>Google Form</strong>よりご連絡下さい。なおご意見やご質問につきまして、内容によっては回答を広く周知すべく、ウェブサイトその他の媒体で公開させていただくことがありますこと、予めご承知置き下さい。</p>
 </section>
-<section class="level2">
+<section id="更新履歴" class="level2">
 <h2>更新履歴</h2>
 <ul>
 <li>2017.08.09 α 版公開</li>
@@ -232,11 +225,11 @@
 <li>2018.02.10 Ver 1.0 リリース</li>
 </ul>
 </section>
-<section class="level2">
+<section id="免責事項" class="level2">
 <h2>免責事項</h2>
 <p>当ソフトウェアの出力結果の最新性、正確性や妥当性につきまして、一切の保障はいたしません。また当ソフトウェアを用いることで生じたあらゆる損害について、一切の責任を負いません。</p>
 </section>
-<section class="level2">
+<section id="references" class="level2">
 <h2>References</h2>
 <ul>
 <li>Chaisson, M. J. P., Huddleston, J., Dennis, M. Y., Sudmant, P. H., Malig, M., Hormozdiari, F., … Eichler, E. E. (2015). Resolving the complexity of the human genome using single-molecule sequencing. Nature, 517(7536), 608–611. <a href="http://doi.org/10.1038/nature13907" class="uri">http://doi.org/10.1038/nature13907</a></li>
