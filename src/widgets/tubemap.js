@@ -1847,6 +1847,12 @@ function generateSVGShapesFromPath() {
       } else { // The track starts with a forward node
         xStart = orderStartX[track.path[0].order] - 20;
       }
+    } else if (track.hasOwnProperty('feature')) {
+      if (track.sequence[0].charAt(0) === '-') { // The track starts with an inversed node
+        xStart = orderEndX[track.path[0].order] + 10;
+      } else { // The track starts with a forward node
+        xStart = orderStartX[track.path[0].order] - 10;
+      }
     } else {
       xStart = getReadXStart(track);
     }
@@ -1917,11 +1923,17 @@ function generateSVGShapesFromPath() {
     /*if (track.hasOwnProperty('feature')) {
       xEnd = orderStartX[track.path[track.path.length - 1].order] + 20
     } else*/
-    if (track.type !== 'read') {
+    if (track.type !== 'read' && !track.hasOwnProperty('feature')) {
       if (!track.path[track.path.length - 1].isForward) { // The track ends with an inversed node
         xEnd = orderStartX[track.path[track.path.length - 1].order] - 20;
       } else { // The track ends with a forward node
         xEnd = orderEndX[track.path[track.path.length - 1].order] + 20;
+      }
+    } else if (track.hasOwnProperty('feature')) {
+      if (!track.path[track.path.length - 1].isForward) { // The track ends with an inversed node
+        xEnd = orderStartX[track.path[track.path.length - 1].order] - 10;
+      } else { // The track ends with a forward node
+        xEnd = orderEndX[track.path[track.path.length - 1].order] + 10;
       }
     } else {
       xEnd = getReadXEnd(track);

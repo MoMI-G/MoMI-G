@@ -53,7 +53,8 @@ class CustomFrame extends React.Component<WrapperProps, WrapperState> {
             <li>
               <span>
                 <h6>
-                  {this.props.title.split(' ').length >= 2 ? this.props.title.split(' ').slice(2).join(' ') : this.props.title}
+                  {/*this.props.title.split(' ').length >= 2 ? this.props.title.split(' ').slice(2).join(' ') : this.props.title*/}
+                  {this.props.title}
                   {'   '}
                 </h6>
               </span>
