@@ -135,13 +135,9 @@ $ yarn start
 * 2018.02.10 Ver 1.0
 * 2019.01.06 Ver 1.0 Rev.1
 
-## Disclaim
-
-We will not guarantee the accuracy and validity of the output result of this software at all. In addition, we will not assume any responsibility for any damage caused by using this software.
-
 ## Acknowledgements
 
-This work is supported in part by Information-technology Promotion Agency, Japan (IPA), Exploratory IT Human Resources Project (The MITOU Program) in the fiscal year 2017.
+This work was supported in part by Information-technology Promotion Agency, Japan (IPA), Exploratory IT Human Resources Project (The MITOU Program) in the fiscal year 2017 and in part by JSPS KAKENHI (Grant Number, 16H06279).
 
 ## References
 
