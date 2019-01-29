@@ -16,7 +16,7 @@ Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https
 
 Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
-![demo_image](public/images/top.png)
+![demo_image](public/images/intro.png)
 
 ## Installation
 ### Dependencies
