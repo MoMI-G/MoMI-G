@@ -87,17 +87,19 @@ class SVList extends React.Component<OverViewProps, SVListState>
     }
   }
   filterByPosition(pos: PathRegion) {
-    const filteredFeatures = this.props.features.filter(a => {
-      return (
-        (a.source_id === pos.path &&
-          pos.start <= a.source_breakpoint &&
-          a.source_breakpoint <= pos.stop) ||
-        (a.target_id === pos.path &&
-          pos.start <= a.target_breakpoint &&
-          a.target_breakpoint <= pos.stop)
-      );
-    });
-    this.setState({ fusions: filteredFeatures });
+    if (pos.path) {
+      const filteredFeatures = this.props.features.filter(a => {
+        return (
+          (a.source_id === pos.path &&
+            pos.start <= a.source_breakpoint &&
+            a.source_breakpoint <= pos.stop) ||
+          (a.target_id === pos.path &&
+            pos.start <= a.target_breakpoint &&
+            a.target_breakpoint <= pos.stop)
+        );
+      });
+      this.setState({ fusions: filteredFeatures });
+    }
   }
   filterCancel() {
     this.setState({ fusions: this.props.features, filter: '' });
