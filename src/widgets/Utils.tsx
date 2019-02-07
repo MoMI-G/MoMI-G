@@ -229,10 +229,10 @@ export class WigAnnotation {
   static interval: number = 100;
   // static mergeOption: number = 0;
   static buildAnnotationRequest(pos: PathRegionPrototype) {
-    return ('/api/v3/region?format=wig&path=' + pos.toQuery());
+    return ('/api/v2/region?format=wig&path=' + pos.toQuery());
   }
   static buildAnnotationRequests(positions: PathRegionPrototype[]) {
-    return ('/api/v3/region?format=wig&multiple=true&path=' + positions.map(a => a.toQuery()).join(','));
+    return ('/api/v2/region?format=wig&multiple=true&path=' + positions.map(a => a.toQuery()).join(','));
   }
   static divide(n: number, ary: any[]) {
     var idx = 0;
@@ -251,16 +251,16 @@ export class WigAnnotation {
   }
   static convertToAnnotations(res: any, positions: PathRegionWithPrevLen[]): Wigs[] {
     // let hash = {};
-    let temporal = new Array(res[0].length);
-    for (let i = 0; i < res[0].length; i++ ) {
+    let key_length = Object.keys(res[0]).length;
+    let temporal = new Array(key_length);
+    for (let i = 0; i < key_length; i++ ) {
       temporal[i] = new Wigs(0, 100000, {});
     }
     
     res.forEach((response, index) => {
-      // console.log(response);
-      response.forEach((wigs, temp_index) => {
+      Object.keys(response).forEach((key, temp_index) => {
+        let wigs = response[key];
         // TODO()
-        // console.log(wigs, index);
         let array = [];
         wigs.forEach(wig => {
           for (let step = wig.start_offset; step < wig.stop_offset; step++) {
@@ -334,13 +334,14 @@ export class BedAnnotation {
 /*    const seq = pos.canonicalPath();
     const start = (pos.start - this.offset > 0 ? pos.start - this.offset : 0);
     const end = (pos.stop + this.offset);*/
-    return ('/api/v3/region?format=bed&path=' + pos.toQuery());
+    return ('/api/v2/region?format=bed&path=' + pos.toQuery());
   }
 
   static convertToAnnotation(res: any, pos: PathRegionWithPrevLen) {
     // res = BEDTest;
-    var hash = {};
-    res.forEach(annotations => {
+    let hash = {};
+    Object.keys(res).forEach((key) => {
+      let annotations = res[key];
       // TODO()
       annotations.forEach(annotation => {
         if (hash[annotation.id] === undefined) {
@@ -377,7 +378,7 @@ export class SPARQList {
   static offset: number = 0; // 5000;
   static buildSparqlistRequest(pos: PathRegionPrototype, ref: string = 'hg19') {
     const seq = pos.canonicalPath();
-    const url = ref === 'hg19' ? '_grch37' : '';
+    const url = ref === 'hg19' ? '_grch37/' : '/';
     return (
       'http://demo.momig.tokyo/rest/api/vg_gene_annotation' +
       url +
