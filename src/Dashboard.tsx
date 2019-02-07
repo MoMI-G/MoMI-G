@@ -82,7 +82,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
       arrayMode: false,
       staticFiles: [],
       subPathAnnotation: props.subPathAnnotation,
-      bigbedAnnotation: false,
+      bigbedAnnotation: true,
       steps: 3
     };
   }
