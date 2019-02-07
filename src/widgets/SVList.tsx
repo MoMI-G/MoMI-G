@@ -87,7 +87,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
     }
   }
   filterByPosition(pos: PathRegion) {
-    if (pos.path) {
+    if (pos && pos.path) {
       const filteredFeatures = this.props.features.filter(a => {
         return (
           (a.source_id === pos.path &&
