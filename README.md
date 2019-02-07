@@ -1,6 +1,6 @@
 # MoMI-G
 
-[ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600) [![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com") [![Gitter chat](https://badges.gitter.im/MoMI-G/community.png)](https://gitter.im/MoMI-G/community)
+[ ![Codeship Status for 6br/graph-genome-browser](https://app.codeship.com/projects/8bd76f20-7c0f-0135-5019-1aa16f5e22b7/status?branch=master)](https://app.codeship.com/projects/245600) [![](https://images.microbadger.com/badges/version/momigteam/momig-backend.svg)](https://microbadger.com/images/momigteam/momig-backend "Get your own version badge on microbadger.com") [![Gitter chat](https://badges.gitter.im/MoMI-G/community.png)](https://gitter.im/MoMI-G/community)　[![Documentation Status](https://readthedocs.org/projects/momi-g/badge/?version=latest)](https://momi-g.readthedocs.io/en/latest/?badge=latest)
 
 ## Modular Multi-scale Integrated Genome Graph Browser
 
@@ -17,6 +17,9 @@ Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https
 Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
 ## Installation
+
+Manual: [here](https://momi-g.readthedocs.io/).
+
 ### Dependencies
 
 * Node.js
