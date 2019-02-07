@@ -99,6 +99,7 @@ export interface GraphWrapperProps {
   annotationsUpdate: (annotations: any[]) => void;
   annotationsClean: () => void;
   subPathAnnotation: boolean;
+  bigbedAnnotation?: boolean;
   toggleSubPathAnnotation: () => void;
   uuid: string;
   sequentialId: number;
@@ -632,7 +633,8 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                     // handle error
                     console.error(err);
                   });
- 
+
+              if (this_.props.bigbedAnnotation === true) {
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
                 .forEach(pathPos => {
@@ -778,6 +780,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                       console.error(err);
                     });
                 });
+              }
 
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN

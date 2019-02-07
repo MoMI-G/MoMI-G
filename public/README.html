@@ -49,7 +49,7 @@
 <h2>使い方</h2>
 <p>画面上にタイル上に配置されたコンポーネントがあります。これらを上から順に操作することで、グラフゲノムにおける 全ゲノムレベル の情報から 1 塩基レベルの情報まで得ることができるようになることを目指しています。それぞれの利用方法を説明します。また利用を検討されるユーザーの方に、入力となるデータについての説明も付与しました。</p>
 <p>（UCSC、Ensembl などのゲノムブラウザをすでに用いたことのある方を主に説明の対象としています）</p>
-<section id="design-dashboard-style" class="level3">
+<section class="level3">
 <h3>Design: dashboard style</h3>
 <p>このブラウザは、様々なパーツがダッシュボード上に配置されて、それらのコンポーネントは自由にレイアウトを変更することができます。ページ上部のナビゲーションバーでは、README をクリックすると別タブでこの説明が表示されるほか、Layout をクリックするとダッシュボードのレイアウトを変更することができます。また右上の Edit ボタンをクリックすると、配置されるコンポーネントを自由に変更・追加・削除することができます。</p>
 <section id="0-path-region-workspace" class="level4">
@@ -68,7 +68,7 @@
 <p>また可視化対象の位置を左右に移動させる操作のために&quot;&lt;-&quot;、&quot;-&gt;&quot;ボタンを用いるほか、可視化対象の位置の縮尺を拡大・縮小させる操作のために&quot;+&quot;、&quot;-&quot;ボタンを用います。もっとも左の&quot;◎&quot;ボタンをクリックすると、入力した文字で確定し、遺伝子名を入力した場合はそれに対応する座標区間が表示されます。ピンのボタンをクリックすると、そのカードが消えないようにピン止めされます。複製ボタンを押すと同じ座標位置のカードが複製されるほか、塗りつぶされた&quot;o&quot;ボタンをクリックすると、そのカードを除いた他のカードが全て削除されます。また塗りつぶされた&quot;x&quot;ボタンをクリックすると、そのカードが削除されますが、ピン留めされている場合は表示されません。</p>
 </section>
 </section>
-<section id="overall-view" class="level3">
+<section class="level3">
 <h3>Overall View</h3>
 <p>Overall View のレイヤーでは、Whole-genome レベルの情報（パスに相当する）から染色体上の場所を一意に選択するためのナビゲーションを提供しています。特に、GUI の上で染色体上の 2 座標間の対応関係(2 座標のペア)を選択することが可能です。これを提供するには予め計算した、2 座標間の対応関係のリストを与える必要があります。</p>
 <p>CHM1 graph では構造多型として列挙された挿入や欠失、逆位のなかで、ある一定の距離離れているものをフィルタリングし、Insertion であれば挿入位置、Deletion/Inversion であれば欠失・逆位の開始点および終了点、Translocation であればその転座によって連結する 2 箇所の染色体の座標を 2 座標のペアとして扱い、この Overall View のレイヤーでナビゲーションする対象としています。</p>
@@ -105,7 +105,7 @@
 <p>横に参照配列上の 1 本の染色体を表現し、その上の対応関係を弧で表現しています。弧にカーソルを合わせると、その弧で表現されている対応関係の説明がツールチップで表示され、クリックするとその区間の Partial Graph が表示されます。また Scale のブラシをドラッグする、または Scale 上の軸をクリックすることで、その染色体上で可視化したい座標区間を変更することができます。</p>
 </section>
 </section>
-<section id="graph-view" class="level3">
+<section class="level3">
 <h3>Graph View</h3>
 <section id="6-sequencetubemap" class="level4">
 <h4>6. SequenceTubeMap</h4>
@@ -135,7 +135,7 @@
 <p><img src="images/TubeMap.png" alt="tube_map" /></p>
 </section>
 </section>
-<section id="linear-view" class="level3">
+<section class="level3">
 <h3>Linear view</h3>
 <section id="7-annotation-table" class="level4">
 <h4>7. Annotation Table</h4>
@@ -143,7 +143,7 @@
 <p><img src="images/annotation.png" alt="annotation" /></p>
 </section>
 </section>
-<section id="supplemental-view" class="level3">
+<section class="level3">
 <h3>Supplemental View</h3>
 <p>その他、&quot;Edit&quot;ボタンをクリックすることによってダッシュボードに追加可能となるデザイン、あるいは実装を予定しているデザインについて紹介します。</p>
 <section id="8-linear-browser" class="level4">
@@ -229,7 +229,7 @@
 <h2>免責事項</h2>
 <p>当ソフトウェアの出力結果の最新性、正確性や妥当性につきまして、一切の保障はいたしません。また当ソフトウェアを用いることで生じたあらゆる損害について、一切の責任を負いません。</p>
 </section>
-<section id="references" class="level2">
+<section class="level2">
 <h2>References</h2>
 <ul>
 <li>Chaisson, M. J. P., Huddleston, J., Dennis, M. Y., Sudmant, P. H., Malig, M., Hormozdiari, F., … Eichler, E. E. (2015). Resolving the complexity of the human genome using single-molecule sequencing. Nature, 517(7536), 608–611. <a href="http://doi.org/10.1038/nature13907" class="uri">http://doi.org/10.1038/nature13907</a></li>

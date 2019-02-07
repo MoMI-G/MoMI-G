@@ -40,6 +40,7 @@ export interface ContainerState {
   name?: string;
   staticFiles: any[];
   subPathAnnotation: boolean;
+  bigbedAnnotation: boolean;
   steps: number;
 }
 
@@ -81,6 +82,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
       arrayMode: false,
       staticFiles: [],
       subPathAnnotation: props.subPathAnnotation,
+      bigbedAnnotation: true,
       steps: 3
     };
   }
