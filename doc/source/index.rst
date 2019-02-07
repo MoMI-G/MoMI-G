@@ -14,6 +14,7 @@ MoMI-G
    quick_start
    why_momig
    view_modules
+   input
 
 .. toctree::
    :maxdepth: 2
@@ -72,7 +73,7 @@ We recommend to build the latest commit from github. If you encounter any issues
 Support
 --------------
 
-* For releases, see :ref:`Changelog <project_info>`_.
+* For releases, see `Changelog <https://github.com/MoMI-G/MoMI-G/blob/readme/README.md>`_.
 * To discuss with other users or post questions, you can use `gitter <https://gitter.im/MoMI-G/community>`_.
 * For bugs and feature requests, please use the `issue tracker <https://github.com/MoMI-G/MoMI-G/issues>`_.
 * For contributions, visit MoMI-G on `github <https://github.com/MoMI-G/MoMI-G>`_.
