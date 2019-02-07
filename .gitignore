@@ -29,6 +29,7 @@ env
 codeship.aes
 *.vcf
 
+docs/build
 
 sv_test*
 hg*
