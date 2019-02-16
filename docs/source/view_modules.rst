@@ -22,6 +22,11 @@ Interval Card Deck
 
 After you select SVs using Feature Table or Circos Plot, the listed variants are stacked on Interval Card Deck at the bottom of the window. In Interval Card Deck, intervals are displayed as cards, and the interval of the top (leftmost) card of the deck is shown on SequenceTubeMap. Each card can be dragged, and the order of cards can be changed. If one double-clicks on a card, the card moves to the top of the deck. Also, a card can be locked to avoid unintended modification or disposal, and the gene name can be input with autocompletion for specifying the interval of a card.
 
+Shortcut keys
+
+* Option/Alt + d -> Delete the head of the deck
+* Option/Alt + s -> Keep the card, and move to the bottom of the deck
+
 SequenceTubeMap
 --------------------------
 
