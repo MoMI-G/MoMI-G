@@ -7,6 +7,7 @@ import {
   SPARQList,
   BedAnnotation,
   WigAnnotation,
+  PackAnnotation,
   PathRegionWithPrevLen
 } from './Utils';
 import * as d3 from 'd3';
@@ -633,6 +634,38 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                     // handle error
                     console.error(err);
                   });
+
+              const pack_url: string = PackAnnotation.buildAnnotationRequests(nodeIds);
+              fetch(pack_url, { headers: { Accept: 'application/json' } })
+                .then(function(response: Response) {
+                  return response.json();
+                })
+                .then(function(res: any) {
+                  // Convert from array of nodes to nodes of array.
+                  const metaNodeCoverages = res.map((wig, index) => {
+                  // console.log(values, min, max);
+          
+                    Object.keys(wig.values).map(function(key: string) {
+                      let array = wig.values[key];
+                      
+                      if (nodeCoverages[key] === undefined) {
+                        nodeCoverages[key] = new Array(res.length);
+                      }
+                      nodeCoverages[key][index] = array; // In original value
+                    });
+                    return {min: wig.min, max: wig.max};
+                  });
+                  
+                  this_.setState({
+                    loading: false,
+                    sequentialId: this_.state.sequentialId + 1,
+                    nodeCoverages,
+                    metaNodeCoverages
+                  });
+                }).catch(function(err: any) {
+                  // handle error
+                  console.error(err);
+                });
 
               if (this_.props.bigbedAnnotation === true) {
               paths

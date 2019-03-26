@@ -224,6 +224,112 @@ export class Wigs {
   }
 }
 
+export class PackAnnotation {
+  static offset: number = 0;
+  static interval: number = 100;
+  // static mergeOption: number = 0;
+  static buildAnnotationRequest(pos: PathRegionPrototype) {
+    return ('/api/v2/static/pack.json'); // + pos.toQuery());
+  }
+  static buildAnnotationRequests(positions: PathRegionPrototype[]) {
+    return ('/api/v2/static/pack.json'); // + positions.map(a => a.toQuery()).join(','));
+  }
+  static divide(n: number, ary: any[]) {
+    var idx = 0;
+    var results = [];
+    var length = ary.length;
+
+    while (idx + n < length) {
+        var result = ary.slice(idx, idx + n);
+        results.push(result);
+        idx = idx + n;
+    }
+
+    var rest = ary.slice(idx, length + 1);
+    results.push(rest);
+    return results;
+  }
+  static convertToAnnotations(res: any, positions: PathRegionWithPrevLen[]): Wigs[] {
+    // let hash = {};
+    let key_length = Object.keys(res[0]).length;
+    let temporal = new Array(key_length);
+    for (let i = 0; i < key_length; i++ ) {
+      temporal[i] = new Wigs(0, 100000, {});
+    }
+    
+    res.forEach((response, index) => {
+      Object.keys(response).forEach((key, temp_index) => {
+        let wigs = response[key];
+        // TODO()
+        let array = [];
+        wigs.forEach(wig => {
+          for (let step = wig.start_offset; step < wig.stop_offset; step++) {
+            if (positions[index].start <= step && step < positions[index].stop) {
+              if (wig.value > temporal[temp_index].max) {
+                temporal[temp_index].max = wig.value;
+              }
+              if (wig.value < temporal[temp_index].min) {
+                temporal[temp_index].min = wig.value;
+              }
+              array.push(wig.value);
+            }
+          }
+        });
+              // Convolution with interval
+        // temporal.forEach(arrayMaxMin => {
+        let arrayMaxMin = temporal[temp_index];
+        array = array.reduce((table, item) => {
+          const last = table[table.length - 1];
+          if (last.length >= array.length / PackAnnotation.interval) {
+            table.push([item]);
+            return table;
+          }
+          last.push(item);
+          return table;
+        },                   [[]]);
+        array = array.map(item => item.reduce((a, b) => a > b ? a : b, 0)); 
+        // Select Max coverage
+        // array = array.filter((a, i) => i % WigAnnotation.interval === 0);
+        if (array.length === 1) { // Since single-length lane cannot visualize
+          array = [array[0], array[0]];
+        }
+        arrayMaxMin.values[positions[index].startIndex] = array;
+        // console.log(hash);
+        // });
+      });
+    });
+    return temporal;
+  }
+  static convertToAnnotation(res: any, pos: PathRegionWithPrevLen) {
+    // res = WIGTest;
+    let max = res[0][0].value;
+    let min = res[0][0].value;
+    let hash = [];
+    res.forEach(wigs => {
+      // TODO()
+      wigs.forEach(wig => {
+        for (let step = wig.start_offset; step < wig.stop_offset; step++) {
+          if (pos.start <= step && step < pos.stop) {
+            if (wig.value > max) {
+              max = wig.value;
+            }
+            if (wig.value < min) {
+              min = wig.value;
+            }
+            hash.push(wig.value);
+          }
+        }
+      });
+    });
+    return {
+      max,
+      min,
+      values: hash,
+    };
+  }
+
+}
+
 export class WigAnnotation {
   static offset: number = 0;
   static interval: number = 100;
