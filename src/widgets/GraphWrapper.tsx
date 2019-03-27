@@ -645,8 +645,8 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   const metaNodeCoverages = res.map((wig, index) => {
                   // console.log(values, min, max);
           
-                    Object.keys(wig.values).map(function(key: string) {
-                      let array = wig.values[key];
+                    Object.keys(wig['values']).map(function(key: string) {
+                      let array = wig['values'][key].values;
                       
                       if (nodeCoverages[key] === undefined) {
                         nodeCoverages[key] = new Array(res.length);
@@ -994,6 +994,8 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
           selectNodeId={this.selectNodeId}
           selectUniqueColor={this.selectUniqueColor}
           changeGam={this.toggleGam}
+          nodeCoverages={this.state.nodeCoverages}
+          metaNodeCoverages={this.state.metaNodeCoverages}
         />
         <div
           id="wrapperContents"

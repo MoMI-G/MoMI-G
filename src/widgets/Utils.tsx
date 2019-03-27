@@ -645,8 +645,8 @@ export class Utils {
       const name = item.split(':');
 
       if (name[0].match(/^[0-9]/)) {
-        name[0] = 'chr' + name[0];
-        // FIXME() Is it valid? all path incluing not reference path will be prefixed "chr"?
+        name[0] = name[0];
+        // FIXME() Does it make sense? all path incluing not reference path will be prefixed "chr"?
       }
       if (name[1] === '' || name[1] === undefined) {
         if (item.indexOf(':', item.length - 1) === item.length - 1) {

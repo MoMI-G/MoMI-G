@@ -2279,7 +2279,7 @@ function drawNodes(dNodes, nodeCoverages, metaNodeCoverages) {
         node.coverage_d = ""
         node.coverage_stats = ""
         metaNodeCoverages.forEach((coverage, index) => {
-          let y2 = metaNodeCoverages.length > 1 ? -40 - index * 30 : 20;
+          let y2 = metaNodeCoverages.length > 1 ? -40 - index * 30 : y;
           // let y2 = 20;
 
           var yscale = d3.scale.linear().domain([0, coverage.max]).nice().range([y2 + 20, y2]);

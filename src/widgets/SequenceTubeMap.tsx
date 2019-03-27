@@ -146,7 +146,6 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
       const graph = props.graph;
       const gam = this.state.showReads ? graph.gam || {} : {}; // JSON.parse(props.gam);
       const bed = props.exon;
-      console.log(bed);
       const nodes = tubeMap.vgExtractNodes(graph);
       const path = graph.path.concat(graph.genes);
       const tracks = this.vgExtractTracks(path);
