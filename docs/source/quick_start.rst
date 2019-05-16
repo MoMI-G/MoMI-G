@@ -25,7 +25,7 @@ And access to http://localhost:3000/. The demo shows CHM1, a human hydatidiform 
 Backend
 -------
 
-If you want to run the backend server on your laptop or workstation, we recommend to use docker image of MoMI-G backend server. As an example, we provide CHM1 chr21 and simulated reads dataset. For running demo, modify package.json and run docker container which includes backend server.
+If you want to run the backend server on your laptop or workstation, we recommend using docker image of MoMI-G backend server. As an example, we provide CHM1 chr21 and simulated reads dataset. For running a demo, modify package.json and run docker container which includes backend server.
 
 First, you have to install docker. See `here <https://docs.docker.com/install/>`_ for installation instructions.
 
@@ -43,7 +43,7 @@ You can start docker container by docker-compose up instead of docker run.
 Custom Backend For Latest VG
 -------
 
-If you want to use the latest version of vg, you have to change the version of vg used on backend server due to the compatibility of xg binary format. Therefore, we recommend to use a custom build of docker binary.
+If you want to use the latest version of vg, you have to change the version of vg used on backend server due to the compatibility of xg binary format. Therefore, we recommend using a custom build of docker binary.
 
 First, you modify the first line of ``Dockerfile.backend`` to set vg's version you used.
 
