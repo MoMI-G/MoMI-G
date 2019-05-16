@@ -1,0 +1,10 @@
+FROM quay.io/vgteam/vg:v1.14.0 as build
+
+# frontend container
+FROM momigteam/momig-backend
+
+COPY --from=build /vg/bin/vg /vg/bin/
+
+EXPOSE 8081
+
+CMD ["./graph-genome-browser-backend", "--config=static/config.yaml", "--interval=1500000", "--http=0.0.0.0:8081", "--api=/api/v2/"]
