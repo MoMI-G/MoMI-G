@@ -126,7 +126,7 @@ File.open(ARGV[1]) do |f|
     elsif line[7] == "DUP"
       next if line[1] >= line[4] 
       path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
-      puts "L\t#{left_segment+1}\t+\t#{right_segment-1}\t+\t0M"
+      puts "L\t#{right_segment-1}\t+\t#{left_segment+1}\t+\t0M"
       puts "P\tdup_#{path_name}\t#{[(right_segment-1).to_s+"+",(left_segment+1).to_s+"+"].join(",")}" 
       #puts "L\t#{left_segment+1}\t-\t#{right_segment-1}\t-\t0M"
     elsif line[7] == "UNK"

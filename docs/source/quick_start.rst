@@ -9,7 +9,7 @@ MoMI-G consists of two parts, frontend and backend (MoMI-G_backend). MoMI-G is a
 Frontend
 --------
 
-First, you have to install git, node, and npm or yarn. See `here <https://yarnpkg.com/lang/en/docs/install/>`_ for installation instructions. 
+First, you need to install git, node, and npm or yarn. See `here <https://yarnpkg.com/lang/en/docs/install/>`_ for installation instructions. 
 
 Then, you can build MoMI-G with
 
