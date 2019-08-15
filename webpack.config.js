@@ -31,9 +31,19 @@ module.exports = {
          ],
         // exclude: /node_modules/
       },
+      {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'sass-loader',
+          // 'postcss-loader'
+         ],
+        // exclude: /node_modules/
+      },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss']
   },
 };

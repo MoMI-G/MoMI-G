@@ -14,6 +14,8 @@ import {
   DropdownMenu
 } from 'reactstrap';
 import { PathRegion } from '../widgets/Utils';
+import ModalVideo from 'react-modal-video';
+import './modal-video.css';
 
 interface HeaderProps {
   keyId: number;
@@ -27,6 +29,7 @@ interface HeaderProps {
 interface HeaderState {
   keyId: number;
   isOpen: boolean;
+  isMovieOpen: boolean;
   dropdownOpen: boolean;
   readmeDropdownOpen: boolean;
 }
@@ -39,12 +42,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.toggleDropdownReadme = this.toggleDropdownReadme.bind(this);
     this.downloadRegions = this.downloadRegions.bind(this);
+    this.openModal = this.openModal.bind(this);
+    const isMovieOpen = location.hash.indexOf("demo-movie") > -1;
     this.state = {
       keyId: this.props.keyId,
       isOpen: false,
       dropdownOpen: false,
-      readmeDropdownOpen: false
+      readmeDropdownOpen: false,
+      isMovieOpen,
     };
+  }
+  openModal () {
+    this.setState({isMovieOpen: !this.state.isMovieOpen});
   }
   toggle() {
     this.setState({
@@ -79,6 +88,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   render() {
     return (
       <div className="top_nav" style={{ marginTop: '60px' }}>
+        <ModalVideo channel='youtube' isOpen={this.state.isMovieOpen} videoId='mEXpFwf1K_M' onClose={() => this.setState({isOpen: false})} />
         <div className="nav_menu">
           <Navbar
             color="dark"
@@ -131,10 +141,16 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   <DropdownMenu>
                     <DropdownItem
                       key={1}
-                      href="./README.en.html"
+                      href="https://momi-g.readthedocs.io/en/latest/"
                       target="_blank"
                       title="readme.english">
-                      English
+                      ReadtheDocs
+                    </DropdownItem>
+                    <DropdownItem
+                      key={2}
+                      onClick={this.openModal}
+                      title="demo.english">
+                      Demo Movie
                     </DropdownItem>
                     <DropdownItem
                       key={2}
