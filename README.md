@@ -16,6 +16,10 @@ Youtube Movies: [Short Demo](https://youtu.be/Cv1OFREYtbU), [Short Demo 2](https
 
 Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
+## Citation
+
+[Yokoyama, T., Sakamoto, Y., Seki, M., Suzuki, Y. & Kasahara, M. MoMI-G : Modular Multi-scale Integrated Genome Graph Browser. bioRxiv (2019)](https://www.biorxiv.org/content/10.1101/540120v2).
+
 ## Installation
 
 Manual: [here](https://momi-g.readthedocs.io/).

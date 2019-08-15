@@ -61,6 +61,7 @@ export interface DashboardInnerProps {
   name?: string;
   staticFiles: any;
   subPathAnnotation: boolean;
+  bigbedAnnotation: boolean;
 }
 
 export interface DashboardInnerState {
@@ -237,8 +238,9 @@ class DashboardInner extends React.Component<
       sequentialId: props.sequentialId,
       reference: props.reference,
       subPathAnnotation: props.subPathAnnotation,
+      bigbedAnnotation: props.bigbedAnnotation,
       toggleSubPathAnnotation: props._toggleSubPathAnnotation,
-      features: props.filteredFeatures
+      features: props.filteredFeatures,
     };
 
     const annotationsProps = {

@@ -80,7 +80,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     var svgUrl = URL.createObjectURL(svgBlob);
     var downloadLink = document.createElement('a');
     downloadLink.href = svgUrl;
-    downloadLink.download = this.props.pos[0].toString() + '.txt';
+    downloadLink.download = Date() + '.txt';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
