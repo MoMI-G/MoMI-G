@@ -664,7 +664,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   });
                 }).catch(function(err: any) {
                   // handle error
-                  console.error(err);
+                  // console.error(err);
                 });
 
               if (this_.props.bigbedAnnotation === true) {
