@@ -12,7 +12,13 @@ STDIN.each do |line|
   info = line[7]
   info_hash = {}
   info.split(";").each{|t| a = t.split("=");info_hash[a[0]] = a[1]}
-  line[6] = info_hash["SVLEN"].to_i.abs
+  if info_hash["SVMETHOD"].start_with("Sniffles")
+    line[6] = info_hash["SVLEN"].to_i.abs
+  elsif info_hash["SVMETHOD"].start_with("SURVIVOR")
+    line[6] = info_hash["AVGLEN"].to_i.abs
+  else
+    line[6] = info_hash["SVLEN"].to_i.abs # It depends on an implementation.
+  end
   line[7] = line[4][1..-2]
 
     line[3] = info_hash["CHR2"]
@@ -35,5 +41,5 @@ STDIN.each do |line|
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
 
-  puts line.join(",")  if line[0]!=""
+  puts line[0..10].join(",")  if line[0] != ""
 end
