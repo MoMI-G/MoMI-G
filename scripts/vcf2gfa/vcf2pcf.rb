@@ -3,34 +3,36 @@
 # For inter-chromosomal dataset.
 
 INTMAX=1000*1000*1000
-MODE_10X=false
+mode_10x=false
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
 
 STDIN.each do |line|
   if line.start_with?("#")
-    MODE_10X = true if line.start_with?("##source=10X")
+    mode_10x = true if line.start_with?("##source=10X")
     next
   end
   line = line.split("\t")
-  next if line[2].end_with?("_2") if MODE_10X # For 10X dataset
+  next if line[2].end_with?("_2") if mode_10x # For 10X dataset
   info = line[7]
   info_hash = {}
   info.split(";").each{|t| a = t.split("=");info_hash[a[0]] = a[1]}
-  if info_hash["SVMETHOD"].start_with("Sniffles")
+  if mode_10x
+    line[6] = info_hash["PAIRS"].to_i.abs 
+  elsif info_hash["SVMETHOD"].start_with?("Sniffles")
     line[6] = info_hash["SVLEN"].to_i.abs
-  elsif info_hash["SVMETHOD"].start_with("SURVIVOR")
+  elsif info_hash["SVMETHOD"].start_with?("SURVIVOR")
     line[6] = info_hash["AVGLEN"].to_i.abs
   else
     line[6] = info_hash["SVLEN"].to_i.abs # It depends on an implementation.
   end
-  if MODE_10X
+  if mode_10x
     line[7] = info_hash["SVTYPE2"] ? info_hash["SVTYPE2"] : info_hash["SVTYPE"]
     line[7] = line[7] === "BND" ? "TRA" : line[7]
   else
     line[7] = line[4][1..-2]
   end
 
-  if MODE_10X
+  if mode_10x
     if match = line[4].match(/(.?)([\[\]])(chr.*)\:(\d*)([\[\]])(.?)/)
       line[3] = match[3]
       line[4] = match[4]
@@ -74,6 +76,10 @@ STDIN.each do |line|
     elsif info_hash["STRANDS"] == "+-"
       line[2] = "+"
       line[5] = "+"
+    end
+    if info_hash["SVMETHOD"].start_with?("SURVIVOR")
+      line[0] = "chr" + line[0]
+      line[3] = "chr" + info_hash["CHR2"]
     end
   end
   next if line[3] == "chrM" || line[0] == "chrM"
