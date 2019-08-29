@@ -18,6 +18,8 @@ STDIN.each do |line|
   info.split(";").each{|t| a = t.split("=");info_hash[a[0]] = a[1]}
   if mode_10x
     line[6] = info_hash["PAIRS"].to_i.abs 
+  elsif not info_hash["SVMETHOD"]
+    line[6] = info_hash["SVLEN"].to_i.abs
   elsif info_hash["SVMETHOD"].start_with?("Sniffles")
     line[6] = info_hash["SVLEN"].to_i.abs
   elsif info_hash["SVMETHOD"].start_with?("SURVIVOR")
@@ -77,7 +79,7 @@ STDIN.each do |line|
       line[2] = "+"
       line[5] = "+"
     end
-    if info_hash["SVMETHOD"].start_with?("SURVIVOR")
+    if info_hash["SVMETHOD"] && info_hash["SVMETHOD"].start_with?("SURVIVOR")
       line[0] = "chr" + line[0]
       line[3] = "chr" + info_hash["CHR2"]
     end
