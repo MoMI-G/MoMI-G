@@ -7413,9 +7413,9 @@ react-select@^1.1.0:
     react-input-autosize "^2.1.2"
 
 react-table@^6.5.1:
-  version "6.8.0"
-  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.8.0.tgz#5ce402eb735df68534c03dabb3faa031478b6a58"
-  integrity sha1-XOQC63Nd9oU0wD2rs/qgMUeLalg=
+  version "6.10.0"
+  resolved "https://registry.yarnpkg.com/react-table/-/react-table-6.10.0.tgz#20444b19d8ca3c1a08e7544e5c3a93e4ba56690e"
+  integrity sha512-s/mQLI1+mNvlae45MfAZyZ04YIT3jUzWJqx34s0tfwpDdgJkpeK6vyzwMUkKFCpGODBxpjBOekYZzcEmk+2FiQ==
   dependencies:
     classnames "^2.2.5"
 
