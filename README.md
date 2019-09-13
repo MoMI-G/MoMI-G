@@ -107,8 +107,8 @@ If you want to run MoMI-G with your own dataset, use our custom scripts `scripts
 |Software|Dataset|Supported SV type|
 |------|---|----|
 |Sniffles|for PacBio/Nanopore|INV, DEL, TRA, DUP, (INS)|
-|10X LongRanger|for 10X|To be supported|
-|SURVIVOR|for merging SV calls|To be supported|
+|10X LongRanger|for 10X|INV, DEL, TRA, DUP|
+|SURVIVOR|for merging SV calls|INV, DEL, TRA, DUP|
 
 ```bash
 $ bash vcf2xg.sh test.vcf test_output /bin/vg hg[19|38]
