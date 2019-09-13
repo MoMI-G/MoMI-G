@@ -5,6 +5,7 @@
 INTMAX=1000*1000*1000
 mode_10x=false
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
+INTRA=ARGV[0]
 
 STDIN.each do |line|
   if line.start_with?("#")
@@ -88,6 +89,7 @@ STDIN.each do |line|
   path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
+  next if line[0] == line[3] && INTRA
 
   puts line[0..10].join(",")  if line[0] != ""
 end
