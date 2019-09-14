@@ -45,7 +45,7 @@ fi
 echo '{"current": 1, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 2. PCF -> GGF2.0
-bash -x `dirname $0`/vcf2gfa/pcf2gfa.sh $pcf_file $ref_id > $ggf_file
+bash -x `dirname $0`/vcf2gfa/pcf2gfa_multi.sh $pcf_file $ref_id > $ggf_file
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 3. GGF2.0 -> GFA1.0
