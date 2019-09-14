@@ -70,6 +70,8 @@ We recommend to build the latest commit from github. If you encounter any issues
   $ cd MoMI-G
   $ yarn
 
+:doc:`For using your custom data <quick_start>`.
+
 Support
 --------------
 
