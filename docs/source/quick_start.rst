@@ -68,3 +68,34 @@ After that, you build the custom backend and run the built backend server instea
 
   $ docker build -t momig-custom-backend -f Dockerfile.backend .
   $ docker run --init -p 8081:8081 momig-custom-backend
+
+-------
+How to use your own custom data
+-------
+
+1. Git clone from https://github.com/MoMI-G/MoMI-G.
+2. ``mkdir static`` on the directory MoMI-G clones.
+3. Put your XG data in the ``static`` folder like ``static/data.xg``.
+4. Add configure file on ``static/config.yaml``.
+5. Modify ``Docker.backend`` file as follows.
+
+.. code-block:: Dockerfile
+
+  FROM quay.io/vgteam/vg:v1.17.0 as build
+
+  # backend container
+  FROM momigteam/momig-backend
+
+  COPY --from=build /vg/bin/vg /vg/bin/
+  COPY static/data.xg /vg/static/
+  COPY static/config.yaml /vg/static/
+
+  EXPOSE 8081
+
+  CMD ["./graph-genome-browser-backend", "--config=static/config.yaml", "--interval=1500000", "--http=0.0.0.0:8081", "--api=/api/v2/"]
+
+6. Build backend server and run.
+.. code-block:: console
+
+  $ docker build -t momig-custom-backend -f Dockerfile.backend .
+  $ docker run --init -p 8081:8081 momig-custom-backend
