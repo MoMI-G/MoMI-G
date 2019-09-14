@@ -5,10 +5,10 @@
 # Reference is hg19 or hg38 from UCSC, auto-downloaded.  #/data/hg38.fa(.gz)
 # Output may be in "./$uuid.xg".
 
-vcf_file=$1
-uuid=$2
-vg_path=$3
-ref_id=$4
+uuid=$1
+vg_path=$2
+ref_id=$3
+vcf_file=$4
 alt_vcf_file=$5
 
 tmp_dir="./"
