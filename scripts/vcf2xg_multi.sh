@@ -12,8 +12,8 @@ vcf_file=$4
 alt_vcf_file=$5
 
 tmp_dir="./"
-pcf_file=${tmp_dir}/$uuid.pcf
-alt_pcf_file=${tmp_dir}/$uuid.2.pcf
+pcf_file=${tmp_dir}/$vcf_file.pcf
+alt_pcf_file=${tmp_dir}/$alt_vcf_file.pcf
 vg_file=${tmp_dir}/$uuid.vg
 ggf_file=${tmp_dir}/$uuid.ggf
 xg_file=${tmp_dir}/$uuid.xg

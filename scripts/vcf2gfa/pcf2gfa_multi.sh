@@ -16,9 +16,9 @@ if [ ! -s $reference.fa.fai ]; then
   gunzip $reference.fa.gz
   samtools faidx $reference.fa
 fi
-cat $input | sort -t "," -k 7n > $pref.output.1.pcf
-cat $input2 | sort -t "," -k 7n > $pref.output.2.pcf
+cat $input | sort -t "," -k 7n > $1.pcf
+cat $input2 | sort -t "," -k 7n > $2.pcf
 
-ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $pref.output.1.pcf $reference.fa > $pref.1.gfa
-ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $pref.output.2.pcf $reference.fa > $pref.2.gfa
-ruby vcf2gfa/gfa_generator_multi.rb $pref.bp.merged.tsv $reference.fa $pref.output.1.pcf $pref.output.2.pcf
+ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $1.pcf $reference.fa > $pref.1.gfa
+ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $2.pcf $reference.fa > $pref.2.gfa
+ruby vcf2gfa/gfa_generator_multi.rb $pref.bp.merged.tsv $reference.fa $1.pcf $2.pcf

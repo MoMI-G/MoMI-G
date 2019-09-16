@@ -92,7 +92,8 @@ puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.drop.
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
-for file in ARGV[2..-1]
+for file in ARGV[1..-1]
+  name = File.basename(file, ".*")
   File.open(file) do |f|
     f.each_line do |line|
       line = line.chomp.split(",")
@@ -100,7 +101,7 @@ for file in ARGV[2..-1]
       next if line[0] == "source_id"
       left_segment = right_hash[line[0]][line[1]]
       right_segment = left_hash[line[3]][line[4]]
-      path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s 
+      path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s + "_" + name 
       if line[7] == "INS"
         next unless line[8]
         ins_segment = unique_id
