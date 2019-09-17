@@ -1,7 +1,7 @@
 #!/bin/bash -eu
 # VCF2XG SCRIPT:
-# Usage: bash vcf2xg.sh vcf_file uuid vg_path ref_id
-# ex. bash vcf2xg.sh test.vcf test_output /bin/vg hg[19|38] 
+# Usage: bash vcf2xg_multi.sh uuid vg_path ref_id vcf_file alternative_vcf_file
+# ex. bash vcf2xg.sh test_output /bin/vg hg[19|38] test1.vcf test2.vcf 
 # Reference is hg19 or hg38 from UCSC, auto-downloaded.  #/data/hg38.fa(.gz)
 # Output may be in "./$uuid.xg".
 
