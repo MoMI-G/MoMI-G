@@ -96,10 +96,10 @@ for file in ARGV[2..-1]
   name = File.basename(file, ".*")
   File.open(file) do |f|
     f.each_line do |line|
+      STDERR.puts line
       line = line.chomp.split(",")
       line = line.map{|t| t =~ /^(-)?[0-9]+$/ ? t.to_i : t}
       next if line[0] == "source_id"
-      STDERR.puts line
       left_segment = right_hash[line[0]][line[1]]
       right_segment = left_hash[line[3]][line[4]]
       path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s + "_" + name 
