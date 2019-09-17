@@ -85,8 +85,8 @@ STDIN.each do |line|
     end
   end
   next if line[3] == "chrM" || line[0] == "chrM"
-  if ARGV[1]
-    name = File.basename(AGRV[1], ".*")
+  if ARGV[0]
+    name = File.basename(AGRV[0], ".*")
     path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
   else
     path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
