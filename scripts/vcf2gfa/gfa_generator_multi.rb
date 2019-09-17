@@ -92,7 +92,7 @@ puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.drop.
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
-for file in ARGV[1..-1]
+for file in ARGV[2..-1]
   name = File.basename(file, ".*")
   File.open(file) do |f|
     f.each_line do |line|

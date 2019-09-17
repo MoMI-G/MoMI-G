@@ -41,7 +41,7 @@ if [ $vcf_or_pcf = "pcf" ]; then
     cat $vcf_file > $pcf_file
 else
     cp $vcf_file $vcf_file.vcf
-    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb < $vcf_file.vcf > $pcf_file
+    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb $vcf_file < $vcf_file.vcf > $pcf_file
 fi
 
 # 1'. VCF -> PCF if needed
@@ -50,7 +50,7 @@ if [ $vcf_or_pcf = "pcf" ]; then
     cat $alt_vcf_file > $alt_pcf_file
 else
     cp $alt_vcf_file $alt_vcf_file.vcf
-    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb < $alt_vcf_file.vcf > $alt_pcf_file
+    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb $alt_vcf_file < $alt_vcf_file.vcf > $alt_pcf_file
 fi
 
 echo '{"current": 1, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
