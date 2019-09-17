@@ -5,6 +5,7 @@
 INTMAX=1000*1000*1000
 mode_10x=false
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
+STDOUT.flush
 
 STDIN.each do |line|
   if line.start_with?("#")
