@@ -59,8 +59,8 @@ echo '{"current": 1, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_
 bash -x `dirname $0`/vcf2gfa/pcf2gfa.sh $pcf_file $alt_pcf_file $ref_id > $ggf_file
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
-# 3. GGF2.0 -> GFA1.0
-:
+# 3. Merge PCF
+tail -n +1 $alt_pcf_file >> $pcf_file
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG

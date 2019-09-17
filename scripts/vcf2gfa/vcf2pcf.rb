@@ -85,7 +85,12 @@ STDIN.each do |line|
     end
   end
   next if line[3] == "chrM" || line[0] == "chrM"
-  path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+  if ARGV[1]
+    name = File.basename(AGRV[1], ".*")
+    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
+  else
+    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+  end
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
 
