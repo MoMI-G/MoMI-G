@@ -153,7 +153,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       Demo Movie
                     </DropdownItem>
                     <DropdownItem
-                      key={}
+                      key={3}
                       onClick={this.downloadRegions}
                       target="_blank"
                       title="download.english">
