@@ -1,7 +1,7 @@
 FROM quay.io/vgteam/vg:v1.14.0 as build
 
 # frontend container
-FROM momigteam/momig-backend
+FROM momigteam/momig-backend:latest
 
 COPY --from=build /vg/bin/vg /vg/bin/
 
