@@ -6,7 +6,7 @@ Project Information
 Citation
 -------------------
 
-`Yokoyama, T., Sakamoto, Y., Seki, M., Suzuki, Y. & Kasahara, M. MoMI-G : Modular Multi-scale Integrated Genome Graph Browser. bioRxiv 1–39 (2019). <https://www.biorxiv.org/content/10.1101/540120v1>`_
+`Yokoyama, T., Sakamoto, Y., Seki, M., Suzuki, Y. & Kasahara, M. MoMI-G : Modular Multi-scale Integrated Genome Graph Browser. bioRxiv 1–39 (2019). <https://www.biorxiv.org/content/10.1101/540120v2>`_
 
 
 Funding
