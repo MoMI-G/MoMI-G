@@ -18,7 +18,7 @@ Demo Page: [CHM1 Demo](http://demo.momig.tokyo/)
 
 ## Citation
 
-[Yokoyama, T.T., Sakamoto, Y., Seki, M. et al. MoMI-G: modular multi-scale integrated genome graph browser. BMC Bioinformatics 20, 548 (2019) doi:10.1186/s12859-019-3145-2](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3145-2).
+[Yokoyama, T.T., Sakamoto, Y., Seki, M., Suzuki, Y., Kasahara, M. MoMI-G: modular multi-scale integrated genome graph browser. BMC Bioinformatics 20, 548 (2019) doi:10.1186/s12859-019-3145-2](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3145-2).
 
 ## Installation
 
