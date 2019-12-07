@@ -10,7 +10,7 @@ File.foreach(ARGV[0]) do |line|
   chrs[line.split("\t")[0]] = 1
 end
 
-File.open("./GRCh.json") do |file|
+File.open(__dir__ + "/GRCh.json") do |file|
   hash = JSON.load(file)
 
   chrs.to_a.each do |chr_name, id| 
