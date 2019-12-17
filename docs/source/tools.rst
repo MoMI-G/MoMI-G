@@ -39,6 +39,44 @@ After that, these files are required to be mounted on ``static/`` folder. Also, 
     * \*.gam(optional): read alignments on the graph
     * \*.gam.index(optional): index of gam
 
+This is an example of config.yaml and Dockerfile
+
+.. code-block:: yaml
+
+      bin:
+        vg: "vg"
+        vg_tmp: "vg"
+        vg_volume_prefix: ""
+        graphviz: "dot"
+        fa22bit: "faToTwoBit"
+        bigbed: "bedToBigBed"
+      reference:
+        chroms: "static/GRCh.json"
+        data:
+          - name: "hg19"
+            features:
+              - name: 'gene_annotation'
+                url: "static/gencode.v27lift37.basic.annotation.gff3"
+                chr_prefix: "chr"
+          - name: "hg38"
+            features:
+              - name: 'gene_annotation'
+                url: "static/gencode.v27.basic.annotation.gff3"
+                chr_prefix: "chr"
+      data:
+        - name: "data"
+          desc: "2019/12/19"
+          chr_prefix: "chr"
+          ref_id: "hg38"
+          source:
+            xg: "static/\*.xg" # To be rewritten
+            csv: "static/\*.pcf" # To be rewritten
+      #      gam: "static/b.gam"
+      #      gamindex: "static/b.gam.index"
+          features: []
+          static_files: []
+
+
 .. code-block:: Dockerfile
 
    # Specify the version you used to build xg index.
