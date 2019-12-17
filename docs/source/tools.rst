@@ -14,15 +14,23 @@ If you want to run MoMI-G with your own dataset, use our custom scripts ``script
    :widths: 20, 20, 40
 
    Sniffles, for PacBio/Nanopore, INV/DEL/DUP/TRA/(INS)
-   10X LongRanger, for 10X, To be supported
-   SURVIVOR, for merging SV calls, To be supported
+   10X LongRanger, for 10X, INV/DEL/DUP/TRA
+   SURVIVOR, for merging SV calls, INV/DEL/DUP/TRA
 
 
 .. code-block:: console
 
   $ bash vcf2xg.sh test.vcf test_output /bin/vg hg[19|38]
 
-After that, these files are required to be mounted on ``static/`` folder. Also, you should modify ``config.yaml``.
+
+Otherwise, you can specify your own reference file as follows.
+
+.. code-block:: console
+
+  $ bash vcf2xg.sh test.vcf test_output /bin/vg /data/hs37d5.fa
+
+
+After that, these files are required to be mounted on ``static/`` folder. Also, you should modify ``config.yaml`` and `Dockerfile.backend` in MoMI-G directory.
 
 * static/
     * config.yaml: a configuration file
@@ -31,11 +39,37 @@ After that, these files are required to be mounted on ``static/`` folder. Also, 
     * \*.gam(optional): read alignments on the graph
     * \*.gam.index(optional): index of gam
 
-Then, run the MoMI-G frontend.
+.. code-block:: Dockerfile
+
+   # Specify the version you used to build xg index.
+   FROM quay.io/vgteam/vg:v1.14.0 as build  
+
+   # frontend container
+   FROM momigteam/momig-backend
+
+   COPY --from=build /vg/bin/vg /vg/bin/
+   # Move these files into /vg/static/ folder.
+   COPY static/\*.xg /vg/static/
+   COPY static/\*.pcf /vg/static/
+   COPY static/config.yaml /vg/static/
+   EXPOSE 8081
+
+   CMD ["./graph-genome-browser-backend", "--config=static/config.yaml", "--interval=1500000", "--http=0.0.0.0:8081", "--api=/api/v2/"]
+
+
+Then, run the MoMI-G backend.
 
 .. code-block:: console
 
-  $ docker run --init -p 8081:8081 -v `pwd`/static:/vg/static momigteam/momig-backend
+  $ docker build -t momig-custom-backend -f Dockerfile.backend .
+  $ docker run --init -p 8081:8081 -v `pwd`/static:/vg/static momig-custom-backend
+
+At last, run the MoMI-G frontend.
+
+.. code-block:: console
+
+  $ sed -e "s/\"target/\"target_/g"  -e "s/\_target/target/g" -i.bak package.json
+  $ yarn
   $ yarn start
 
 
