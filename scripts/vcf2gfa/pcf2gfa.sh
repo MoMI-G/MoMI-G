@@ -11,7 +11,7 @@ awk -F "[,:]" '{print $1,"\t",$2,"\n",$4,"\t",$5}' <(sed '1d' $input) | sed -e '
 ruby `dirname $0`/json_to_breakpoint_list.rb $pref.bp.tsv $reference > breakpoint_list_tmp.tsv
 cat $pref.bp.tsv breakpoint_list_tmp.tsv | sort -k 1,1 -k 2,2n | uniq > $pref.bp.merged.tsv
 if [ ! -s $reference.fa.fai ]; then 
-  rsync -avzP --ignore-existing rsync://hgdownload.cse.ucsc.edu/goldenPath/$reference/bigZips/$reference.fa.gz .
+  rsync -avP --ignore-existing rsync://hgdownload.cse.ucsc.edu/goldenPath/$reference/bigZips/$reference.fa.gz .
   gunzip $reference.fa.gz
   samtools faidx $reference.fa
 fi
