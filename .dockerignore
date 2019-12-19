@@ -4,3 +4,5 @@ src/samples/old
 node_modules/
 scripts
 *.vg
+*.fa
+*.fasta
