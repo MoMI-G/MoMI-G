@@ -137,7 +137,6 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
               chromsName.indexOf(d2.target_id) !== i
             );
           })
-          .transition()
           .style('opacity', opacity);
       };
     };
