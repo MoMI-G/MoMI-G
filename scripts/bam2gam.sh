@@ -19,6 +19,7 @@ uuid=$4
 tmp_dir="./"
 bed_file=${tmp_dir}/$uuid.bed
 gam_file=${tmp_dir}/$uuid.gam
+gam_sorted_file=${tmp_dir}/$uuid.sorted.gam
 gam_json_file=${tmp_dir}/$uuid.gam.json
 json_file=${tmp_dir}/$uuid.json # For progress.
 
@@ -52,4 +53,6 @@ echo "{\"current\": 4, \"max\": 5}" > $json_file
 # 5. Canonical JSON -> Canonical GAM 
 $vg_path view -aJG $gam_json_file.2 > $gam_file
 $vg_path index -t 12 -N $gam_file -d $gam_file.index
+$vg_path gamsort -d -t 12 $gam_file > $gam_sorted_file
+$vg_path index -l $gam_sorted_file
 echo "{\"current\": 5, \"max\": 5}" > $json_file
