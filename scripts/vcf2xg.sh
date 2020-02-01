@@ -1,9 +1,15 @@
 #!/bin/bash -eu
 # VCF2XG SCRIPT:
-# Usage: bash vcf2xg.sh vcf_file uuid vg_path ref_id
+# Usage: bash vcf2xg.sh vcf_file uuid vg_path (ref_id|ref_path)
 # ex. bash vcf2xg.sh test.vcf test_output /bin/vg hg[19|38] 
 # Reference is hg19 or hg38 from UCSC, auto-downloaded.  #/data/hg38.fa(.gz)
+# ex. bash vcf2xg.sh test.vcf test_output /bin/vg hg38.fa.gz 
 # Output may be in "./$uuid.xg".
+
+if [ $# -lt 4 ]; then
+    echo "Error: arguments are not correct." 1>&2
+    exit 1
+fi
 
 vcf_file=$1
 uuid=$2
@@ -17,11 +23,6 @@ ggf_file=${tmp_dir}/$uuid.ggf
 xg_file=${tmp_dir}/$uuid.xg
 json_file=${tmp_dir}/$uuid.json # For progress.
 readable_name=$uuid
-
-if [ $# -lt 4 ]; then
-    echo "Error: arguments are not correct." 1>&2
-    exit 1
-fi
 
 : $vg_path version
 echo "{\"current\": 0, \"max\": 5}" > $json_file
