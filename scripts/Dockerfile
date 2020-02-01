@@ -11,12 +11,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 WORKDIR /usr/src/app
 
 RUN apt-get update && apt-get install -y \
-		samtools ruby rsync \
+		samtools ruby rsync bedtools \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY . .
 
 #RUN yarn install && yarn build
+
+ENV PATH $PATH:/usr/src/app/
 
 ENTRYPOINT ["/usr/src/app/vcf2xg.sh"]
 

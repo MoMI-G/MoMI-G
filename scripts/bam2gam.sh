@@ -6,6 +6,11 @@
 # It discards CIGARs explicitly.
 # Dependencies: bedtools, vg, gawk, ruby 
 
+if [ $# -lt 3 ]; then
+    echo "Error: arguments are not correct." 1>&2
+    exit 1
+fi
+
 bam_file=$1
 xg_file=$2
 vg_path=$3
@@ -17,10 +22,6 @@ gam_file=${tmp_dir}/$uuid.gam
 gam_json_file=${tmp_dir}/$uuid.gam.json
 json_file=${tmp_dir}/$uuid.json # For progress.
 
-if [ $# -lt 3 ]; then
-    echo "Error: arguments are not correct." 1>&2
-    exit 1
-fi
 if [ $# -lt 4 ]; then
     uuid=$1
 fi
