@@ -18,4 +18,5 @@ COPY . .
 
 #RUN yarn install && yarn build
 
-CMD /usr/src/app/vcf2xg.sh
+ENTRYPOINT ["/usr/src/app/vcf2xg.sh"]
+
