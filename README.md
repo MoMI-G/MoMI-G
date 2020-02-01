@@ -114,6 +114,12 @@ If you want to run MoMI-G with your own dataset, use our custom scripts `scripts
 $ bash vcf2xg.sh test.vcf test_output /bin/vg hg[19|38]
 ```
 
+You can use singularity instead.
+
+```bash
+$ singularity -s run docker://momigteam/momig-tools:latest test.vcf test_output vg hg38
+```
+
 After that, these files are required to be mounted on "static/" folder.
 
 * static/
