@@ -6,6 +6,11 @@
 # ex. bash vcf2xg.sh test.vcf test_output /bin/vg hg38.fa.gz 
 # Output may be in "./$uuid.xg".
 
+if [ $# -lt 4 ]; then
+    echo "Error: arguments are not correct." 1>&2
+    exit 1
+fi
+
 vcf_file=$1
 uuid=$2
 vg_path=$3
@@ -18,11 +23,6 @@ ggf_file=${tmp_dir}/$uuid.ggf
 xg_file=${tmp_dir}/$uuid.xg
 json_file=${tmp_dir}/$uuid.json # For progress.
 readable_name=$uuid
-
-if [ $# -lt 4 ]; then
-    echo "Error: arguments are not correct." 1>&2
-    exit 1
-fi
 
 : $vg_path version
 echo "{\"current\": 0, \"max\": 5}" > $json_file
