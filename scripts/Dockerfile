@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 WORKDIR /usr/src/app
 
 RUN apt-get update && apt-get install -y \
-		samtools ruby \
+		samtools ruby rsync \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY . .

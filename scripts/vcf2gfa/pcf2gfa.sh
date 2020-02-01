@@ -11,7 +11,7 @@ awk -F "[,:]" '{print $1,"\t",$2,"\n",$4,"\t",$5}' <(sed '1d' $input) | sed -e '
 if [ ! -s $reference.fai ]; then
   if [ ! -s $reference ]; then
     rsync -avP --ignore-existing rsync://hgdownload.cse.ucsc.edu/goldenPath/$reference/bigZips/$reference.fa.gz .
-    gunzip $reference.fa.gz
+    gunzip -c $reference.fa.gz > $reference.fa
     samtools faidx $reference.fa
     reference=$reference.fa
   else
