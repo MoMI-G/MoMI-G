@@ -18,4 +18,4 @@ COPY . .
 
 #RUN yarn install && yarn build
 
-CMD ./vcf2xg.sh
+CMD /usr/src/app/vcf2xg.sh
