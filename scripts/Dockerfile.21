@@ -1,5 +1,5 @@
-FROM quay.io/vgteam/vg:v1.6.0-213-gc0c19fe5-t126-run
-#FROM quay.io/vgteam/vg:v1.21.0-run
+#FROM quay.io/vgteam/vg:v1.6.0-213-gc0c19fe5-t126-run
+FROM quay.io/vgteam/vg:v1.21.0
 
 ARG BUILD_DATE
 ARG VCS_REF
