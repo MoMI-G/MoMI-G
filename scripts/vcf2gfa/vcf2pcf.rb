@@ -2,11 +2,18 @@
 #
 # For inter-chromosomal dataset.
 
+require 'optparse'
+
+opt = OptionParser.new
+params = {}
+opt.on('-i', "--intra") {|v| params[:i] = v }
+opt.parse!(ARGV)
+
 INTMAX=1000*1000*1000
 mode_10x=false
+INTRA=params[:i]
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
 STDOUT.flush
-INTRA=ARGV[0]
 
 STDIN.each do |line|
   if line.start_with?("#")
