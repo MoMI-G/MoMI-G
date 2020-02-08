@@ -1,5 +1,5 @@
 #!/bin/ruby
-# ruby gfa_generator_with_svlink.rb all_list_new_ins_bplist.csv all_list_new_clustered.tsv > sv_test_with_svlink.gfa
+# ruby gfa_generator.rb all_list_new_ins_bplist.csv all_list_new_clustered.tsv > sv_test_with_svlink.gfa
 #
 
 exit if ARGV.size < 3
@@ -85,11 +85,11 @@ end
 
 seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
 fasta = `samtools faidx #{REF} #{seq}`
-  seq = unique_id
-  unique_id += 1
+seq = unique_id
+unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-  seg_names << seq
+seg_names << seq
 puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#\t#{seg_names.map{"*"}.drop.join(",")}"
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
@@ -107,8 +107,8 @@ File.open(ARGV[1]) do |f|
       next unless line[8]
       ins_segment = unique_id
       unique_id += 1
-        fasta = line[8] 
-        puts "S\t#{ins_segment}\t#{fasta.upcase}"
+      fasta = line[8] 
+      puts "S\t#{ins_segment}\t#{fasta.upcase}"
       puts "L\t#{left_segment}\t#{line[2]}\t#{ins_segment}\t+\t0M"
       puts "L\t#{ins_segment}\t+\t#{right_segment}\t#{line[5]}\t0M"
       puts "P\t#{"ins_" + path_name + "_" + line[9]}\t#{[left_segment.to_s+line[2],ins_segment.to_s+"+",right_segment.to_s+line[5]].join(",")}\t*"
