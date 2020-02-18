@@ -105,11 +105,12 @@ for file in ARGV[2..-1]
       left_segment = right_hash[line[0]][line[1]]
       right_segment = left_hash[line[3]][line[4]]
       path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s + "_" + name 
+      next if not left_segment or not right_segment
       if line[7] == "INS"
         next unless line[8]
         ins_segment = unique_id
         unique_id += 1
-        fasta = line[8] 
+        fasta = line[8]
         puts "S\t#{ins_segment}\t#{fasta.upcase}"
         puts "L\t#{left_segment}\t#{line[2]}\t#{ins_segment}\t+\t0M"
         puts "L\t#{ins_segment}\t+\t#{right_segment}\t#{line[5]}\t0M"
