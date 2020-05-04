@@ -14,7 +14,7 @@ def parse_faidx(ref)
   ref_file = ref + ".fai"
   csv = CSV.read(ref_file, col_sep: "\t", headers: false)
   ref_len = {}
-  csvDatas.each do |row|
+  csv.each do |row|
     ref_len[row[0]] = row[1].to_i
   end
   ref_len
