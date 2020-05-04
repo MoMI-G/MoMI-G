@@ -12,7 +12,7 @@ REF=ARGV[2]
 
 def parse_faidx(ref)
   ref_file = ref + ".fai"
-  csv = CSV.read(ref_file, col_sep: "\t", header=false)
+  csv = CSV.read(ref_file, col_sep: "\t", header: false)
   ref_len = {}
   csvDatas.each do |row|
     ref_len[row[0]] = row[1].to_i
