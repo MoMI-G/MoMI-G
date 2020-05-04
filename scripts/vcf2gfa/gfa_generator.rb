@@ -1,12 +1,27 @@
 #!/bin/ruby
-# ruby gfa_generator_with_svlink.rb all_list_new_ins_bplist.csv all_list_new_clustered.tsv > sv_test_with_svlink.gfa
+# ruby gfa_generator_with_svlink.rb all_list_new_ins_bplist.csv all_list_new_clustered.tsv reference.fa > sv_test_with_svlink.gfa
 #
+
+require 'csv'
 
 exit if ARGV.size < 3
 
 CHRMAX=270000000
 #SPLIT=40 * 1000 * 1000
 REF=ARGV[2]
+
+def parse_faidx(ref)
+  ref_file = ref + ".fai"
+  csv = CSV.read(ref_file, col_sep: "\t", header=false)
+  ref_len = {}
+  csvDatas.each do |row|
+    ref_len[row[0]] = row[1].to_i
+  end
+  ref_len
+end
+
+ref_len = parse_faidx(REF)
+
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
 puts "H\tVN:Z:1.0"
@@ -23,7 +38,7 @@ f.each_line do |line|
   next if line[0].end_with?("id")
   line[1] = line[1].to_i
   if line[1]==0 # When reads start from 0
-    seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
+    seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
     fasta = `samtools faidx #{REF} #{seq}`
     next if fasta == ""
     #seq = seq.gsub(":", "_")
@@ -43,7 +58,7 @@ f.each_line do |line|
     next
   end
   if current_read != "" && line[0] != current_read
-  seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
+  seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
   fasta = `samtools faidx #{REF} #{seq}`
   #seq = seq.gsub(":", "_")
   seq = unique_id
@@ -81,7 +96,7 @@ f.each_line do |line|
 end
 end
 
-seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
+seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
 fasta = `samtools faidx #{REF} #{seq}`
   seq = unique_id
   unique_id += 1
@@ -105,8 +120,8 @@ File.open(ARGV[1]) do |f|
       next unless line[8]
       ins_segment = unique_id
       unique_id += 1
-        fasta = line[8] 
-        puts "S\t#{ins_segment}\t#{fasta.upcase}"
+      fasta = line[8] 
+      puts "S\t#{ins_segment}\t#{fasta.upcase}"
       puts "L\t#{left_segment}\t#{line[2]}\t#{ins_segment}\t+\t0M"
       puts "L\t#{ins_segment}\t+\t#{right_segment}\t#{line[5]}\t0M"
       puts "P\t#{"ins_" + path_name + "_" + line[9]}\t#{[left_segment.to_s+line[2],ins_segment.to_s+"+",right_segment.to_s+line[5]].join(",")}"
