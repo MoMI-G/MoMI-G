@@ -60,7 +60,7 @@ f.each_line do |line|
   if current_read != "" && line[0] != current_read
   seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
   fasta = `samtools faidx #{REF} #{seq}`
-  #seq = seq.gsub(":", "_")
+
   seq = unique_id
   unique_id += 1
   seg_names << seq
@@ -82,8 +82,8 @@ f.each_line do |line|
   else
   seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
   fasta = `samtools faidx #{REF} #{seq}`
-    seq = unique_id
-    unique_id += 1
+  seq = unique_id
+  unique_id += 1
   puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
   puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
   left_hash[line[0]][prev_pos] = seq
