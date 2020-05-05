@@ -86,7 +86,11 @@ STDIN.each do |line|
     end
   end
   next if line[3] == "chrM" || line[0] == "chrM"
-  path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+  begin
+    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+  rescue => e
+    raise "Error line: " + line
+  end
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
