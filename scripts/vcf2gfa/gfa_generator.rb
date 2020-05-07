@@ -15,7 +15,7 @@ def parse_faidx(ref)
   csv = CSV.read(ref_file, col_sep: "\t", headers: false)
   ref_tail = {}
   csv.each do |row|
-    ref_tail[row[0]] = row[1].to_i + 1
+    ref_tail[row[0]] = row[1].to_i
   end
   ref_tail
 end
