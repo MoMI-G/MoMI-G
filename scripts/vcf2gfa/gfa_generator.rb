@@ -58,36 +58,36 @@ f.each_line do |line|
     next
   end
   if current_read != "" && line[0] != current_read
-  seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-  fasta = `samtools faidx #{REF} #{seq}`
+    seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
+    fasta = `samtools faidx #{REF} #{seq}`
 
-  seq = unique_id
-  unique_id += 1
-  seg_names << seq
-  puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-  puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-  puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
-  seg_names = []
-  left_hash[current_read][prev_pos] = seq
-  right_hash[current_read][CHRMAX] = seq
-
-
-  seq = "#{line[0]}:0-#{line[1]-1}"
-  fasta = `samtools faidx #{REF} #{seq}`
     seq = unique_id
     unique_id += 1
-  puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
-  left_hash[line[0]][0] = seq
-  right_hash[line[0]][line[1]] = seq
+    seg_names << seq
+    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+    puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
+    seg_names = []
+    left_hash[current_read][prev_pos] = seq
+    right_hash[current_read][CHRMAX] = seq
+
+
+    seq = "#{line[0]}:0-#{line[1]-1}"
+    fasta = `samtools faidx #{REF} #{seq}`
+    seq = unique_id
+    unique_id += 1
+    puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
+    left_hash[line[0]][0] = seq
+    right_hash[line[0]][line[1]] = seq
   else
-  seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
-  fasta = `samtools faidx #{REF} #{seq}`
-  seq = unique_id
-  unique_id += 1
-  puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-  puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
-  left_hash[line[0]][prev_pos] = seq
-  right_hash[line[0]][line[1]] = seq
+    seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
+    fasta = `samtools faidx #{REF} #{seq}`
+    seq = unique_id
+    unique_id += 1
+    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
+    left_hash[line[0]][prev_pos] = seq
+    right_hash[line[0]][line[1]] = seq
   end
   current_read = line[0]
   prev_seq = seq
@@ -117,11 +117,15 @@ File.open(ARGV[1]) do |f|
     path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s 
     next if not left_segment or not right_segment
     if line[7] == "INS"
-      next unless line[8]
+      next unless line[8] # If insersion sequence is not explicitly 
       ins_segment = unique_id
       unique_id += 1
-      fasta = line[8] 
-      puts "S\t#{ins_segment}\t#{fasta.upcase}"
+      fasta = line[8].upcase
+      if fasta !== /[ATGCN]+/
+        STDERR.puts "[INFO] VCF file does not include implicit insertion sequence."
+        next
+      end
+      puts "S\t#{ins_segment}\t#{fasta}"
       puts "L\t#{left_segment}\t#{line[2]}\t#{ins_segment}\t+\t0M"
       puts "L\t#{ins_segment}\t+\t#{right_segment}\t#{line[5]}\t0M"
       puts "P\t#{"ins_" + path_name + "_" + line[9]}\t#{[left_segment.to_s+line[2],ins_segment.to_s+"+",right_segment.to_s+line[5]].join(",")}"
