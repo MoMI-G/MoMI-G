@@ -66,11 +66,11 @@ f.each_line do |line|
       seg_names << seq
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+      left_hash[current_read][prev_pos] = seq
+      right_hash[current_read][CHRMAX] = seq
     end
     puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length > 1 #{seg_names.map{"*"}.join(",")}"
     seg_names = []
-    left_hash[current_read][prev_pos] = seq
-    right_hash[current_read][CHRMAX] = seq
 
     if line[1]-1 > 0
       seq = "#{line[0]}:0-#{line[1]-1}"
