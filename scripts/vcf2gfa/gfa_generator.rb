@@ -106,7 +106,7 @@ unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
 seg_names << seq
-puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t#{seg_names.map{"*"}.drop.join(",")}"
+puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t#{seg_names.map{"*"}.drop(1).join(",")}"
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
