@@ -1,7 +1,7 @@
 #!/bin/ruby
 #
 
-interval = 1*1000*1000
+interval = 50*1000
 chrs = {}
 hash = {}
 
