@@ -84,7 +84,7 @@ f.each_line do |line|
     left_hash[line[0]][0] = seq
     right_hash[line[0]][line[1]] = seq
   else
-    next if line[1]-1 == line[0]
+    next if line[1]-1 == prev_pos
     seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
     fasta = `samtools faidx #{REF} #{seq}`
     seq = unique_id
