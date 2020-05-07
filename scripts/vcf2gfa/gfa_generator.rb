@@ -15,9 +15,9 @@ def parse_faidx(ref)
   csv = CSV.read(ref_file, col_sep: "\t", headers: false)
   ref_len = {}
   csv.each do |row|
-    ref_len[row[0]] = row[1].to_i
+    ref_tail[row[0]] = row[1].to_i + 1
   end
-  ref_len
+  ref_tail
 end
 
 ref_len = parse_faidx(REF)
@@ -71,9 +71,12 @@ f.each_line do |line|
     left_hash[current_read][prev_pos] = seq
     right_hash[current_read][CHRMAX] = seq
 
-
-    seq = "#{line[0]}:0-#{line[1]-1}"
-    fasta = `samtools faidx #{REF} #{seq}`
+    if line[1]-1 > 0
+      seq = "#{line[0]}:0-#{line[1]-1}"
+      fasta = `samtools faidx #{REF} #{seq}`
+    else
+      fasta = ""
+    end
     seq = unique_id
     unique_id += 1
     puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
