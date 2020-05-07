@@ -131,27 +131,27 @@ File.open(ARGV[1]) do |f|
       puts "S\t#{ins_segment}\t#{fasta}"
       puts "L\t#{left_segment}\t#{line[2]}\t#{ins_segment}\t+\t0M"
       puts "L\t#{ins_segment}\t+\t#{right_segment}\t#{line[5]}\t0M"
-      puts "P\t#{"ins_" + path_name + "_" + line[9]}\t#{[left_segment.to_s+line[2],ins_segment.to_s+"+",right_segment.to_s+line[5]].join(",")}"
+      puts "P\t#{"ins_" + path_name + "_" + line[9]}\t#{[left_segment.to_s+line[2],ins_segment.to_s+"+",right_segment.to_s+line[5]].join(",")}\t*"
     elsif line[7] == "INV"
       #next if line[1] >= line[4] 
       left_segment += 1 if line[2] == "-"
       right_segment -= 1 if line[5] == "-"
       puts "L\t#{left_segment}\t#{line[2]}\t#{right_segment}\t#{line[5]}\t0M"
-      puts "P\tinv_#{path_name}\t#{[left_segment.to_s+line[2],right_segment.to_s+line[5]].join(",")}" 
+      puts "P\tinv_#{path_name}\t#{[left_segment.to_s+line[2],right_segment.to_s+line[5]].join(",")}\t*" 
     elsif line[7] == "DEL"
       next if line[1] >= line[4] 
       puts "L\t#{left_segment}\t+\t#{right_segment}\t+\t0M"
-      puts "P\tdel_#{path_name}\t#{[left_segment.to_s+"+",right_segment.to_s+"+"].join(",")}" 
+      puts "P\tdel_#{path_name}\t#{[left_segment.to_s+"+",right_segment.to_s+"+"].join(",")}\t*" 
     elsif line[7] == "BND" || line[7] == "TRA"
       left_segment += 1 if line[2] == "-"
       right_segment -= 1 if line[5] == "-"
       puts "L\t#{left_segment}\t#{line[2]}\t#{right_segment}\t#{line[5]}\t0M"
-      puts "P\ttra_#{path_name}\t#{[left_segment.to_s+line[2],right_segment.to_s+line[5]].join(",")}" 
+      puts "P\ttra_#{path_name}\t#{[left_segment.to_s+line[2],right_segment.to_s+line[5]].join(",")}\t*" 
     elsif line[7] == "DUP"
       next if line[1] >= line[4] 
       path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
       puts "L\t#{right_segment-1}\t+\t#{left_segment+1}\t+\t0M"
-      puts "P\tdup_#{path_name}\t#{[(right_segment-1).to_s+"+",(left_segment+1).to_s+"+"].join(",")}" 
+      puts "P\tdup_#{path_name}\t#{[(right_segment-1).to_s+"+",(left_segment+1).to_s+"+"].join(",")}\t*" 
       #puts "L\t#{left_segment+1}\t-\t#{right_segment-1}\t-\t0M"
     elsif line[7] == "UNK"
       #IGNORE
