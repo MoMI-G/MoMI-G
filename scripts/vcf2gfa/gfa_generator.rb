@@ -47,7 +47,7 @@ f.each_line do |line|
     seg_names << seq
     puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
     puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.join(",")}"
+    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t#{seg_names.map{"*"}.join(",")}"
     seg_names = []
     left_hash[current_read][prev_pos] = seq
     right_hash[current_read][CHRMAX] = seq
@@ -66,7 +66,7 @@ f.each_line do |line|
     seg_names << seq
     puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
     puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
+    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
     seg_names = []
     left_hash[current_read][prev_pos] = seq
     right_hash[current_read][CHRMAX] = seq
@@ -101,12 +101,12 @@ end
 
 seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
 fasta = `samtools faidx #{REF} #{seq}`
-  seq = unique_id
-  unique_id += 1
+seq = unique_id
+unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-  seg_names << seq
-puts "P\t#{current_read}\t#{seg_names.join("+,")}+"#\t#{seg_names.map{"*"}.drop.join(",")}"
+seg_names << seq
+puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t#{seg_names.map{"*"}.drop.join(",")}"
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
