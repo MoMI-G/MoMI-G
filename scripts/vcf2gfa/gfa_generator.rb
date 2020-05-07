@@ -121,7 +121,7 @@ File.open(ARGV[1]) do |f|
       ins_segment = unique_id
       unique_id += 1
       fasta = line[8].upcase
-      if fasta !== /[ATGCN]+/
+      unless fasta =~ /[ATGCN]+/
         STDERR.puts "[INFO] VCF file does not include implicit insertion sequence."
         next
       end
