@@ -33,72 +33,72 @@ seg_names = []
 unique_id = 1
 
 File.open(ARGV[0]) do |f|
-f.each_line do |line|
-  line = line.chomp.split(" ")
-  next if line[0].end_with?("id")
-  line[1] = line[1].to_i
-  if line[1]==0 # When reads start from 0
-    seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    next if fasta == ""
-    #seq = seq.gsub(":", "_")
-    seq = unique_id
-    unique_id += 1
-    seg_names << seq
-    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
-    seg_names = []
-    left_hash[current_read][prev_pos] = seq
-    right_hash[current_read][CHRMAX] = seq
- 
-    current_read = line[0]
-    prev_seq = ""
-    prev_pos = 0
-    next
-  end
-  if current_read != "" && line[0] != current_read
-    seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    if fasta.split("\n").drop(1).join("").upcase != ""
+  f.each_line do |line|
+    line = line.chomp.split(" ")
+    next if line[0].end_with?("id")
+    line[1] = line[1].to_i
+    if line[1]==0 # When reads start from 0
+      seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
+      fasta = `samtools faidx #{REF} #{seq}`
+      next if fasta == ""
+      #seq = seq.gsub(":", "_")
       seq = unique_id
       unique_id += 1
       seg_names << seq
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
+      seg_names = []
       left_hash[current_read][prev_pos] = seq
       right_hash[current_read][CHRMAX] = seq
+  
+      current_read = line[0]
+      prev_seq = ""
+      prev_pos = 0
+      next
     end
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length > 1 #{seg_names.map{"*"}.join(",")}"
-    seg_names = []
-
-    if line[1]-1 > 0
-      seq = "#{line[0]}:0-#{line[1]-1}"
+    if current_read != "" && line[0] != current_read
+      seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
       fasta = `samtools faidx #{REF} #{seq}`
+      if fasta.split("\n").drop(1).join("").upcase != ""
+        seq = unique_id
+        unique_id += 1
+        seg_names << seq
+        puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+        puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+        left_hash[current_read][prev_pos] = seq
+        right_hash[current_read][CHRMAX] = seq
+      end
+      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length > 1 #{seg_names.map{"*"}.join(",")}"
+      seg_names = []
+
+      if line[1]-1 > 0
+        seq = "#{line[0]}:0-#{line[1]-1}"
+        fasta = `samtools faidx #{REF} #{seq}`
+      else
+        fasta = ""
+      end
+      seq = unique_id
+      unique_id += 1
+      puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
+      left_hash[line[0]][0] = seq
+      right_hash[line[0]][line[1]] = seq
     else
-      fasta = ""
+      next if line[1]-1 == 0
+      seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
+      fasta = `samtools faidx #{REF} #{seq}`
+      seq = unique_id
+      unique_id += 1
+      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+      puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
+      left_hash[line[0]][prev_pos] = seq
+      right_hash[line[0]][line[1]] = seq
     end
-    seq = unique_id
-    unique_id += 1
-    puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
-    left_hash[line[0]][0] = seq
-    right_hash[line[0]][line[1]] = seq
-  else
-    next if line[1]-1 == 0
-    seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    seq = unique_id
-    unique_id += 1
-    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
-    left_hash[line[0]][prev_pos] = seq
-    right_hash[line[0]][line[1]] = seq
+    current_read = line[0]
+    prev_seq = seq
+    prev_pos = line[1]
+    seg_names << seq
   end
-  current_read = line[0]
-  prev_seq = seq
-  prev_pos = line[1]
-  seg_names << seq
-end
 end
 
 seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
