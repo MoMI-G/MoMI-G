@@ -89,7 +89,7 @@ STDIN.each do |line|
   begin
     path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
   rescue => e
-    raise "Error line: " + line
+    raise "Error line: " + line.join("\t")
   end
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
