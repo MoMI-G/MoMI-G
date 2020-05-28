@@ -43,7 +43,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.toggleDropdownReadme = this.toggleDropdownReadme.bind(this);
     this.downloadRegions = this.downloadRegions.bind(this);
     this.openModal = this.openModal.bind(this);
-    const isMovieOpen = location.hash.indexOf("demo-movie") > -1;
+    const isMovieOpen = location.hash.indexOf('demo-movie') > -1;
     this.state = {
       keyId: this.props.keyId,
       isOpen: false,
@@ -88,7 +88,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   render() {
     return (
       <div className="top_nav" style={{ marginTop: '60px' }}>
-        <ModalVideo channel='youtube' isOpen={this.state.isMovieOpen} videoId='mEXpFwf1K_M' onClose={() => this.setState({isOpen: false})} />
+        <ModalVideo channel="youtube" isOpen={this.state.isMovieOpen} videoId="mEXpFwf1K_M" onClose={() => this.setState({isOpen: false})} />
         <div className="nav_menu">
           <Navbar
             color="dark"
