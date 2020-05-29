@@ -334,13 +334,13 @@ class SVList extends React.Component<OverViewProps, SVListState>
           showPageSizeOptions={true}
           freezeWhenExpanded={true}
           defaultPageSize={10}
-          filters={[
+          /*filters={[
             {
               // the current filters model
               id: 'source_id',
               value: this.props.pos[0].path
             }
-          ]}
+          ]}*/
           getTdProps={(state, rowInfo, column, instance) => {
             return {
               onClick: e => {
