@@ -82,7 +82,7 @@ STDIN.each do |line|
         line[5] = "+"
       end
     else
-      line[3] = line[1]
+      line[3] = line[0]
       line[4] = line[4]
       line[2] = "+"
       line[5] = "-"
