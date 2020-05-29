@@ -2,7 +2,6 @@
 #
 # For inter-chromosomal dataset.
 
-INTMAX=1000*1000*1000
 mode_10x=false
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
 INTRA=ARGV[0]
@@ -12,6 +11,7 @@ STDIN.each do |line|
     mode_10x = true if line.start_with?("##source=10X")
     next
   end
+  orig = line
   line = line.split("\t")
   next if line[2].end_with?("_2") if mode_10x # For 10X dataset
   info = line[7]
@@ -65,20 +65,27 @@ STDIN.each do |line|
       #end
     end
   else
-    line[3] = info_hash["CHR2"]
-    line[4] = info_hash["END"]
-    if info_hash["STRANDS"] == "++" 
+    if info_hash["CHR2"] && info_hash["END"]
+      line[3] = info_hash["CHR2"]
+      line[4] = info_hash["END"]
+      if info_hash["STRANDS"] == "++" 
+        line[2] = "+"
+        line[5] = "-"
+      elsif info_hash["STRANDS"] == "--" 
+        line[2] = "-"
+        line[5] = "+"
+      elsif info_hash["STRANDS"] == "-+" 
+        line[2] = "-"
+        line[5] = "-"
+      elsif info_hash["STRANDS"] == "+-"
+        line[2] = "+"
+        line[5] = "+"
+      end
+    else
+      line[3] = line[1]
+      line[4] = line[4]
       line[2] = "+"
       line[5] = "-"
-    elsif info_hash["STRANDS"] == "--" 
-      line[2] = "-"
-      line[5] = "+"
-    elsif info_hash["STRANDS"] == "-+" 
-      line[2] = "-"
-      line[5] = "-"
-    elsif info_hash["STRANDS"] == "+-"
-      line[2] = "+"
-      line[5] = "+"
     end
     if info_hash["SVMETHOD"] && info_hash["SVMETHOD"].start_with?("SURVIVOR")
       line[0] = "chr" + line[0]
@@ -89,7 +96,7 @@ STDIN.each do |line|
   begin
     path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
   rescue => e
-    raise "Error line: " + line.join("\t")
+    raise "Error line: " + orig
   end
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
