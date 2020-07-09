@@ -8,6 +8,7 @@ import { OverViewProps, PathRegion, Helpable, Utils } from './Utils';
 import AutoComplete from './AutoComplete';
 import styled from 'styled-components';
 
+// tslint:disable-next-line:variable-name
 const FeatureTableContainer = styled.div`
   font-size: 12px;
 `;
@@ -55,7 +56,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
   }
   filterExec() {
     const pos = Utils.strToRegion(this.state.filter);
-    const this_ = this;
+    const _this = this;
     if (pos[0] !== null) {
       this.filterByPosition(pos[0]);
     } else {
@@ -78,7 +79,7 @@ class SVList extends React.Component<OverViewProps, SVListState>
           } else {
             pos2 = new PathRegion(json2.path, json2.stop, json2.start);
           }
-          this_.filterByPosition(pos2);
+          _this.filterByPosition(pos2);
         })
         .catch(function(err: any) {
           // handle error

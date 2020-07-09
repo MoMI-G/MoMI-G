@@ -40,7 +40,7 @@ class AutoComplete extends React.Component<
     };
   }
   _getSuggestions(value: string) {
-    const this_ = this;
+    const _this = this;
     if (value.length >= 2 && value.lastIndexOf('ch', 0) !== 0) {
       fetch(
         '/api/v2/feature?ref=' +
@@ -52,7 +52,7 @@ class AutoComplete extends React.Component<
           return response.json();
         })
         .then(function(json: any) {
-          this_.setState({ suggestions: json });
+          _this.setState({ suggestions: json });
         })
         .catch(function(err: any) {
           // handle error

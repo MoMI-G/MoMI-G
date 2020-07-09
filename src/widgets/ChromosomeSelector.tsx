@@ -22,8 +22,6 @@ class Selector extends React.Component<SelectorProps, SelectorState> {
     };
   }
 
-  componentWillReceiveProps(props: SelectorProps) {}
-
   handleSelectChange(value: any) {
     // console.log("You've selected:", value);
     this.setState({ value: value.split(',') });
