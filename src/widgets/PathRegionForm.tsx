@@ -73,7 +73,7 @@ class PathRegionForm extends React.Component<PathRegionProps, PathRegionState>
     event.preventDefault();
     const pos = Utils.strToRegion(this.state.pos);
     // console.log(pos, 'PathReg');
-    const this_ = this;
+    const _this = this;
     if (pos[0] !== null) {
       // if it is the correct region.
       pos[0].name = this.state.posInner.name;
@@ -93,7 +93,7 @@ class PathRegionForm extends React.Component<PathRegionProps, PathRegionState>
           var pos2;
           if (Object.prototype.toString.call(json2) === '[object object]')
             json2[1] = json2; // For Compatible
-          const pos = String(this_.state.pos);
+          const pos = String(_this.state.pos);
           if (json2[1].start <= json2[1].stop) {
             pos2 = new PathRegion(
               json2[1].path,
@@ -111,8 +111,8 @@ class PathRegionForm extends React.Component<PathRegionProps, PathRegionState>
               [json2[0]]
             );
           }
-          this_.props.posUpdate(pos2);
-          this_.setState({ pos: pos2.toString() });
+          _this.props.posUpdate(pos2);
+          _this.setState({ pos: pos2.toString() });
         })
         .catch(function(err: any) {
           // handle error
@@ -139,7 +139,7 @@ class PathRegionForm extends React.Component<PathRegionProps, PathRegionState>
     this.props.posUpdate(this.state.posInner.chunkRight());
   }
   _getSuggestions(value: string) {
-    const this_ = this;
+    const _this = this;
     if (value.length >= 2) {
       fetch(
         '/api/v2/feature?ref=' +
@@ -151,7 +151,7 @@ class PathRegionForm extends React.Component<PathRegionProps, PathRegionState>
           return response.json();
         })
         .then(function(json: any) {
-          this_.setState({ suggestions: json });
+          _this.setState({ suggestions: json });
         })
         .catch(function(err: any) {
           // handle error

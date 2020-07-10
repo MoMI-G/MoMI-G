@@ -110,7 +110,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
   }
 
   fetchOverview() {
-    const this_ = this;
+    const _this = this;
     const uuidQuery = this.state.uuid !== '' ? '&uuid=' + this.state.uuid : '';
     d3.csv('/api/v2/overview?source=features' + uuidQuery, function(
       error: any,
@@ -118,7 +118,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
     ) {
       if (error) {
         d3.csv('./samples/fusion-genes.csv', function(sampleData: any) {
-          this_.setState({
+          _this.setState({
             features: sampleData,
             filteredFeatures: sampleData
           });
@@ -127,7 +127,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
         const sortedData = data.sort(function(a: any, b: any) {
           return d3.descending(+a.priority, +b.priority);
         });
-        this_.setState({
+        _this.setState({
           features: sortedData,
           filteredFeatures: sortedData
         });
@@ -139,15 +139,15 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
         return response.json();
       })
       .then(function(json2: any) {
-        this_.setState({
+        _this.setState({
           chromsAll: json2,
-          chroms: json2[this_.state.reference]
+          chroms: json2[_this.state.reference]
         });
       })
       .catch(function(err: any) {
         // handle error
         console.error(err);
-        this_.setState({ chroms: chroms });
+        _this.setState({ chroms: chroms });
       });
 
     if (this.props.uuid === undefined || this.props.uuid.length === 0) {
@@ -156,7 +156,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
           return response.json();
         })
         .then(function(json: any) {
-          this_.setState({
+          _this.setState({
             reference: json.ref_id,
             name: json.name,
             staticFiles: json.static_files
@@ -165,7 +165,7 @@ class DashBoard extends React.Component<ContainerProps, ContainerState> {
         .catch(function(err: any) {
           // handle error
           console.error(err);
-          this_.setState({ name: 'demo' });
+          _this.setState({ name: 'demo' });
         });
     }
   }

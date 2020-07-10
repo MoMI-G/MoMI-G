@@ -21,7 +21,7 @@ class Tags extends React.Component<TagsProps, {}> {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(tags) {
+  handleChange(tags: any) {
     this.props.tagsUpdate(tags);
   }
 

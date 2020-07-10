@@ -226,7 +226,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
   selectUniqueColor(
     name: string,
     type?: string,
-    colorOption = this.state.colorOption
+    colorOption: [HaploidColorful, GeneColor] = this.state.colorOption
   ) {
     const sameColor = (color: string) => {
       return { haplotype_color: color, exon_color: color };
@@ -391,7 +391,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
   }
   fetchGraph(pos: PathRegion, uuid: string, cache: boolean) {
     this.setState({ pos: pos });
-    const this_ = this;
+    const _this = this;
     if (pos.diff() < this.maximumRange) {
       this.setState({ loading: true });
       this.tubemap.fadeout();
@@ -624,9 +624,9 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                       return {min: wig.min, max: wig.max};
                     });
                    
-                    this_.setState({
+                    _this.setState({
                       loading: false,
-                      sequentialId: this_.state.sequentialId + 1,
+                      sequentialId: _this.state.sequentialId + 1,
                       nodeCoverages,
                       metaNodeCoverages
                     });
@@ -656,9 +656,9 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                     return {min: wig.min, max: wig.max};
                   });
                   
-                  this_.setState({
+                  _this.setState({
                     loading: false,
-                    sequentialId: this_.state.sequentialId + 1,
+                    sequentialId: _this.state.sequentialId + 1,
                     nodeCoverages,
                     metaNodeCoverages
                   });
@@ -667,7 +667,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                   // console.error(err);
                 });
 
-              if (this_.props.bigbedAnnotation === true) {
+              if (_this.props.bigbedAnnotation === true) {
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
                 .forEach(pathPos => {
@@ -755,7 +755,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                       // console.log(annotations);
                       if (
                         annotations.isoform.length > 0 &&
-                        this_.props.subPathAnnotation
+                        _this.props.subPathAnnotation
                       ) {
                         let additionalPath = annotations.isoform
                           .map(a => convertIsoformToPath(a))
@@ -787,10 +787,10 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                         });
                         // path = path.concat(additionalPath);
                         let colouredIsoform = annotations.isoform.map(a => {
-                          a['color'] = this_.selectUniqueColor(
+                          a['color'] = _this.selectUniqueColor(
                             a.name + ' (' + a.track + ')',
                             'bed',
-                            [this_.state.colorOption[0], GeneColor.Colorful]
+                            [_this.state.colorOption[0], GeneColor.Colorful]
                           ).haplotype_color;
                           return a;
                         });
@@ -798,12 +798,12 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
 
                         graph.genes = genes;
                         // console.log("path:",graph.path);
-                        this_.props.annotationsUpdate(annotations.isoform);
-                        this_.setState({
+                        _this.props.annotationsUpdate(annotations.isoform);
+                        _this.setState({
                           loading: false,
                           graph: graph,
-                          exon: this_.state.exon.concat(exons),
-                          sequentialId: this_.state.sequentialId + 1,
+                          exon: _this.state.exon.concat(exons),
+                          sequentialId: _this.state.sequentialId + 1,
                           annotations: colouredIsoform // annotations.isoform
                         });
                       }
@@ -820,7 +820,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                 .forEach(pathPos => {
                   const url: string = SPARQList.buildSparqlistRequest(
                     pathPos,
-                    this_.props.reference
+                    _this.props.reference
                   );
                   fetch(url, { headers: { Accept: 'application/json' } })
                     .then(function(response: Response) {
@@ -884,7 +884,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                       };
                       if (
                         annotations.isoform.length > 0 &&
-                        this_.props.subPathAnnotation
+                        _this.props.subPathAnnotation
                       ) {
                         let additionalPath = annotations.isoform
                           .map(a => convertIsoformToPath(a))
@@ -904,7 +904,13 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                         let margin_exons = additionalPath
                           .map(a => { if ( a.mapping[a.mapping.length - 1].position.offset < 0 ) {return [
                             {start: 0, end: a.mapping[0].position.offset, track: a.name, name: a.name, type: 'margin'},
-                            {start: a.full_length + a.mapping[0].position.offset, end: a.full_length + a.mapping[0].position.offset - a.mapping[a.mapping.length - 1].position.offset, track: a.name, name: a.name, type: 'margin'},
+                            {
+                              start: a.full_length + a.mapping[0].position.offset,
+                              end: a.full_length + a.mapping[0].position.offset - a.mapping[a.mapping.length - 1].position.offset,
+                              track: a.name,
+                              name: a.name,
+                              type: 'margin'
+                            },
                           ]; } else {return [
                             {start: 0, end: a.mapping[0].position.offset, track: a.name, name: a.name, type: 'margin'}
                           ]; } });
@@ -919,21 +925,21 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                           }
                         });
                         let colouredIsoform = annotations.isoform.map(a => {
-                          a['color'] = this_.selectUniqueColor(
+                          a['color'] = _this.selectUniqueColor(
                             a.name + ' (' + a.track + ')',
                             'gene',
-                            [this_.state.colorOption[0], GeneColor.Colorful]
+                            [_this.state.colorOption[0], GeneColor.Colorful]
                           ).haplotype_color;
                           return a;
                         });
 
                         graph.genes = genes;
-                        this_.props.annotationsUpdate(annotations.isoform);
-                        this_.setState({
+                        _this.props.annotationsUpdate(annotations.isoform);
+                        _this.setState({
                           loading: false,
                           graph: graph,
-                          exon: this_.state.exon.concat(exons),
-                          sequentialId: this_.state.sequentialId + 1,
+                          exon: _this.state.exon.concat(exons),
+                          sequentialId: _this.state.sequentialId + 1,
                           annotations: colouredIsoform
                         });
                       }
@@ -947,19 +953,19 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
             graph.path = path;
             graph.genes = [];
             // console.log(graph.path);
-            this_.props.annotationsClean();
-            this_.setState({
+            _this.props.annotationsClean();
+            _this.setState({
               loading: false,
               graph: graph,
               exon: pathAsAllExon,
               annotations: [],
-              sequentialId: this_.state.sequentialId + 1
+              sequentialId: _this.state.sequentialId + 1
             });
           }
         })
         .catch(function(err: any) {
           // handle error
-          this_.tubemap.fadein();
+          _this.tubemap.fadein();
           console.error(err);
         });
     }
