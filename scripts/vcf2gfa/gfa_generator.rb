@@ -48,7 +48,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in #{line} : #{exception}"
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
       end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
@@ -71,7 +71,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in #{line} : #{exception}"
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
       end
       if fasta.split("\n").drop(1).join("").upcase != ""
         seq = unique_id
@@ -89,7 +89,7 @@ File.open(ARGV[0]) do |f|
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
-          raise "[ERROR] in #{line} : #{exception}"
+          raise "[ERROR] in #{line.join(" ")} : #{exception}"
         end
       else
         fasta = ""
@@ -104,7 +104,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception
-        raise "[ERROR] in #{line} : #{exception}"
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
       end
       seq = unique_id
       unique_id += 1
@@ -123,7 +123,7 @@ end
 begin
   fasta = fasta(current_read, prev_pos, ref_len[current_read])
 rescue => exception
-  raise "[ERROR] in #{line} : #{exception}"
+  raise "[ERROR] in #{line.join(" ")} : #{exception}"
 end
 seq = unique_id
 unique_id += 1
