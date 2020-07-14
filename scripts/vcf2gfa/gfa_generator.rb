@@ -22,7 +22,7 @@ end
 
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
-  raise "Error: unexpected sequence #{seq}" if !current_read || !start || !stop
+  raise "[ERROR] unexpected sequence #{seq}" if !current_read || !start || !stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
@@ -48,7 +48,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "Error in #{line} : #{exception}"
+        raise "[ERROR] in #{line} : #{exception}"
       end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
@@ -71,7 +71,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "Error in #{line} : #{exception}"
+        raise "[ERROR] in #{line} : #{exception}"
       end
       if fasta.split("\n").drop(1).join("").upcase != ""
         seq = unique_id
@@ -89,7 +89,7 @@ File.open(ARGV[0]) do |f|
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
-          raise "Error in #{line} : #{exception}"
+          raise "[ERROR] in #{line} : #{exception}"
         end
       else
         fasta = ""
@@ -104,7 +104,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception
-        raise "Error in #{line} : #{exception}"
+        raise "[ERROR] in #{line} : #{exception}"
       end
       seq = unique_id
       unique_id += 1
@@ -123,7 +123,7 @@ end
 begin
   fasta = fasta(current_read, prev_pos, ref_len[current_read])
 rescue => exception
-  raise "Error in #{line} : #{exception}"
+  raise "[ERROR] in #{line} : #{exception}"
 end
 seq = unique_id
 unique_id += 1
