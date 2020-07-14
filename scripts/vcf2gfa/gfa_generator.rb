@@ -20,6 +20,13 @@ def parse_faidx(ref)
   ref_tail
 end
 
+def fasta(current_read, start, stop)
+  seq = "#{current_read}:#{start}-#{stop}"
+  raise "[ERROR] unexpected sequence #{seq}" if !current_read || !start || !stop
+  fasta = `samtools faidx #{REF} #{seq}`
+  fasta
+end
+
 ref_len = parse_faidx(REF)
 
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
@@ -38,8 +45,11 @@ File.open(ARGV[0]) do |f|
     next if line[0].end_with?("id")
     line[1] = line[1].to_i
     if line[1]==0 # When reads start from 0
-      seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-      fasta = `samtools faidx #{REF} #{seq}`
+      begin
+        fasta = fasta(current_read, prev_pos, ref_len[current_read])
+      rescue => exception
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+      end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
       seq = unique_id
@@ -58,8 +68,11 @@ File.open(ARGV[0]) do |f|
       next
     end
     if current_read != "" && line[0] != current_read
-      seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-      fasta = `samtools faidx #{REF} #{seq}`
+      begin
+        fasta = fasta(current_read, prev_pos, ref_len[current_read])
+      rescue => exception
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+      end
       if fasta.split("\n").drop(1).join("").upcase != ""
         seq = unique_id
         unique_id += 1
@@ -73,8 +86,11 @@ File.open(ARGV[0]) do |f|
       seg_names = []
 
       if line[1]-1 > 0
-        seq = "#{line[0]}:0-#{line[1]-1}"
-        fasta = `samtools faidx #{REF} #{seq}`
+        begin
+          fasta = fasta(line[0], 0, line[1]-1)
+        rescue => exception
+          raise "[ERROR] in #{line.join(" ")} : #{exception}"
+        end
       else
         fasta = ""
       end
@@ -85,8 +101,11 @@ File.open(ARGV[0]) do |f|
       right_hash[line[0]][line[1]] = seq
     else
       next if line[1]-1 == 0
-      seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
-      fasta = `samtools faidx #{REF} #{seq}`
+      begin
+        fasta = fasta(line[0], prev_pos, line[1]-1)
+      rescue => exception
+        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+      end
       seq = unique_id
       unique_id += 1
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
@@ -101,8 +120,11 @@ File.open(ARGV[0]) do |f|
   end
 end
 
-seq = "#{current_read}:#{prev_pos}-#{ref_len[current_read]}"
-fasta = `samtools faidx #{REF} #{seq}`
+begin
+  fasta = fasta(current_read, prev_pos, ref_len[current_read])
+rescue => exception
+  raise "[ERROR] in #{line.join(" ")} : #{exception}"
+end
 seq = unique_id
 unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
