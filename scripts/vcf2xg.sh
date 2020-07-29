@@ -54,7 +54,8 @@ echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG
-cat $ggf_file | $vg_path view -Fv - > $vg_file.old
+#cat $ggf_file | $vg_path view -Fv - > $vg_file.old
+$vg_path convert -g $ggf_file -p > $vg_file.old
 $vg_path mod -X 1024 $vg_file.old > $vg_file
 rm $vg_file.old
 echo '{"current": 4, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
