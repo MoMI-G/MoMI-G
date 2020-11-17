@@ -22,7 +22,7 @@ end
 
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
-  raise "[ERROR] unexpected sequence #{seq}" if !current_read || !start || !stop
+  raise "unexpected sequence #{seq}" if !current_read || !start || !stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
@@ -43,12 +43,13 @@ File.open(ARGV[0]) do |f|
   f.each_line do |line|
     line = line.chomp.split(" ")
     next if line[0].end_with?("id")
+    line_orig = line
     line[1] = line[1].to_i
     if line[1]==0 # When reads start from 0
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
       end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
@@ -71,7 +72,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
       end
       if fasta.split("\n").drop(1).join("").upcase != ""
         seq = unique_id
@@ -89,7 +90,7 @@ File.open(ARGV[0]) do |f|
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
-          raise "[ERROR] in #{line.join(" ")} : #{exception}"
+          raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
         end
       else
         fasta = ""
@@ -104,7 +105,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception
-        raise "[ERROR] in #{line.join(" ")} : #{exception}"
+        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
       end
       seq = unique_id
       unique_id += 1
@@ -123,7 +124,7 @@ end
 begin
   fasta = fasta(current_read, prev_pos, ref_len[current_read])
 rescue => exception
-  raise "[ERROR] in #{line.join(" ")} : #{exception}"
+  raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
 end
 seq = unique_id
 unique_id += 1
