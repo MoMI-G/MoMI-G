@@ -28,7 +28,7 @@ if builtin command -v $vg_path > /dev/null 2>&1
 then
     : $vg_path version
 else
-    echo "Error: ${vg_path} is not executable."
+    echo "Error: ${vg_path} is not executable." 1>&2
     exit 1
 fi
 
