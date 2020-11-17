@@ -45,7 +45,7 @@ File.open(ARGV[0]) do |f|
     next if line[0].end_with?("id")
     line_orig = line
     line[1] = line[1].to_i
-    raise "ERROR: Refrerence #{line[0]} is not found in #{REF}" if !ref_len[line[0]]
+    raise "ERROR: Reference id '#{line[0]}' is not found in #{REF}" if !ref_len[line[0]]
     if line[1]==0 # When reads start from 0
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
