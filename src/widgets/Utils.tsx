@@ -467,7 +467,7 @@ export class BedAnnotation {
         return {
           track: hash[key][0].attributes[0] + '_' + hash[key][0].id,
           path: pos.path,
-          type: 'repeat',
+          type: 'bed', // repeat
           mrna_start: coordinate[0],
           mrna_end: coordinate[1],
           strand: hash[key][0].attributes[2],
