@@ -24,7 +24,7 @@ xg_file=${tmp_dir}/$uuid.xg
 json_file=${tmp_dir}/$uuid.json # For progress.
 readable_name=$uuid
 
-if type $vg_path > /dev/null 2>&1
+if builtin command -v $vg_path > /dev/null 2>&1
 then
     : $vg_path version
 else
