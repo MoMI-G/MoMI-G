@@ -24,7 +24,14 @@ xg_file=${tmp_dir}/$uuid.xg
 json_file=${tmp_dir}/$uuid.json # For progress.
 readable_name=$uuid
 
-: $vg_path version
+if builtin command -v $vg_path > /dev/null 2>&1
+then
+    : $vg_path version
+else
+    echo "Error: ${vg_path} is not executable." 1>&2
+    exit 1
+fi
+
 echo "{\"current\": 0, \"max\": 5}" > $json_file
 
 # The workflow:
@@ -32,7 +39,7 @@ echo "{\"current\": 0, \"max\": 5}" > $json_file
 # 2. PCF->GGF2.0
 # 3. GGF2.0->GFA1.0
 # 4. GFA1.0->VG
-# 5. VG-> XG
+# 5. VG->XG
 
 # 1. VCF -> PCF if needed
 vcf_or_pcf=${vcf_file##*.}
