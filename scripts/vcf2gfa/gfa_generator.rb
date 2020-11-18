@@ -22,7 +22,7 @@ end
 
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
-  raise "unexpected sequence #{seq}" if !current_read || !start || !stop
+  raise "unexpected genomic range #{seq}" if !current_read || !start || !stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
