@@ -22,7 +22,7 @@ end
 
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
-  raise "unexpected sequence #{seq}" if !current_read || !start || !stop
+  raise "unexpected genomic range #{seq}" if !current_read || !start || !stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
@@ -43,10 +43,10 @@ File.open(ARGV[0]) do |f|
   f.each_line do |line|
     line = line.chomp.split(" ")
     next if line[0].end_with?("id")
-    line_orig = line
+    line_orig = line.clone
     line[1] = line[1].to_i
     raise "ERROR: Reference id '#{line[0]}' is not found in #{REF}" if !ref_len[line[0]]
-    if line[1]==0 # When reads start from 0
+    if line[1]==0 && current_read != "" # When reads start from 0
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
