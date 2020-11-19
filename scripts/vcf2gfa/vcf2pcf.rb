@@ -101,6 +101,7 @@ STDIN.each do |line|
   line[9] = line[9].chomp
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
-
+  raise "Illegal genomic range: #{orig}" if line[1].to_i <= 0 || line[4].to_i <= 0
+  
   puts line[0..10].join(",")  if line[0] != ""
 end
