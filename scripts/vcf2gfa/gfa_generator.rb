@@ -22,7 +22,7 @@ end
 
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
-  raise "unexpected genomic range #{seq}" if !current_read || !start || !stop
+  raise "unexpected genomic range #{seq}" if !current_read || !start || !stop || stop <= 0
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
@@ -102,7 +102,7 @@ File.open(ARGV[0]) do |f|
       left_hash[line[0]][0] = seq
       right_hash[line[0]][line[1]] = seq
     else
-      next if line[1]-1 == 0
+      next if line[1]-1 <= 0
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception
