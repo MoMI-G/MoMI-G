@@ -20,6 +20,7 @@ tmp_dir="./"
 pcf_file=${tmp_dir}/$uuid.pcf
 vg_file=${tmp_dir}/$uuid.vg
 ggf_file=${tmp_dir}/$uuid.ggf
+gfa_file=${tmp_dir}/$uuid.gfa
 xg_file=${tmp_dir}/$uuid.xg
 json_file=${tmp_dir}/$uuid.json # For progress.
 readable_name=$uuid
@@ -57,12 +58,12 @@ bash -x `dirname $0`/vcf2gfa/pcf2gfa.sh $pcf_file $ref_id > $ggf_file
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 3. GGF2.0 -> GFA1.0
-:
+cp $ggf_file $gfa_file
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG
 #cat $ggf_file | $vg_path view -Fv - > $vg_file.old
-$vg_path convert -g $ggf_file -p > $vg_file.old
+$vg_path convert -g $gfa_file -p > $vg_file.old
 $vg_path mod -X 1024 $vg_file.old > $vg_file
 rm $vg_file.old
 echo '{"current": 4, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
