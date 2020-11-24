@@ -31,6 +31,7 @@ ref_len = parse_faidx(REF)
 
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
+read_hash = {}
 puts "H\tVN:Z:1.0"
 
 current_read = ""
@@ -58,7 +59,7 @@ File.open(ARGV[0]) do |f|
       unique_id += 1
       seg_names << seq
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-      raise "ERROR: Link is not found on '#{line_org}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
       puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
       seg_names = []
@@ -66,6 +67,7 @@ File.open(ARGV[0]) do |f|
       right_hash[current_read][CHRMAX] = seq
   
       current_read = line[0]
+      read_hash[current_read] = true
       prev_seq = ""
       prev_pos = 0
       next
@@ -81,7 +83,7 @@ File.open(ARGV[0]) do |f|
         unique_id += 1
         seg_names << seq
         puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-        raise "ERROR: Link is not found on '#{line_org}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+        raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
         puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
         left_hash[current_read][prev_pos] = seq
         right_hash[current_read][CHRMAX] = seq
@@ -113,12 +115,14 @@ File.open(ARGV[0]) do |f|
       seq = unique_id
       unique_id += 1
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-      raise "ERROR: Link is not found on '#{line_org}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq != "" #|| prev_pos == 0
       left_hash[line[0]][prev_pos] = seq
       right_hash[line[0]][line[1]] = seq
     end
     current_read = line[0]
+    raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+    read_hash[current_read] = true
     prev_seq = seq
     prev_pos = line[1]
     seg_names << seq
@@ -133,7 +137,7 @@ end
 seq = unique_id
 unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-raise "ERROR: Link is not found on '#{line_org}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
 seg_names << seq
 puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.drop(1).join(",")}"
