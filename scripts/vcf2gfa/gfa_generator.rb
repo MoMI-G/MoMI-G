@@ -31,6 +31,7 @@ ref_len = parse_faidx(REF)
 
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
+read_hash = {}
 puts "H\tVN:Z:1.0"
 
 current_read = ""
@@ -66,6 +67,7 @@ File.open(ARGV[0]) do |f|
       right_hash[current_read][CHRMAX] = seq
   
       current_read = line[0]
+      read_hash[current_read] = true
       prev_seq = ""
       prev_pos = 0
       next
@@ -119,6 +121,8 @@ File.open(ARGV[0]) do |f|
       right_hash[line[0]][line[1]] = seq
     end
     current_read = line[0]
+    raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+    read_hash[current_read] = true
     prev_seq = seq
     prev_pos = line[1]
     seg_names << seq
