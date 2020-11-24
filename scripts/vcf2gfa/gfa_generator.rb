@@ -62,12 +62,14 @@ File.open(ARGV[0]) do |f|
       raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
       puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
+      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      read_hash[current_read] = true
+
       seg_names = []
       left_hash[current_read][prev_pos] = seq
       right_hash[current_read][CHRMAX] = seq
   
       current_read = line[0]
-      read_hash[current_read] = true
       prev_seq = ""
       prev_pos = 0
       next
@@ -89,6 +91,8 @@ File.open(ARGV[0]) do |f|
         right_hash[current_read][CHRMAX] = seq
       end
       puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length > 1 #{seg_names.map{"*"}.join(",")}"
+      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      read_hash[current_read] = true      
       seg_names = []
 
       if line[1]-1 > 0
@@ -105,8 +109,7 @@ File.open(ARGV[0]) do |f|
       puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
       left_hash[line[0]][0] = seq
       right_hash[line[0]][line[1]] = seq
-      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
-      read_hash[line[0]] = true
+
     else
       next if line[1]-1 <= 0
       begin
@@ -141,6 +144,8 @@ raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
 seg_names << seq
 puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.drop(1).join(",")}"
+raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
