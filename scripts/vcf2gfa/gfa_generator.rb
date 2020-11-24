@@ -115,7 +115,7 @@ File.open(ARGV[0]) do |f|
       seq = unique_id
       unique_id += 1
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if seq == ""
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq != "" #|| prev_pos == 0
       left_hash[line[0]][prev_pos] = seq
       right_hash[line[0]][line[1]] = seq
