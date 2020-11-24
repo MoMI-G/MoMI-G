@@ -105,6 +105,8 @@ File.open(ARGV[0]) do |f|
       puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
       left_hash[line[0]][0] = seq
       right_hash[line[0]][line[1]] = seq
+      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      read_hash[line[0]] = true
     else
       next if line[1]-1 <= 0
       begin
@@ -121,8 +123,6 @@ File.open(ARGV[0]) do |f|
       right_hash[line[0]][line[1]] = seq
     end
     current_read = line[0]
-    #raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
-    read_hash[current_read] = true
     prev_seq = seq
     prev_pos = line[1]
     seg_names << seq
