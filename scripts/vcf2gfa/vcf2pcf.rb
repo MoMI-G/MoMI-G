@@ -98,7 +98,7 @@ STDIN.each do |line|
   rescue => e
     raise "Error line: " + orig
   end
-  line[9] = line[9].chomp
+  line[9] = line[9].chomp if line[9]
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
   raise "Unsupported format: #{orig}" if line[1] == "" || line[4] == ""
