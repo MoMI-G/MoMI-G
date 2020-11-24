@@ -121,7 +121,7 @@ File.open(ARGV[0]) do |f|
       right_hash[line[0]][line[1]] = seq
     end
     current_read = line[0]
-    raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+    #raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
     read_hash[current_read] = true
     prev_seq = seq
     prev_pos = line[1]
