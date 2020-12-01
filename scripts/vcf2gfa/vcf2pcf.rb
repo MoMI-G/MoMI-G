@@ -102,6 +102,7 @@ STDIN.each do |line|
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
   raise "Unsupported format: #{orig}" if line[1] == "" || line[4] == ""
+  raise "Unsupported format: #{orig}, #{line[0..10].join(",")}" if !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
   
   puts line[0..10].join(",")  if line[0] != ""
 end
