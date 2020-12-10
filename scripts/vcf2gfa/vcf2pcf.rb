@@ -81,6 +81,8 @@ STDIN.each do |line|
         line[2] = "+"
         line[5] = "+"
       end
+    elsif info_hash["END"]
+      line[4] = info_hash["END"]
     else
       line[3] = line[0]
       line[4] = line[4]
