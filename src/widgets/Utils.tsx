@@ -486,7 +486,7 @@ export class SPARQList {
     const seq = pos.canonicalPath();
     const url = ref === 'hg19' ? '_grch37/' : '/';
     return (
-      'http://demo.momig.tokyo/rest/api/vg_gene_annotation' +
+      'http://biohackathon.org/rest/api/vg_gene_annotation' +
       url +
       '?seq=' +
       seq +
