@@ -22,9 +22,11 @@
     <noscript>
       MoMI-G is not working, unfortunately. You need to enable JavaScript to run this app.
     </noscript>
-    <script>
-    window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
-</script>
+     <script>
+        if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
+            __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+        }
+    </script>
     <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js"
         crossorigin="anonymous"></script>
 
