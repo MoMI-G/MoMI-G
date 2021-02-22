@@ -152,12 +152,16 @@ export class PathRegion extends PathRegionPrototype {
       this.name.toString() === target.name.toString()
     );
   }
+  withPrevLen() {
+    return new PathRegionWithPrevLen(this.path, this.start, this.stop);
+  }
 }
 
 export class PathRegionWithPrevLen extends PathRegionPrototype {
   previous: number;
   startIndex: number;
   stopIndex: number;
+
   constructor(
     path: string,
     start?: number,
