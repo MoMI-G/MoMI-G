@@ -668,6 +668,9 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                 });
 
               if (_this.props.bigbedAnnotation === true) {
+              if (paths.length === 0) {
+                  paths.push(_this.props.pos[0].withPrevLen());
+              }
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
                 .forEach(pathPos => {
@@ -684,7 +687,6 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                         res,
                         pathPos
                       );
-                      // console.log(res);
 
                       const i_mapping = i.mapping.slice(
                         pathPos.startIndex,
@@ -708,7 +710,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                         let newMapping = i_mapping.slice(
                           startNodeIndex,
                           endNodeIndex
-                        ); // [startNodeIndex..endNodeIndex]
+                        ); 
                         // console.log(newMapping)
                         if (newMapping.length > 1) {
                           newMapping = JSON.parse(JSON.stringify(newMapping)); // Deep copy
