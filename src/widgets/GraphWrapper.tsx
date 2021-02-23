@@ -503,7 +503,7 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
               return i;
             });
 
-            if (referencePath.length === 0) {
+            if (true) {
               let pathPos = _this.props.pos[0].withPrevLen();
 
               // const pos = new PathRegion(i.name, i.indexOfFirstBase, stop);

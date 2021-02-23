@@ -383,21 +383,25 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
     }
   }
   _scaleRight() {
-    let chroms = this.state.chroms;
-    const tail = chroms.pop();
-    chroms.unshift(tail);
-    this.setState({ chroms: chroms });
-    this.drawCircos(this.props.features, chroms);
+    if (this.props.features) {
+      let chroms = this.state.chroms;
+      const tail = chroms.pop();
+      chroms.unshift(tail);
+      this.setState({ chroms: chroms });
+      this.drawCircos(this.props.features, chroms);
+    }
   }
   _scaleLeft() {
-    let chroms = this.state.chroms;
-    const head = chroms.shift();
-    chroms.push(head);
-    this.setState({ chroms: chroms });
-    this.drawCircos(this.props.features, chroms);
+    if (this.props.features) {
+      let chroms = this.state.chroms;
+      const head = chroms.shift();
+      chroms.push(head);
+      this.setState({ chroms: chroms });
+      this.drawCircos(this.props.features, chroms);
+    }
   }
   _selectChrom(chromsLabel: string[]) {
-    if (chromsLabel.filter(a => a.length > 0).length > 0) {
+    if (chromsLabel.filter(a => a.length > 0).length > 0 && this.props.features) {
       /*const chroms = chromsLabel.map(
         a => this.props.chroms.find(b => b.label === a)
       ).filter(a => a !== null);*/
