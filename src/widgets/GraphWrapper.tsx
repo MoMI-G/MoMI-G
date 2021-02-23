@@ -503,6 +503,35 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
               return i;
             });
 
+            if (referencePath.length === 0) {
+              let pathPos = _this.props.pos[0].withPrevLen();
+
+              // const pos = new PathRegion(i.name, i.indexOfFirstBase, stop);
+              const url: string = BedAnnotation.buildBedAnnotationRequest(
+                pathPos,
+              );
+              fetch(url, { headers: { Accept: 'application/json' } })
+                .then(function(response: Response) {
+                  return response.json();
+                })
+                .then(function(res: any) {
+                  const annotations = BedAnnotation.convertToAnnotation(
+                    res,
+                    pathPos
+                  );
+                  _this.props.annotationsUpdate(annotations.isoform);
+                  _this.setState({
+                    loading: false,
+                    graph: graph,
+                    sequentialId: _this.state.sequentialId + 1,
+                  });
+                  })
+                .catch(function(err: any) {
+                  // handle error
+                  console.error(err);
+                });
+            }
+            
             referencePath.forEach(i => {
               const diff = i.mapping.map((a, idx) => {
                 if (idx >= 1) {
@@ -668,9 +697,6 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                 });
 
               if (_this.props.bigbedAnnotation === true) {
-              if (paths.length === 0) {
-                  paths.push(_this.props.pos[0].withPrevLen());
-              }
               paths
                 .filter(a => !(a.start === 0 && a.stop !== a.stop)) // isNaN
                 .forEach(pathPos => {
