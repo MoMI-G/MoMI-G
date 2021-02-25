@@ -29,7 +29,7 @@ class App extends React.Component<{}, { showModal: boolean }> {
     const parsedHash = QueryString.parse(window.parent.location.hash.slice(1));
     const postext = parsedHash.path
       ? parsedHash.path
-      : 'chr12:80,851,974-80,853,202';
+      : process.env.DEFAULT_POS ? process.env.DEFAULT_POS : 'chr12:80,851,974-80,853,202';
     const uuid = parsedHash.uuid;
     const layout = parsedHash.layout ? Number(parsedHash.layout) : 0;
     const reference = parsedHash.ref ? parsedHash.ref : 'hg19';
@@ -37,7 +37,7 @@ class App extends React.Component<{}, { showModal: boolean }> {
       ? parsedHash.annotations === 'false' ? false : true
       : true;
     return (
-      <div className="App">
+      <div className="App" style={{ marginBottom: '130px' }}>
         <DashBoard
           posText={postext}
           uuid={uuid}
