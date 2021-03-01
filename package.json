@@ -31,7 +31,7 @@
     "react": "^16.0.0",
     "react-autosuggest": "^9.3.1",
     "react-beautiful-dnd": "^4.0.0",
-    "react-csv": "^1.0.19",
+    "react-csv": "^2.0.3",
     "react-dazzle": "^1.2.7",
     "react-dom": "^16.2.1",
     "react-draggable": "^3.0.3",

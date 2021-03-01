@@ -17,23 +17,20 @@ export interface AnnotationsProps {
 export interface AnnotationsState {
   annotations: any; // DSVParsedArray<DSVRowString>;
   loaded: boolean;
-  csv: any;
 }
 
 class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
   implements Helpable {
   constructor(props: AnnotationsProps) {
     super(props);
-    let csv = this.props.annotations.map(a => {return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand,  a.description]; });
-    this.state = { annotations: props.annotations, loaded: false, csv };
+    this.state = { annotations: props.annotations, loaded: false };
   }
   componentWillReceiveProps(props: AnnotationsProps) {
     if (
       this.props.annotations === undefined ||
       props.annotations.length !== this.props.annotations.length
     ) {
-      let csv = this.props.annotations.map(a => {return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand,  a.description]; });
-      this.setState({ annotations: props.annotations, loaded: true, csv });
+      this.setState({ annotations: props.annotations, loaded: true });
     }
   }
   help() {
@@ -180,8 +177,8 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
         />
         <div className="btn btn-primary-outline">
           <CSVLink
-            filename={this.props.pos[0].toString() + '.csv'} 
-            data={this.state.csv}>
+            filename={this.props.pos[0].toString() + '.csv'}
+            data={this.props.annotations.map(a => { return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand, a.description]; })} >
             Download
           </CSVLink>
         </div>
