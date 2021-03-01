@@ -340,7 +340,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
                 />
               </div>
             </span>
-            <label className="form-control">MergeNodes</label>
+            <label className="form-control" style={{ 'height': 'auto' }}>MergeNodes</label>
             <span className="input-group-prepend">
               <div className="input-group-text">
                 <input
@@ -353,7 +353,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
                 />
               </div>
             </span>
-            <label className="form-control">Annotations</label>
+            <label className="form-control" style={{ 'height': 'auto' }}>Annotations</label>
             <span className="input-group-prepend">
               <div className="input-group-text">
                 <input
@@ -366,7 +366,7 @@ class TubeMap extends React.Component<TubeMapProps, TubeMapState> {
                 />
               </div>
             </span>
-            <label className="form-control d-inline-flex">Alignments
+            <label className="form-control d-inline-flex" style={{ 'height': 'auto' }}>Alignments
               <button className="btn btn-primary-outline" style={{padding: '0 5px', marginLeft: '10px'}} onClick={this.readNameDownload}>
                 <FontAwesome name="download" />
               </button>

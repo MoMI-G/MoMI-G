@@ -178,6 +178,7 @@ class Annotations extends React.Component<AnnotationsProps, AnnotationsState>
         <div className="btn btn-primary-outline">
           <CSVLink
             filename={this.props.pos[0].toString() + '.csv'}
+            className="btn btn-primary"
             data={this.props.annotations.map(a => { return [a.path, a.mrna_start, a.mrna_end, a.name, a.strand, a.description]; })} >
             Download
           </CSVLink>
