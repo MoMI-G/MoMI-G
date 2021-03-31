@@ -20,14 +20,18 @@ def parse_faidx(ref)
   ref_tail
 end
 
+ref_len = parse_faidx(REF)
+REF_CHECK= ref_len.clone
+REF_RANGE = Hash.new{|h,k| h[k]= [] }
+
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
   raise "unexpected genomic range #{seq}" if !current_read || !start || !stop || stop <= 0
+  REF_CHECK[current_read] -= (stop - start) 
+  REF_RANGE[current_read] << start..stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
-
-ref_len = parse_faidx(REF)
 
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
@@ -149,6 +153,8 @@ raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_
 read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
+
+STDERR.puts(REF_CHECK)
 
 File.open(ARGV[1]) do |f|
   f.each_line do |line|
