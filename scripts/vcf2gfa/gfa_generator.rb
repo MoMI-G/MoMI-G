@@ -154,7 +154,13 @@ read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
-STDERR.puts(REF_CHECK)
+REF_CHECK.to_a.each do |line|
+  STDERR.puts(line)
+end
+
+REF_RANGE.to_a.each do |line|
+  STDERR.puts(line)
+end
 
 File.open(ARGV[1]) do |f|
   f.each_line do |line|
