@@ -157,8 +157,8 @@ read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
+STDERR.puts("Potentially truncated chromosomes:")
 REF_CHECK.to_a.each do |line|
-  STDERR.puts("Potentially truncated chromosomes:")
   if read_hash[line[0]]&& line[1] > 0
     STDERR.puts(line.join(" "))
   end
