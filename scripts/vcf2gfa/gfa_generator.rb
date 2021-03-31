@@ -27,7 +27,7 @@ REF_RANGE = Hash.new{|h,k| h[k]= [] }
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
   raise "unexpected genomic range #{seq}" if !current_read || !start || !stop || stop <= 0
-  REF_CHECK[current_read] -= (stop - start) 
+  REF_CHECK[current_read] -= (stop - start + 1)
   REF_RANGE[current_read] << start..stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
@@ -100,14 +100,14 @@ File.open(ARGV[0]) do |f|
       read_hash[current_read] = true      
       seg_names = []
 
-      if line[1]-1 > 0
+      if line[1] >= 0
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
           raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
         end
       else
-        fasta = ""
+        next
       end
       seq = unique_id
       unique_id += 1
