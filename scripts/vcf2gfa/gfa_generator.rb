@@ -35,7 +35,7 @@ read_hash = {}
 puts "H\tVN:Z:1.0"
 
 current_read = ""
-prev_pos = 1
+prev_pos = 0
 prev_seq = ""
 seg_names = []
 unique_id = 1
@@ -72,7 +72,7 @@ File.open(ARGV[0]) do |f|
   
       current_read = line[0]
       prev_seq = ""
-      prev_pos = 1
+      prev_pos = 0
       next
     end
     if current_read != "" && line[0] != current_read
@@ -98,7 +98,7 @@ File.open(ARGV[0]) do |f|
 
       if line[1]-1 > 0
         begin
-          fasta = fasta(line[0], 1, line[1]-1)
+          fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
           raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
         end
