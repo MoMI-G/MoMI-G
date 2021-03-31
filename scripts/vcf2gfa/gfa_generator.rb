@@ -100,7 +100,7 @@ File.open(ARGV[0]) do |f|
       read_hash[current_read] = true      
       seg_names = []
 
-      if line[1] >= 0
+      if line[1] >= 1
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
