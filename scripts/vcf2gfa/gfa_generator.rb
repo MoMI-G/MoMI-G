@@ -100,13 +100,16 @@ File.open(ARGV[0]) do |f|
       read_hash[current_read] = true      
       seg_names = []
 
-      if line[1] >= 1
+      if line[1] > 1
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
           raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
         end
       else
+        current_read = ""
+        prev_pos = 0
+        prev_seq = ""
         next
       end
       seq = unique_id
