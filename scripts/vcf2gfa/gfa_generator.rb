@@ -158,11 +158,10 @@ left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
 REF_CHECK.to_a.each do |line|
-  STDERR.puts(line)
-end
-
-REF_RANGE.to_a.each do |line|
-  STDERR.puts(line)
+  STDERR.puts("Potentially truncated chromosomes:")
+  if line[0] ~= /^chr\d*$/ && line[1] > 0
+    STDERR.puts(line.join(" "))
+  end
 end
 
 File.open(ARGV[1]) do |f|
