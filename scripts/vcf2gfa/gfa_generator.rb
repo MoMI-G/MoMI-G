@@ -20,14 +20,18 @@ def parse_faidx(ref)
   ref_tail
 end
 
+ref_len = parse_faidx(REF)
+REF_CHECK= ref_len.clone
+REF_RANGE = Hash.new{|h,k| h[k]= [] }
+
 def fasta(current_read, start, stop)
   seq = "#{current_read}:#{start}-#{stop}"
   raise "unexpected genomic range #{seq}" if !current_read || !start || !stop || stop <= 0
+  REF_CHECK[current_read] -= (stop - start + 1)
+  REF_RANGE[current_read] << start..stop
   fasta = `samtools faidx #{REF} #{seq}`
   fasta
 end
-
-ref_len = parse_faidx(REF)
 
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
@@ -96,14 +100,17 @@ File.open(ARGV[0]) do |f|
       read_hash[current_read] = true      
       seg_names = []
 
-      if line[1]-1 > 0
+      if line[1] > 1
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
           raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
         end
       else
-        fasta = ""
+        current_read = ""
+        prev_pos = 0
+        prev_seq = ""
+        next
       end
       seq = unique_id
       unique_id += 1
@@ -149,6 +156,13 @@ raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_
 read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
+
+STDERR.puts("Potentially truncated chromosomes:")
+REF_CHECK.to_a.each do |line|
+  if read_hash[line[0]]&& line[1] > 0
+    STDERR.puts(line.join(" "))
+  end
+end
 
 File.open(ARGV[1]) do |f|
   f.each_line do |line|
