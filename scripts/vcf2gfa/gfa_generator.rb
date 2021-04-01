@@ -7,7 +7,7 @@ require 'csv'
 exit if ARGV.size < 3
 
 CHRMAX=270000000
-FLAG=false
+flag=false
 #SPLIT=40 * 1000 * 1000
 REF=ARGV[2]
 
@@ -57,7 +57,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
       end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
@@ -84,7 +84,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
-        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
       end
       if fasta.split("\n").drop(1).join("").upcase != ""
         seq = unique_id
@@ -105,7 +105,7 @@ File.open(ARGV[0]) do |f|
         begin
           fasta = fasta(line[0], 0, line[1]-1)
         rescue => exception
-          raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
+          raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
         end
       else
         current_read = ""
@@ -124,7 +124,7 @@ File.open(ARGV[0]) do |f|
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception
-        raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
       end
       seq = unique_id
       unique_id += 1
@@ -144,7 +144,7 @@ end
 begin
   fasta = fasta(current_read, prev_pos, ref_len[current_read])
 rescue => exception
-  raise "[ERROR] in '#{line_orig.join(" ")}' : #{exception}"
+  raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
 end
 seq = unique_id
 unique_id += 1
@@ -182,8 +182,8 @@ File.open(ARGV[1]) do |f|
       unique_id += 1
       fasta = line[8].upcase
       unless fasta =~ /^[ATGCN]+$/
-        STDERR.puts "INFO： VCF file does not contain an insertion sequence." if FLAG
-        FLAG = true
+        STDERR.puts "INFO： VCF file does not contain an insertion sequence." unless flag
+        flag = true
         next
       end
       puts "S\t#{ins_segment}\t#{fasta}"
