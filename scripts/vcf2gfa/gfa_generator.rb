@@ -7,6 +7,7 @@ require 'csv'
 exit if ARGV.size < 3
 
 CHRMAX=270000000
+FLAG=false
 #SPLIT=40 * 1000 * 1000
 REF=ARGV[2]
 
@@ -164,6 +165,8 @@ REF_CHECK.to_a.each do |line|
   end
 end
 
+
+
 File.open(ARGV[1]) do |f|
   f.each_line do |line|
     line = line.chomp.split(",")
@@ -179,7 +182,8 @@ File.open(ARGV[1]) do |f|
       unique_id += 1
       fasta = line[8].upcase
       unless fasta =~ /^[ATGCN]+$/
-        STDERR.puts "[INFO] VCF file does not include implicit insertion sequence."
+        STDERR.puts "INFO： VCF file does not contain an insertion sequence." if FLAG
+        FLAG = true
         next
       end
       puts "S\t#{ins_segment}\t#{fasta}"
