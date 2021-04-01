@@ -48,13 +48,13 @@ if [ $vcf_or_pcf = "pcf" ]; then
     cat $vcf_file > $pcf_file
 else
     cp $vcf_file $vcf_file.vcf
-    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb < $vcf_file.vcf > $pcf_file
+    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb < $vcf_file.vcf > $pcf_file 2>&1
 fi
 
 echo '{"current": 1, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 2. PCF -> GGF2.0
-bash -x `dirname $0`/vcf2gfa/pcf2gfa.sh $pcf_file $ref_id > $ggf_file
+bash -x `dirname $0`/vcf2gfa/pcf2gfa.sh $pcf_file $ref_id > $ggf_file 2>&1
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 3. GGF2.0 -> GFA1.0
@@ -63,13 +63,13 @@ echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_
 
 # 4. GFA1.0 -> VG
 #cat $ggf_file | $vg_path view -Fv - > $vg_file.old
-$vg_path convert -g $gfa_file -p > $vg_file.old
-$vg_path mod -X 1024 $vg_file.old > $vg_file
+$vg_path convert -g $gfa_file -p > $vg_file.old 2>&1
+$vg_path mod -X 1024 $vg_file.old > $vg_file 2>&1
 rm $vg_file.old
 echo '{"current": 4, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 5. VG(mod) -> XG
-$vg_path index -x $xg_file $vg_file
+$vg_path index -x $xg_file $vg_file 2>&1
 echo '{"current": 5, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 exit 0
