@@ -53,7 +53,7 @@ File.open(ARGV[0]) do |f|
     raise "ERROR: Link is not found on '#{line_orig}'" if !(line[1]=~ /^[0-9]+$/)
     line[1] = line[1].to_i
     raise "ERROR: Reference id '#{line[0]}' is not found in #{REF}" if !ref_len[line[0]]
-    if line[1]==0 && current_read != "" # When reads start from 0
+    if line[1]==0 && current_read != "" # When contigs start from 0
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
       rescue => exception
@@ -158,9 +158,9 @@ read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
-STDERR.puts("Potentially truncated chromosomes:")
 REF_CHECK.to_a.each do |line|
   if read_hash[line[0]]&& line[1] > 0
+    STDERR.puts("Potentially truncated chromosomes:")
     STDERR.puts(line.join(" "))
   end
 end
