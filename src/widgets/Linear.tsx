@@ -60,6 +60,7 @@ class Linear extends React.Component<LinearProps, LinearProps>
       }
     } else {
       if (props.staticFiles.length !== 0) {
+        /* */
       }
     }
   }
@@ -72,7 +73,7 @@ class Linear extends React.Component<LinearProps, LinearProps>
   }
   _linearReflection() {
     /* TODO() Uncomment when /api/v2/linear becomes avalable.
-    const this_ = this;
+    const _this = this;
     if (!this.state.toggleNodes) {
       const nodesList = this.props.nodes;
       if (this.props.pos[0].diff() < 50000) {
@@ -86,8 +87,8 @@ class Linear extends React.Component<LinearProps, LinearProps>
             return response.json();
           })
           .then(function(json: any) {
-            // this_.drawSankey(json2);
-            this_.setPileupWithNodes(json);
+            // _this.drawSankey(json2);
+            _this.setPileupWithNodes(json);
           })
           .catch(function(err: any) {
             console.error(err);

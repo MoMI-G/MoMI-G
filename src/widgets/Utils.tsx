@@ -152,12 +152,16 @@ export class PathRegion extends PathRegionPrototype {
       this.name.toString() === target.name.toString()
     );
   }
+  withPrevLen() {
+    return new PathRegionWithPrevLen(this.path, this.start, this.stop);
+  }
 }
 
 export class PathRegionWithPrevLen extends PathRegionPrototype {
   previous: number;
   startIndex: number;
   stopIndex: number;
+
   constructor(
     path: string,
     start?: number,
@@ -467,7 +471,7 @@ export class BedAnnotation {
         return {
           track: hash[key][0].attributes[0] + '_' + hash[key][0].id,
           path: pos.path,
-          type: 'repeat',
+          type: 'bed', // repeat
           mrna_start: coordinate[0],
           mrna_end: coordinate[1],
           strand: hash[key][0].attributes[2],
@@ -486,7 +490,7 @@ export class SPARQList {
     const seq = pos.canonicalPath();
     const url = ref === 'hg19' ? '_grch37/' : '/';
     return (
-      'http://demo.momig.tokyo/rest/api/vg_gene_annotation' +
+      'http://biohackathon.org/rest/api/vg_gene_annotation' +
       url +
       '?seq=' +
       seq +

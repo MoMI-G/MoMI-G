@@ -1,5 +1,4 @@
 {
-  "extends": ["tslint-react", "tslint-config-prettier"],
   "rules": {
     "align": [true, "parameters", "arguments", "statements"],
     "ban": false,

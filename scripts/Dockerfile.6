@@ -1,4 +1,4 @@
-FROM quay.io/vgteam/vg:v1.21.0
+FROM quay.io/vgteam/vg:v1.6.0-213-gc0c19fe5-t126-run
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -20,5 +20,5 @@ COPY . .
 
 ENV PATH $PATH:/usr/src/app/
 
-ENTRYPOINT ["/usr/src/app/vcf2xg.sh"]
+ENTRYPOINT ["/usr/src/app/vcf2xg6.sh"]
 

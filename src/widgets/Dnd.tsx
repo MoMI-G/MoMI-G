@@ -6,21 +6,12 @@ import PathRegionForm from './PathRegionForm';
 import styled from 'styled-components';
 import * as key from 'keymaster';
 
-const DropZone = styled.div`
-  display: flex;
-  /*
-      Needed to avoid growth in list due to lifting the first item
-      Caused by display: inline-flex strangeness
-    */
-  align-items: start;
-  /* stop the list collapsing when empty */
-  min-width: 600px;
-`;
-
+// tslint:disable-next-line:variable-name
 const ScrollContainer = styled.div`
   overflow: auto;
 `;
 
+// tslint:disable-next-line:variable-name
 const Container = styled.div`
   /* flex child */
   flex-grow: 1;
@@ -78,10 +69,10 @@ class Dnd extends React.Component<PathRegionProps, DndState>
     this.onItemSelect = this.onItemSelect.bind(this);
     this.onItemDuplicate = this.onItemDuplicate.bind(this);
     this.onItemMoveToTail = this.onItemMoveToTail.bind(this);
-    let this_ = this;
+    let _this = this;
     // Key bindings
-    key('option+d', function() {this_.onHeadItemDelete(); });
-    key('option+s', function() {this_.onItemMoveToTail(); });
+    key('option+d', function() {_this.onHeadItemDelete(); });
+    key('option+s', function() {_this.onItemMoveToTail(); });
 
   }
 

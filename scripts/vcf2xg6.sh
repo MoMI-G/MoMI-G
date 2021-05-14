@@ -62,7 +62,7 @@ cp $ggf_file $gfa_file
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG
-$vg_path convert -g $gfa_file -p 2>&1 > $vg_file.old
+cat $ggf_file | $vg_path view -Fv - 2>&1 > $vg_file.old
 $vg_path mod -X 1024 $vg_file.old 2>&1 > $vg_file
 rm $vg_file.old
 echo '{"current": 4, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file

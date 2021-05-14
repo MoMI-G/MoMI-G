@@ -162,8 +162,6 @@ class DashboardInner extends React.Component<
   componentWillReceiveProps(props: DashboardInnerProps) {
     this.updateWidget(props);
   }
-  componentDidMount() {
-  }
   updateWidget(props: DashboardInnerProps) {
     // On mounted
     // const width = 1280;

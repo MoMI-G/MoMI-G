@@ -20,6 +20,7 @@ STDIN.each do |line|
     mode_10x = true if line.start_with?("##source=10X")
     next
   end
+  orig = line
   line = line.split("\t")
   next if line[2].end_with?("_2") if mode_10x # For 10X dataset
   info = line[7]
@@ -73,20 +74,29 @@ STDIN.each do |line|
       #end
     end
   else
-    line[3] = info_hash["CHR2"]
-    line[4] = info_hash["END"]
-    if info_hash["STRANDS"] == "++" 
+    if info_hash["CHR2"] && info_hash["END"]
+      line[3] = info_hash["CHR2"]
+      line[4] = info_hash["END"]
+      if info_hash["STRANDS"] == "++" 
+        line[2] = "+"
+        line[5] = "-"
+      elsif info_hash["STRANDS"] == "--" 
+        line[2] = "-"
+        line[5] = "+"
+      elsif info_hash["STRANDS"] == "-+" 
+        line[2] = "-"
+        line[5] = "-"
+      elsif info_hash["STRANDS"] == "+-"
+        line[2] = "+"
+        line[5] = "+"
+      end
+    elsif info_hash["END"]
+      line[4] = info_hash["END"]
+    else
+      line[3] = line[0]
+      line[4] = line[4]
       line[2] = "+"
       line[5] = "-"
-    elsif info_hash["STRANDS"] == "--" 
-      line[2] = "-"
-      line[5] = "+"
-    elsif info_hash["STRANDS"] == "-+" 
-      line[2] = "-"
-      line[5] = "-"
-    elsif info_hash["STRANDS"] == "+-"
-      line[2] = "+"
-      line[5] = "+"
     end
     if info_hash["SVMETHOD"] && info_hash["SVMETHOD"].start_with?("SURVIVOR")
       line[0] = "chr" + line[0]
@@ -94,15 +104,21 @@ STDIN.each do |line|
     end
   end
   next if line[3] == "chrM" || line[0] == "chrM"
-  if ARGV[0]
-    name = File.basename(ARGV[0], ".*")
-    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
-  else
-    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+  begin
+    if ARGV[0]
+      name = File.basename(ARGV[0], ".*")
+      path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
+    else
+      path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+    end
+  rescue => e
+    raise "Error line: " + orig
   end
-  line[9] = line[9].chomp
+  line[9] = line[9].chomp if line[9]
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
-
+  raise "Unsupported format: #{orig}" if line[1] == "" || line[4] == ""
+  raise "Unsupported format: #{orig}, #{line[0..10].join(",")}" if !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
+  
   puts line[0..10].join(",")  if line[0] != ""
 end

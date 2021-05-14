@@ -60,15 +60,15 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
   drawCircos(features: any, chroms: any) {
     // Initialize Informations
 
-    var chromsLen = chroms.map(function(k) {
+    var chromsLen = chroms.map(function(k: any) {
       return k.len;
     });
 
-    var chromsName = chroms.map(function(k) {
+    var chromsName = chroms.map(function(k: any) {
       return k.id;
     });
 
-    var colors = chroms.map(function(k) {
+    var colors = chroms.map(function(k: any) {
       return k.color;
     });
 
@@ -76,7 +76,7 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
     var maxLen = Math.max.apply(null, chromsLen) / 10;
     var ticks = maxLen.toExponential(0);
 
-    var groupTicks = function(d, step) {
+    var groupTicks = function(d: any, step: any) {
       var k = (d.endAngle - d.startAngle) / d.value;
       return d3.range(0, d.value, step).map(function(value: number) {
         return { value: value, angle: value * k + d.startAngle };
@@ -128,7 +128,7 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
       .append('g');
 
     var fade = function(opacity: number) {
-      return function(d, i) {
+      return function(d: any, i: number) {
         d3.select(d3.event.currentTarget).style('fill-opacity', 1 - opacity);
         ribbons
           .filter(function(d2: any) {
@@ -152,9 +152,9 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
         return String(d3.rgb(String(color(String(d.index)))));
       })
       .attr('d', arc as any)
-      .on('click', function(d: d3.ChordGroup, i) {
+      .on('click', function(d: d3.ChordGroup, i: any) {
         // Click a chromosome arc
-        this_.props.posUpdate(
+        _this.props.posUpdate(
           [new PathRegion(chromsName[d.index], 0, chromsLen[d.index])],
           null
         );
@@ -223,20 +223,20 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
     groupTick.append('line').attr('x2', 6);
 
     groupTick
-      .filter(function(d) {
+      .filter(function(d: any) {
         return d.value % (Number(ticks) * 5) === 0;
       })
       .append('text')
       .attr('x', 8)
       .attr('dy', '.35em')
-      .attr('transform', function(d) {
+      .attr('transform', function(d: any) {
         return d.angle > Math.PI ? 'rotate(180) translate(-16)' : null;
       })
-      .style('text-anchor', function(d) {
+      .style('text-anchor', function(d: any) {
         return d.angle > Math.PI ? 'end' : null;
       })
       .style('font-size', '8px')
-      .text(function(d) {
+      .text(function(d: any) {
         return formatValue(d.value);
       });
 
@@ -291,7 +291,7 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
         );
       })
       .slice(0, MAXITEMS);
-    const this_ = this;
+    const _this = this;
     var ribbons = g
       .append('g')
       .attr('class', 'path')
@@ -312,7 +312,7 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
         return (tooltip
             .style('visibility', 'visible')
             .selectAll('tspan')
-            .data((() => this_.tooltip(d))())
+            .data((() => _this.tooltip(d))())
             .enter()
             .append('tspan')
             .text(function(d2: string) {
@@ -332,15 +332,15 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
       })
       .on('click', function(d: any, i: number) {
         // Click a chromosome arc
-        const false_ = false;
-        if (false_ && d.hasOwnProperty('id')) {
-          this_.props.posUpdate(
+        const _false = false;
+        if (_false && d.hasOwnProperty('id')) {
+          _this.props.posUpdate(
             [new PathRegion(d.id, null, null, false, [d.svtype, d.priority])],
             i
           );
         } else {
           if (d.source_id !== d.target_id) {
-            this_.props.posUpdate(
+            _this.props.posUpdate(
               [
                 new PathRegion(
                   d.source_id,
@@ -360,7 +360,7 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
               i
             );
           } else {
-            this_.props.posUpdate(
+            _this.props.posUpdate(
               [
                 new PathRegion(
                   d.source_id,
@@ -383,21 +383,25 @@ class CircosView extends React.Component<OverViewProps, CircosViewState>
     }
   }
   _scaleRight() {
-    let chroms = this.state.chroms;
-    const tail = chroms.pop();
-    chroms.unshift(tail);
-    this.setState({ chroms: chroms });
-    this.drawCircos(this.props.features, chroms);
+    if (this.props.features) {
+      let chroms = this.state.chroms;
+      const tail = chroms.pop();
+      chroms.unshift(tail);
+      this.setState({ chroms: chroms });
+      this.drawCircos(this.props.features, chroms);
+    }
   }
   _scaleLeft() {
-    let chroms = this.state.chroms;
-    const head = chroms.shift();
-    chroms.push(head);
-    this.setState({ chroms: chroms });
-    this.drawCircos(this.props.features, chroms);
+    if (this.props.features) {
+      let chroms = this.state.chroms;
+      const head = chroms.shift();
+      chroms.push(head);
+      this.setState({ chroms: chroms });
+      this.drawCircos(this.props.features, chroms);
+    }
   }
   _selectChrom(chromsLabel: string[]) {
-    if (chromsLabel.filter(a => a.length > 0).length > 0) {
+    if (chromsLabel.filter(a => a.length > 0).length > 0 && this.props.features) {
       /*const chroms = chromsLabel.map(
         a => this.props.chroms.find(b => b.label === a)
       ).filter(a => a !== null);*/

@@ -2980,6 +2980,7 @@ export function vgExtractReads(myNodes, myTracks, myReads) {
   const nodeNames = [];
   myNodes.forEach((node) => {
     nodeNames.push(parseInt(node.name, 10));
+    nodeNames.push(node.name);
   });
 
   for (let i = 0; i < myReads.length; i += 1) {
