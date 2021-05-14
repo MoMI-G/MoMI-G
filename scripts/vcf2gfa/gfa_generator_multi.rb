@@ -16,71 +16,74 @@ prev_pos = 0
 prev_seq = ""
 seg_names = []
 unique_id = 1
+read_hash = {}
 
 File.open(ARGV[0]) do |f|
-f.each_line do |line|
-  line = line.chomp.split(" ")
-  next if line[0].end_with?("id")
-  line[1] = line[1].to_i
-  if line[1]==0 # When reads start from 0
+  f.each_line do |line|
+    line = line.chomp.split(" ")
+    next if line[0].end_with?("id")
+    line[1] = line[1].to_i
+    if line[1]==0 # When reads start from 0
+      seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
+      fasta = `samtools faidx #{REF} #{seq}`
+      next if fasta == ""
+      #seq = seq.gsub(":", "_")
+      seq = unique_id
+      unique_id += 1
+      seg_names << seq
+      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+      puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
+      #raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      read_hash[current_read] = true
+      seg_names = []
+      left_hash[current_read][prev_pos] = seq
+      right_hash[current_read][CHRMAX] = seq
+  
+      current_read = line[0]
+      prev_seq = ""
+      prev_pos = 0
+      next
+    end
+    if current_read != "" && line[0] != current_read
     seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
     fasta = `samtools faidx #{REF} #{seq}`
-    next if fasta == ""
     #seq = seq.gsub(":", "_")
-    seq = unique_id
-    unique_id += 1
-    seg_names << seq
-    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
+    if fasta == ""
+      seq = unique_id
+      unique_id += 1
+      seg_names << seq
+      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+      puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+      left_hash[current_read][prev_pos] = seq
+      right_hash[current_read][CHRMAX] = seq
+    end
+    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length >= 1 #\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
     seg_names = []
-    left_hash[current_read][prev_pos] = seq
-    right_hash[current_read][CHRMAX] = seq
- 
-    current_read = line[0]
-    prev_seq = ""
-    prev_pos = 0
-    next
-  end
-  if current_read != "" && line[0] != current_read
-  seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
-  fasta = `samtools faidx #{REF} #{seq}`
-  #seq = seq.gsub(":", "_")
-  if fasta == ""
+
+    next if line[1] <= 1
+    seq = "#{line[0]}:0-#{line[1]-1}"
+    fasta = `samtools faidx #{REF} #{seq}`
     seq = unique_id
     unique_id += 1
-    seg_names << seq
+    puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
+    left_hash[line[0]][0] = seq
+    right_hash[line[0]][line[1]] = seq
+    else
+    seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
+    fasta = `samtools faidx #{REF} #{seq}`
+    seq = unique_id
+    unique_id += 1
     puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-    left_hash[current_read][prev_pos] = seq
-    right_hash[current_read][CHRMAX] = seq
+    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
+    left_hash[line[0]][prev_pos] = seq
+    right_hash[line[0]][line[1]] = seq
+    end
+    current_read = line[0]
+    prev_seq = seq
+    prev_pos = line[1]
+    seg_names << seq
   end
-  puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
-  seg_names = []
-
-  next if line[1] <= 1
-  seq = "#{line[0]}:0-#{line[1]-1}"
-  fasta = `samtools faidx #{REF} #{seq}`
-  seq = unique_id
-  unique_id += 1
-  puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
-  left_hash[line[0]][0] = seq
-  right_hash[line[0]][line[1]] = seq
-  else
-  seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
-  fasta = `samtools faidx #{REF} #{seq}`
-  seq = unique_id
-  unique_id += 1
-  puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-  puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
-  left_hash[line[0]][prev_pos] = seq
-  right_hash[line[0]][line[1]] = seq
-  end
-  current_read = line[0]
-  prev_seq = seq
-  prev_pos = line[1]
-  seg_names << seq
-end
 end
 
 seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
@@ -90,7 +93,9 @@ unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
 seg_names << seq
-puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#\t#{seg_names.map{"*"}.drop.join(",")}"
+puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" #\t#{seg_names.map{"*"}.drop.join(",")}"
+#raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
 
