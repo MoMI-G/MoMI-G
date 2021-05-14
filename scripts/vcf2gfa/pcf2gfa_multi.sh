@@ -10,7 +10,7 @@ pref=$input
 cat <(sed '1d' $input)  <(sed '1d' $input2) | sort -t "," -k 7n > $pref.output.pcf
 awk -F "[,:]" '{print $1,"\t",$2,"\n",$4,"\t",$5}' <(cat $pref.output.pcf) | sed -e 's/[ ]*//g' | sort -k 1,1 -k 2,2n | uniq > $pref.bp.tsv
 
-if [ ! -s $reference.fai] && [ ! -s $reference.fa.fai ]; then 
+if [ ! -s $reference.fai ] && [ ! -s $reference.fa.fai ]; then 
   if [ ! -s $reference ]; then
     rsync -avPq --ignore-existing rsync://hgdownload.cse.ucsc.edu/goldenPath/$reference/bigZips/$reference.fa.gz .
     gunzip -c $reference.fa.gz > $reference.fa
