@@ -117,8 +117,11 @@ STDIN.each do |line|
   line[9] = line[9].chomp if line[9]
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
-  STDERR.puts "Unsupported format: #{orig}" if line[1] == "" || line[4] == ""
-  STDERR.puts "Unsupported format: #{orig}, #{line[0..10].join(",")}" if !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
-  
-  puts line[0..10].join(",")  if line[0] != ""
+  if line[1] == "" || line[4] == ""
+    STDERR.puts "Unsupported format: #{orig}" 
+  elsif !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
+    STDERR.puts "Unsupported format: #{orig}, #{line[0..10].join(",")}"
+  else
+    puts line[0..10].join(",")  if line[0] != ""
+  end  
 end
