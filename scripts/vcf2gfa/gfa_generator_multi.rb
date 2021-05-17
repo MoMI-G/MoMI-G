@@ -109,7 +109,7 @@ for file in ARGV[2..-1]
       next if line[0] == "source_id"
       left_segment = right_hash[line[0]][line[1]]
       right_segment = left_hash[line[3]][line[4]]
-      path_name = line[0].to_s+"_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s + "_" + name 
+      path_name = line[0].to_s + "_" + line[1].to_s + ".."+ line[3].to_s + "_" + line[4].to_s + "_" + name 
       next if not left_segment or not right_segment
       if line[7] == "INS"
         next unless line[8]
@@ -137,7 +137,7 @@ for file in ARGV[2..-1]
         puts "P\ttra_#{path_name}\t#{[left_segment.to_s+line[2],right_segment.to_s+line[5]].join(",")}\t*" 
       elsif line[7] == "DUP"
         next if line[1] >= line[4] 
-        path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+        path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
         puts "L\t#{right_segment-1}\t+\t#{left_segment+1}\t+\t0M"
         puts "P\tdup_#{path_name}\t#{[(right_segment-1).to_s+"+",(left_segment+1).to_s+"+"].join(",")}\t*" 
         #puts "L\t#{left_segment+1}\t-\t#{right_segment-1}\t-\t0M"
