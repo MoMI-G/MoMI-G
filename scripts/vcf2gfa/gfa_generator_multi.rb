@@ -53,7 +53,10 @@ File.open(ARGV[0]) do |f|
     line_orig = line.clone
     raise "ERROR: Link is not found on '#{line_orig}'" if !(line[1]=~ /^[0-9]+$/)
     line[1] = line[1].to_i
-    STDERR.puts "ERROR: Reference id '#{line[0]}' is not found in #{REF}" if !ref_len.key?(line[0])
+    if !ref_len.key?(line[0])
+      STDERR.puts "ERROR: Reference id '#{line[0]}' is not found in #{REF}" 
+      next
+    end
     if line[1]==0 && current_read != "" # When contigs start from 0
       begin
         fasta = fasta(current_read, prev_pos, ref_len[current_read])
