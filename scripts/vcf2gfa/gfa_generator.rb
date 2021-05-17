@@ -96,7 +96,7 @@ File.open(ARGV[0]) do |f|
         left_hash[current_read][prev_pos] = seq
         right_hash[current_read][CHRMAX] = seq
       end
-      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length > 1 #{seg_names.map{"*"}.join(",")}"
+      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length >= 1 #{seg_names.map{"*"}.join(",")}"
       raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
       read_hash[current_read] = true      
       seg_names = []
@@ -120,7 +120,7 @@ File.open(ARGV[0]) do |f|
       right_hash[line[0]][line[1]] = seq
 
     else
-      next if line[1]-1 <= 0
+      next if line[1] <= 1
       begin
         fasta = fasta(line[0], prev_pos, line[1]-1)
       rescue => exception

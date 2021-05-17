@@ -2,13 +2,41 @@
 # ruby gfa_generator_multi.rb all_list_new_ins_bplist.csv all_list_new_clustered.tsv > sv_test_with_svlink.gfa
 #
 
+require 'csv'
+
 exit if ARGV.size < 4
 
 CHRMAX=270000000
+flag=false
 #SPLIT=40 * 1000 * 1000
 REF=ARGV[1]
+
+def parse_faidx(ref)
+  ref_file = ref + ".fai"
+  csv = CSV.read(ref_file, col_sep: "\t", headers: false)
+  ref_tail = {}
+  csv.each do |row|
+    ref_tail[row[0]] = row[1].to_i
+  end
+  ref_tail
+end
+
+ref_len = parse_faidx(REF)
+REF_CHECK= ref_len.clone
+REF_RANGE = Hash.new{|h,k| h[k]= [] }
+
+def fasta(current_read, start, stop)
+  seq = "#{current_read}:#{start}-#{stop}"
+  raise "unexpected genomic range #{seq}" if !current_read || !start || !stop || stop <= 0
+  REF_CHECK[current_read] -= (stop - start + 1)
+  REF_RANGE[current_read] << start..stop
+  fasta = `samtools faidx #{REF} #{seq}`
+  fasta
+end
+
 left_hash = Hash.new{|h,k| h[k]= Hash.new }
 right_hash = Hash.new{|h,k| h[k]= Hash.new }
+read_hash = {}
 puts "H\tVN:Z:1.0"
 
 current_read = ""
@@ -16,26 +44,34 @@ prev_pos = 0
 prev_seq = ""
 seg_names = []
 unique_id = 1
-read_hash = {}
+
 
 File.open(ARGV[0]) do |f|
   f.each_line do |line|
     line = line.chomp.split(" ")
     next if line[0].end_with?("id")
+    line_orig = line.clone
+    raise "ERROR: Link is not found on '#{line_orig}'" if !(line[1]=~ /^[0-9]+$/)
     line[1] = line[1].to_i
-    if line[1]==0 # When reads start from 0
-      seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
-      fasta = `samtools faidx #{REF} #{seq}`
+    raise "ERROR: Reference id '#{line[0]}' is not found in #{REF}" if !ref_len[line[0]]
+    if line[1]==0 && current_read != "" # When contigs start from 0
+      begin
+        fasta = fasta(current_read, prev_pos, ref_len[current_read])
+      rescue => exception
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
+      end
       next if fasta == ""
       #seq = seq.gsub(":", "_")
       seq = unique_id
       unique_id += 1
       seg_names << seq
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
       puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
       puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.join(",")}"
-      #raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
       read_hash[current_read] = true
+
       seg_names = []
       left_hash[current_read][prev_pos] = seq
       right_hash[current_read][CHRMAX] = seq
@@ -46,38 +82,58 @@ File.open(ARGV[0]) do |f|
       next
     end
     if current_read != "" && line[0] != current_read
-    seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    #seq = seq.gsub(":", "_")
-    if fasta == ""
+      begin
+        fasta = fasta(current_read, prev_pos, ref_len[current_read])
+      rescue => exception
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
+      end
+      if fasta.split("\n").drop(1).join("").upcase != ""
+        seq = unique_id
+        unique_id += 1
+        seg_names << seq
+        puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+        raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
+        puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
+        left_hash[current_read][prev_pos] = seq
+        right_hash[current_read][CHRMAX] = seq
+      end
+      puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length >= 1 #{seg_names.map{"*"}.join(",")}"
+      raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+      read_hash[current_read] = true      
+      seg_names = []
+
+      if line[1] > 1
+        begin
+          fasta = fasta(line[0], 0, line[1]-1)
+        rescue => exception
+          raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
+        end
+      else
+        current_read = ""
+        prev_pos = 0
+        prev_seq = ""
+        next
+      end
       seq = unique_id
       unique_id += 1
-      seg_names << seq
-      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-      puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
-      left_hash[current_read][prev_pos] = seq
-      right_hash[current_read][CHRMAX] = seq
-    end
-    puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" if seg_names.length >= 1 #\t#{seg_names.map{"*"}.join(",")}" if seg_names.length > 1
-    seg_names = []
+      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}" # Now N is not needed for 0-origin problem.
+      left_hash[line[0]][0] = seq
+      right_hash[line[0]][line[1]] = seq
 
-    next if line[1] <= 1
-    seq = "#{line[0]}:0-#{line[1]-1}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    seq = unique_id
-    unique_id += 1
-    puts "S\t#{seq}\tN#{fasta.split("\n").drop(1).join("").upcase}" # added N for 0-origin problem.
-    left_hash[line[0]][0] = seq
-    right_hash[line[0]][line[1]] = seq
     else
-    seq = "#{line[0]}:#{prev_pos}-#{line[1]-1}"
-    fasta = `samtools faidx #{REF} #{seq}`
-    seq = unique_id
-    unique_id += 1
-    puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
-    puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq!="" #|| prev_pos == 0
-    left_hash[line[0]][prev_pos] = seq
-    right_hash[line[0]][line[1]] = seq
+      next if line[1] <= 1
+      begin
+        fasta = fasta(line[0], prev_pos, line[1]-1)
+      rescue => exception
+        raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
+      end
+      seq = unique_id
+      unique_id += 1
+      puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+      raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if seq == ""
+      puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M" if prev_seq != "" #|| prev_pos == 0
+      left_hash[line[0]][prev_pos] = seq
+      right_hash[line[0]][line[1]] = seq
     end
     current_read = line[0]
     prev_seq = seq
@@ -86,15 +142,19 @@ File.open(ARGV[0]) do |f|
   end
 end
 
-seq = "#{current_read}:#{prev_pos}-#{CHRMAX}"
-fasta = `samtools faidx #{REF} #{seq}`
+begin
+  fasta = fasta(current_read, prev_pos, ref_len[current_read])
+rescue => exception
+  raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
+end
 seq = unique_id
 unique_id += 1
 puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
+raise "ERROR: Link is not found on '#{line_orig}': #{prev_seq}, #{seq}" if prev_seq == "" || seq == ""
 puts "L\t#{prev_seq}\t+\t#{seq}\t+\t0M"
 seg_names << seq
-puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*" #\t#{seg_names.map{"*"}.drop.join(",")}"
-#raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
+puts "P\t#{current_read}\t#{seg_names.join("+,")}+\t*"#{seg_names.map{"*"}.drop(1).join(",")}"
+raise "ERROR: input file is not sorted in chromosome '#{current_read}'" if read_hash[current_read]
 read_hash[current_read] = true
 left_hash[current_read][prev_pos] = seq
 right_hash[current_read][CHRMAX] = seq
