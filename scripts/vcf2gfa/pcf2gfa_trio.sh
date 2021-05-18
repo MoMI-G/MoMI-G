@@ -27,7 +27,7 @@ cat $input | sort -t "," -k 7n > $input.pcf
 cat $input2 | sort -t "," -k 7n > $input2.pcf
 cat $input3 | sort -t "," -k 7n > $input3.pcf
 
-ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $input1.pcf $reference.fa > $pref.1.gfa &
+ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $input.pcf $reference.fa > $pref.1.gfa &
 ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $input2.pcf $reference.fa > $pref.2.gfa &
 ruby vcf2gfa/gfa_generator.rb $pref.bp.merged.tsv $input3.pcf $reference.fa > $pref.3.gfa &
 wait
