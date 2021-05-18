@@ -2,9 +2,18 @@
 #
 # For inter-chromosomal dataset.
 
+require 'optparse'
+
+opt = OptionParser.new
+params = {}
+opt.on('-i', "--intra") {|v| params[:i] = v }
+opt.parse!(ARGV)
+
+INTMAX=1000*1000*1000
 mode_10x=false
+INTRA=params[:i]
 puts "source_id,source_breakpoint,source_strand,target_id,target_breakpoint,target_strand,priority,svtype,gt,allele,id"
-INTRA=ARGV[0]
+STDOUT.flush
 
 STDIN.each do |line|
   if line.start_with?("#")
@@ -96,15 +105,23 @@ STDIN.each do |line|
   end
   next if line[3] == "chrM" || line[0] == "chrM"
   begin
-    path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+    if ARGV[0]
+      name = File.basename(ARGV[0], ".*")
+      path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s + "_" + name 
+    else
+      path_name = line[0] + "_" + line[1].to_s + ".." + line[3] + "_" + line[4].to_s 
+    end
   rescue => e
     raise "Error line: " + orig
   end
   line[9] = line[9].chomp if line[9]
   line[10] = "#{line[7].downcase}_#{path_name}"
   next if line[0] == line[3] && INTRA
-  raise "Unsupported format: #{orig}" if line[1] == "" || line[4] == ""
-  raise "Unsupported format: #{orig}, #{line[0..10].join(",")}" if !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
-  
-  puts line[0..10].join(",")  if line[0] != ""
+  if line[1] == "" || line[4] == ""
+    STDERR.puts "Unsupported format: #{orig}" 
+  elsif !(line[1] =~ /^[0-9]+$/ && line[4] =~ /^[0-9]+$/ )
+    STDERR.puts "Unsupported format: #{orig}, #{line[0..10].join(",")}"
+  else
+    puts line[0..10].join(",")  if line[0] != ""
+  end  
 end
