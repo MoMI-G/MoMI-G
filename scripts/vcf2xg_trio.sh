@@ -12,11 +12,11 @@ vcf_file=$4
 alt_vcf_file=$5
 alt_vcf_file2=$6
 
-tmp_dir="./"
+tmp_dir=${MOMIG_TMP:-"./"}
 pcf_file=${tmp_dir}/$vcf_file.pcf
 alt_pcf_file=${tmp_dir}/$alt_vcf_file.pcf
 alt_pcf_file2=${tmp_dir}/$alt_vcf_file2.pcf
-pcf_output=$uuid.pcf
+pcf_output=${tmp_dir}/$uuid.pcf
 vg_file=${tmp_dir}/$uuid.vg
 ggf_file=${tmp_dir}/$uuid.ggf
 xg_file=${tmp_dir}/$uuid.xg
