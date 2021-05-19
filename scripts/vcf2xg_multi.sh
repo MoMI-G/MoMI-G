@@ -14,6 +14,7 @@ alt_vcf_file=$5
 tmp_dir="./"
 pcf_file=${tmp_dir}/$vcf_file.pcf
 alt_pcf_file=${tmp_dir}/$alt_vcf_file.pcf
+pcf_output=$uuid.pcf
 vg_file=${tmp_dir}/$uuid.vg
 ggf_file=${tmp_dir}/$uuid.ggf
 xg_file=${tmp_dir}/$uuid.xg
@@ -60,7 +61,8 @@ bash -x `dirname $0`/vcf2gfa/pcf2gfa_multi.sh $pcf_file $alt_pcf_file $ref_id $u
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 3. Merge PCF
-tail -n +1 $alt_pcf_file >> $pcf_file
+cat $pcf_file > $pcf_output
+tail -n +1 $alt_pcf_file >> $pcf_output
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG
