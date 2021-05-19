@@ -10,10 +10,12 @@ vg_path=$2
 ref_id=$3
 vcf_file=$4
 alt_vcf_file=$5
+alt_vcf_file2=$6
 
 tmp_dir=${MOMIG_TMP:-"./"}
 pcf_file=${tmp_dir}/$vcf_file.pcf
 alt_pcf_file=${tmp_dir}/$alt_vcf_file.pcf
+alt_pcf_file2=${tmp_dir}/$alt_vcf_file2.pcf
 pcf_output=${tmp_dir}/$uuid.pcf
 vg_file=${tmp_dir}/$uuid.vg
 ggf_file=${tmp_dir}/$uuid.ggf
@@ -49,20 +51,24 @@ fi
 vcf_or_pcf=${alt_vcf_file##*.}
 if [ $vcf_or_pcf = "pcf" ]; then
     cat $alt_vcf_file > $alt_pcf_file
+    cat $alt_vcf_file2 > $alt_vcf_file2
 else
     cp $alt_vcf_file $alt_vcf_file.vcf
     ruby `dirname $0`/vcf2gfa/vcf2pcf.rb $alt_vcf_file < $alt_vcf_file.vcf > $alt_pcf_file
+    cp $alt_vcf_file2 $alt_vcf_file2.vcf
+    ruby `dirname $0`/vcf2gfa/vcf2pcf.rb $alt_vcf_file2 < $alt_vcf_file2.vcf > $alt_pcf_file2
 fi
 
 echo '{"current": 1, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 2. PCF -> GGF2.0
-bash -x `dirname $0`/vcf2gfa/pcf2gfa_multi.sh $pcf_file $alt_pcf_file $ref_id $uuid > $ggf_file
+bash -x `dirname $0`/vcf2gfa/pcf2gfa_trio.sh $ref_id $uuid $pcf_file $alt_pcf_file $alt_pcf_file2 > $ggf_file
 echo '{"current": 2, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 3. Merge PCF
 cat $pcf_file > $pcf_output
 tail -n +1 $alt_pcf_file >> $pcf_output
+tail -n +1 $alt_pcf_file2 >> $pcf_output
 echo '{"current": 3, "max": 5, "reference": "'${ref_id}'", "name": "'${readable_name}'" }' > $json_file
 
 # 4. GFA1.0 -> VG
