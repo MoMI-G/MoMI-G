@@ -126,6 +126,7 @@ File.open(ARGV[0]) do |f|
       rescue => exception
         raise "ERROR: in '#{line_orig.join(" ")}' : #{exception}"
       end
+      next if fasta == ""
       seq = unique_id
       unique_id += 1
       puts "S\t#{seq}\t#{fasta.split("\n").drop(1).join("").upcase}"
