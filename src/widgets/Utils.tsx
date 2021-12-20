@@ -361,6 +361,9 @@ export class WigAnnotation {
   }
   static convertToAnnotations(res: any, positions: PathRegionWithPrevLen[]): Wigs[] {
     // let hash = {};
+    if (!res[0]) {
+      return new Array();
+    }
     let key_length = Object.keys(res[0]).length;
     let temporal = new Array(key_length);
     for (let i = 0; i < key_length; i++ ) {
