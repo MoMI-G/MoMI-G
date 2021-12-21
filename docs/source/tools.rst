@@ -34,7 +34,7 @@ You can use singularity instead.
 
 .. code-block:: console
 
-  $ singularity -s run docker://momigteam/momig-tools:auto-build test.vcf test_output vg hg38
+  $ singularity -s run docker://momigteam/momig-tools:master test.vcf test_output vg hg38
 
 
 After that, these files are required to be mounted on ``static/`` folder. Also, you should modify ``config.yaml`` and `Dockerfile.backend` in MoMI-G directory.
