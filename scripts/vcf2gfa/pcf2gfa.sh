@@ -22,4 +22,7 @@ if [ ! -s $reference.fai ]; then
 fi
 ruby `dirname $0`/json_to_breakpoint_list.rb $pref.bp.tsv $reference > breakpoint_list_tmp.tsv
 cat $pref.bp.tsv breakpoint_list_tmp.tsv | sort -k 1,1 -k 2,2n | uniq > $pref.bp.merged.tsv
-ruby `dirname $0`/gfa_generator.rb $pref.bp.merged.tsv $pref.output.pcf $reference
+awk '{print $1 "\t" $2 "\t" $2}' $pref.bp.merged.tsv > $pref.bp.merged.bed
+awk '{print $1 "\t0\t" $2}' $reference.fai > $pref.reference.tsv
+bedtools intersect -a $pref.bp.merged.bed -b $pref.reference.tsv | cut -f 1,2 > $pref.bp.merged.filtered.tsv
+ruby `dirname $0`/gfa_generator.rb $pref.bp.merged.filtered.tsv $pref.output.pcf $reference
