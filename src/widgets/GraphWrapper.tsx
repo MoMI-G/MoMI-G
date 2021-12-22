@@ -919,10 +919,12 @@ class GraphWrapper extends React.Component<GraphWrapperProps, GraphWrapperState>
                           .filter(a => a);
                         let exons = annotations.exon
                           .map(a => {
-                            var offset = additionalPath.filter(
+                            let path = additionalPath.filter(
                               b => b.name === a.track
-                            )[0].mapping[0].position.offset;
-                            // console.log(offset);
+                            )[0] || additionalPath.filter(
+                              b => b.name.indexOf(a.track) === 0
+                            )[0];
+                            var offset = path.mapping[0].position.offset;
                             if (offset < 0) offset = 0;
                             a.start += offset;
                             a.end += offset;
