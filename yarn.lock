@@ -1457,7 +1457,7 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-runtime@6.x, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
+babel-runtime@6.x, babel-runtime@^6.18.0, babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -6048,13 +6048,6 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
   integrity sha1-2TPOuSBdgr3PSIb2dCvcK03qFG0=
-
-maryamyriameliamurphies@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/maryamyriameliamurphies/-/maryamyriameliamurphies-1.0.4.tgz#4dccd251a74c454c08cd99aa5225809327ae7823"
-  integrity sha1-TczSUadMRUwIzZmqUiWAkyeueCM=
-  dependencies:
-    babel-runtime "^6.9.2"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
