@@ -64,7 +64,7 @@
     "react-scripts-ts": "^2.6.0",
     "sass-loader": "^7.2.0",
     "tslint-config-prettier": "^1.6.0",
-    "typescript": "^2.9.2",
+    "typescript": "^4.4.0",
     "webpack-parallel-uglify-plugin": "^1.0.2"
   },
   "scripts": {
