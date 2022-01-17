@@ -9,7 +9,7 @@ import './dashboard/custom.css';
 
 import { Utils, PathRegion } from './widgets/Utils';
 import AddWidgetDialog from './dashboard/AddWidgetDialog';
-import EditBar from './dashboard/Editbar';
+import editBar from './dashboard/Editbar';
 import CustomFrame from './dashboard/FrameWithManual';
 import Header from './dashboard/Header';
 import Footer from './dashboard/Footer';

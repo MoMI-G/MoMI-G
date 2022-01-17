@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const EditBar = ({ onEdit }) => {
+const editBar = ({ onEdit }) => {
   return (
     <div className="row edit-bar">
       <div className="col-sm-12 text-right">
@@ -17,4 +17,4 @@ const EditBar = ({ onEdit }) => {
     </div>
   );
 };
-export default EditBar;
+export default editBar;

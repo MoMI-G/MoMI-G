@@ -12,7 +12,7 @@ app.use(express.static('build'));
 app.use(
   '/api/v0',
   proxy('localhost:8080/', {
-    proxyReqPathResolver: function(req) {
+    proxyReqPathResolver: function(req: any) {
       return '/api/v0' + require('url').parse(req.url).path;
     }
   })
@@ -20,14 +20,14 @@ app.use(
 app.use(
   '/api/v2',
   proxy('localhost:8081/', {
-    proxyReqPathResolver: function(req) {
+    proxyReqPathResolver: function(req: any) {
       return '/api/v2' + require('url').parse(req.url).path;
     }
   })
 );
 
 // add top page routing
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: any) => {
   res.status(200).send(
     DOMServer.renderToString(
       <div>

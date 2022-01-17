@@ -7,7 +7,8 @@
     "experimentalDecorators": true,
     "skipLibCheck": true, 
     "allowJs": true,
-    "outDir": "build/dist"
+    "outDir": "build/dist",
+    "baseUrl": "./src"
   },
   "files": [
     "src/server.tsx",
