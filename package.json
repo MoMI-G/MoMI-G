@@ -17,7 +17,7 @@
     "d3": "^4.9.1",
     "d3-sankey": "https://github.com/6br/d3-sankey",
     "d3-svg-legend": "^2.24.1",
-    "express": "^4.17.3",
+    "express": "^4.19.2",
     "express-http-proxy": "^1.0.4",
     "ideogram": "https://github.com/6br/ideogram#zoom",
     "jquery": "^3.6.0",
