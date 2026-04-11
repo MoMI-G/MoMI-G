@@ -22,7 +22,7 @@
     "ideogram": "https://github.com/6br/ideogram#zoom",
     "jquery": "^3.6.0",
     "keymaster": "^1.6.2",
-    "mathjs": "^7.5.1",
+    "mathjs": "^15.2.0",
     "pileup": "^0.6.8",
     "query-string": "^5.0.1",
     "raven-js": "^3.17.0",
